@@ -1798,11 +1798,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Resources/Tsurukame.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1157;
 				DEFINES_MODULE = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = Info.plist;
@@ -1815,9 +1815,8 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.davidsansome.wanikani 1651749118";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1835,11 +1834,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Resources/Tsurukame.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1157;
 				DEFINES_MODULE = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = Info.plist;
@@ -1851,10 +1850,8 @@
 				MARKETING_VERSION = 1.17;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d5cd9a5d-213c-42f1-b72b-185d1259a0f2";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.davidsansome.wanikani";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1868,7 +1865,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				INFOPLIST_FILE = AppStoreScreenshots/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1878,7 +1875,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.AppStoreScreenshots;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.AppStoreScreenshots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1894,7 +1891,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				INFOPLIST_FILE = AppStoreScreenshots/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1903,7 +1900,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.AppStoreScreenshots;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.AppStoreScreenshots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -1920,7 +1917,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -1935,7 +1932,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.FontScreenshotter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.FontScreenshotter;
 				PRODUCT_MODULE_NAME = Tsurukame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1953,7 +1950,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -1967,7 +1964,7 @@
 					"@executable_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.FontScreenshotter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.FontScreenshotter;
 				PRODUCT_MODULE_NAME = Tsurukame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
@@ -1983,7 +1980,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = FontScreenshotterUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1993,7 +1990,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.FontScreenshotterUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.FontScreenshotterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2009,7 +2006,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = FontScreenshotterUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2018,7 +2015,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.FontScreenshotterUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.FontScreenshotterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2036,7 +2033,7 @@
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2044,7 +2041,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.Tests;
 				PRODUCT_MODULE_NAME = Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
@@ -2065,7 +2062,7 @@
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2073,7 +2070,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.Tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.Tests;
 				PRODUCT_MODULE_NAME = Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tsurukame-Bridging-Header.h";
@@ -2090,17 +2087,16 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1157;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				IBSC_MODULE = Tsurukame_Complication_Extension;
 				INFOPLIST_FILE = Complication/Info.plist;
 				MARKETING_VERSION = 1.18;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.watchapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.watchapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.davidsansome.wanikani.watchapp 1651749127";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -2118,17 +2114,15 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1157;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				IBSC_MODULE = Tsurukame_Complication_Extension;
 				INFOPLIST_FILE = Complication/Info.plist;
 				MARKETING_VERSION = 1.18;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.watchapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.watchapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "df06fa1e-0be6-4ca1-8d8d-352da185fec6";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.davidsansome.wanikani.watchapp";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -2145,9 +2139,9 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1157;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				INFOPLIST_FILE = ComplicationExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2157,9 +2151,8 @@
 				MARKETING_VERSION = 1.18;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.watchapp.c;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.watchapp.c;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.davidsansome.wanikani.watchapp.c 1651749139";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -2177,9 +2170,9 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1157;
-				DEVELOPMENT_TEAM = 7B2GP77Y4A;
+				DEVELOPMENT_TEAM = JFUFD59NS2;
 				INFOPLIST_FILE = ComplicationExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2188,10 +2181,8 @@
 				);
 				MARKETING_VERSION = 1.18;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.davidsansome.wanikani.watchapp.c;
+				PRODUCT_BUNDLE_IDENTIFIER = com.giorgiobrullo.tsurukame.watchapp.c;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "a1f9acf7-3902-4937-a701-fd4e488ec576";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.davidsansome.wanikani.watchapp.c";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
