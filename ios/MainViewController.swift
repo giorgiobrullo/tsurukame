@@ -73,24 +73,22 @@ class MainViewController: UIViewController, LoginViewControllerDelegate,
     // search button is pressed. Setting this property to false leaves the navigation bar alone.
     searchController.hidesNavigationBarDuringPresentation = false
 
-    // Configure the search bar.
+    // Configure the search bar. On iOS 26 we let it adopt the native Liquid Glass
+    // appearance instead of tinting it blue to match the old opaque header.
     let searchBar = searchController.searchBar
-    searchBar.barTintColor = TKMStyle.radicalColor2
     searchBar.autocapitalizationType = .none
 
-    let originalSearchBarTintColor = searchBar.tintColor
-    searchBar.tintColor = .white // Make the button white.
-
-    if #available(iOS 13, *) {
-      let searchTextField = searchBar.searchTextField
-      searchTextField.backgroundColor = .systemBackground
-      searchTextField.tintColor = originalSearchBarTintColor
+    if #available(iOS 26, *) {
+      // Native glass: no custom bar/text-field tinting.
     } else {
-      for view in searchBar.subviews[0].subviews {
-        if view.isKind(of: UITextField.self) {
-          // Make the input field cursor dark blue.
-          view.tintColor = originalSearchBarTintColor
-        }
+      searchBar.barTintColor = TKMStyle.radicalColor2
+      let originalSearchBarTintColor = searchBar.tintColor
+      searchBar.tintColor = .white // Make the button white.
+
+      if #available(iOS 13, *) {
+        let searchTextField = searchBar.searchTextField
+        searchTextField.backgroundColor = .systemBackground
+        searchTextField.tintColor = originalSearchBarTintColor
       }
     }
 

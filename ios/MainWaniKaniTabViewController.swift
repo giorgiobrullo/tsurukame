@@ -85,19 +85,27 @@ class MainWaniKaniTabViewController: UITableViewController {
     let model = MutableTableModel(tableView: tableView)
 
     if !user.hasVacationStartedAt {
-      model.add(section: "Currently available")
-      let lessonsItem = BasicModelItem(style: .value1,
-                                       title: "Lessons",
-                                       subtitle: "",
-                                       accessoryType: .disclosureIndicator) { [unowned self] in self
-        .startLessons()
-      }
       let apprenticeCount = services.localCachingClient.apprenticeCount
       let limit = Settings.apprenticeLessonsLimit
-      let disabledMessage = apprenticeCount >= limit ? "apprentice limit reached" : nil
-      hasLessons = setTableViewCellCount(lessonsItem, count: lessons,
-                                         disabledMessage: disabledMessage)
-      model.add(lessonsItem)
+      let lessonsAtLimit = apprenticeCount >= limit
+      hasLessons = lessons > 0 && !lessonsAtLimit
+      hasReviews = reviews > 0
+
+      // Big gradient action cards for the two primary actions.
+      model.add(section: nil)
+      let lessonsSubtitle = lessonsAtLimit ? "Apprentice limit reached"
+        : (lessons == 1 ? "lesson to learn" : "lessons to learn")
+      let reviewsSubtitle = reviews == 1 ? "review to do" : "reviews to do"
+      model.add(DashboardActionCardsItem(lessonCount: lessons, reviewCount: reviews,
+                                         lessonsEnabled: hasLessons, reviewsEnabled: hasReviews,
+                                         lessonsSubtitle: lessonsSubtitle,
+                                         reviewsSubtitle: reviewsSubtitle,
+                                         onLessons: { [unowned self] in
+                                           if self.hasLessons { self.startLessons() }
+                                         },
+                                         onReviews: { [unowned self] in
+                                           if self.hasReviews { self.startReviews() }
+                                         }))
 
       if lessons > 0 && apprenticeCount < limit {
         model.add(BasicModelItem(style: .value1,
@@ -107,15 +115,6 @@ class MainWaniKaniTabViewController: UITableViewController {
             self.showLessonPicker()
           })
       }
-
-      let reviewsItem = BasicModelItem(style: .value1,
-                                       title: "Reviews",
-                                       subtitle: "",
-                                       accessoryType: .disclosureIndicator) { [unowned self] in self
-        .startReviews()
-      }
-      hasReviews = setTableViewCellCount(reviewsItem, count: reviews)
-      model.add(reviewsItem)
 
       model.add(section: "Upcoming reviews")
       model.add(UpcomingReviewsChartItem(upcomingReviews: upcomingReviews,
