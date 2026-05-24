@@ -41,9 +41,6 @@
 		6335B4E723CF14280071671E /* Screenshotter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6335B4E623CF14280071671E /* Screenshotter.swift */; };
 		633611DF2352B93900DD72A3 /* VocabularyHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AFAE52352B6F2004F732F /* VocabularyHighlighter.swift */; };
 		633632EF201F3490006D582B /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633632EE201F3490006D582B /* Settings.swift */; };
-		63391B572779B7FC005CDA72 /* AppSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63391B562779B7FC005CDA72 /* AppSettingsViewController.swift */; };
-		63391B592779B8BF005CDA72 /* ReviewSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63391B582779B8BF005CDA72 /* ReviewSettingsViewController.swift */; };
-		63391B5F2779BF56005CDA72 /* LessonSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63391B5E2779BF56005CDA72 /* LessonSettingsViewController.swift */; };
 		633AFAE62352B6F2004F732F /* VocabularyHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633AFAE52352B6F2004F732F /* VocabularyHighlighter.swift */; };
 		634C9B1423BF687800E4415C /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FCAE77237F75CC00DB1418 /* Style.swift */; };
 		634EB1A121B6BBA400E1831C /* FontLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4E32D2172576B003A200E /* FontLoader.swift */; };
@@ -260,9 +257,6 @@
 		6335B48C23CF0D390071671E /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		6335B4E623CF14280071671E /* Screenshotter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshotter.swift; sourceTree = "<group>"; };
 		633632EE201F3490006D582B /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		63391B562779B7FC005CDA72 /* AppSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsViewController.swift; sourceTree = "<group>"; };
-		63391B582779B8BF005CDA72 /* ReviewSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSettingsViewController.swift; sourceTree = "<group>"; };
-		63391B5E2779BF56005CDA72 /* LessonSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonSettingsViewController.swift; sourceTree = "<group>"; };
 		633AFAE52352B6F2004F732F /* VocabularyHighlighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyHighlighter.swift; sourceTree = "<group>"; };
 		6356E7821FDFF0E3009CE7C1 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		6364A10A242DFB6F000ABF32 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Intents.framework; sourceTree = DEVELOPER_DIR; };
@@ -477,7 +471,6 @@
 				6324AE3D2F9DC7FF0089066C /* RadicalCharacterImages.swift */,
 				631CAD62234AD5FC008CEA73 /* AnswerChecker.swift */,
 				C904455C2395DBAE001BC48B /* AnswerTextField.swift */,
-				63391B562779B7FC005CDA72 /* AppSettingsViewController.swift */,
 				6335B46323CF0C820071671E /* AppStoreScreenshots */,
 				6335B46223CF0C820071671E /* AppStoreScreenshots.xctest */,
 				63F7F52D23D4C2CA006A31FB /* Audio.swift */,
@@ -510,7 +503,6 @@
 				630EB13E25C5713000783E54 /* ReviewItem.swift */,
 				63344E892D291CAA002A4FED /* ReviewQuickSettings */,
 				63A9A55C282389C800602D09 /* ReviewSession.swift */,
-				63391B582779B8BF005CDA72 /* ReviewSettingsViewController.swift */,
 				63BEBF9625C57D4000123147 /* SearchResultViewController.swift */,
 				63F7F52B23D43DF6006A31FB /* Services.swift */,
 				633632EE201F3490006D582B /* Settings.swift */,
@@ -637,7 +629,6 @@
 		63CAAB0F1FD7FAC500E09DA1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				63391B5E2779BF56005CDA72 /* LessonSettingsViewController.swift */,
 				6364A10A242DFB6F000ABF32 /* Intents.framework */,
 				6356E7821FDFF0E3009CE7C1 /* WebKit.framework */,
 				63CAAB101FD7FAC600E09DA1 /* SystemConfiguration.framework */,
@@ -1227,13 +1218,10 @@
 				63C4EA7A2C267C85003D3C0B /* XCAssets+Generated.swift in Sources */,
 				97A120DF2D9C467100D19CAE /* ReviewUtils.swift in Sources */,
 				63F7F52E23D4C2CA006A31FB /* Audio.swift in Sources */,
-				63391B592779B8BF005CDA72 /* ReviewSettingsViewController.swift in Sources */,
-				63391B572779B7FC005CDA72 /* AppSettingsViewController.swift in Sources */,
 				79D887452B41949F003D8F99 /* String+SHA256.swift in Sources */,
 				791B8B5C2D657E2A000C8142 /* CommonErrors.swift in Sources */,
 				63358E9A27365FC70013A2AC /* OfflineAudio.swift in Sources */,
 				C970BC0323D262CE001F3735 /* SiriShortcutHelper.swift in Sources */,
-				63391B5F2779BF56005CDA72 /* LessonSettingsViewController.swift in Sources */,
 				63BEBF9725C57D4000123147 /* SearchResultViewController.swift in Sources */,
 				639CE0BD2CF0ABD500902668 /* FeatureFlags.swift in Sources */,
 				63E1386827E59F4100AC4706 /* FullRefreshOverlayView.swift in Sources */,

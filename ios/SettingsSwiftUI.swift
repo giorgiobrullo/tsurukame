@@ -23,149 +23,253 @@ import WaniKaniAPI
 // `SettingsNavigator`, so the migration can proceed screen-by-screen while everything keeps
 // working.
 
-// MARK: - Navigator
+// MARK: - Routes + Navigator
 
-/// Bridges SwiftUI settings screens to the UIKit navigation stack and to the sub-screens that are
-/// still UIKit (or are UIKit choice-list pickers). Holds `services` and a weak presenter.
-@available(iOS 15.0, *)
-final class SettingsNavigator {
+/// A pushable settings destination. Closure-free so it can live in a `NavigationPath`; the picker
+/// setters are reconstructed in `SettingsView.destination`.
+enum SettingsRoute: Hashable {
+  case appearance, audio, account, dashboard, anki, notifications, subjectInfo
+  case lessonSettings, reviewSettings, lessonOrder
+  case interfaceStyle, fontSize, fonts, offlineAudio
+  case ankiTaskType, lessonBatchSize, apprenticeLimit
+  case reviewItemsLimit, leechThreshold, reviewOrder, taskOrder, reviewBatchSize
+}
+
+enum SettingsAlert: Identifiable {
+  case logout, imageCacheCleared, noJapaneseKeyboard
+  var id: Int { hashValue }
+}
+
+/// Drives the settings `NavigationStack`. Replaces the UINavigationController-pushing navigator.
+@available(iOS 16.0, *)
+final class SettingsNavigator: ObservableObject {
   let services: TKMServices
-  weak var presenter: UIViewController?
+  @Published var path = NavigationPath()
+  @Published var alert: SettingsAlert?
+  @Published var shareDatabase = false
 
   init(services: TKMServices) { self.services = services }
 
-  private func push(_ vc: UIViewController) {
-    presenter?.navigationController?.pushViewController(vc, animated: true)
-  }
+  private func push(_ route: SettingsRoute) { path.append(route) }
+  func pop() { if !path.isEmpty { path.removeLast() } }
 
-  private func present(_ vc: UIViewController) {
-    presenter?.present(vc, animated: true)
-  }
+  func openAppearance() { push(.appearance) }
+  func openAudio() { push(.audio) }
+  func openAccount() { push(.account) }
+  func openDashboard() { push(.dashboard) }
+  func openAnki() { push(.anki) }
+  func openNotifications() { push(.notifications) }
+  func openAnkiTaskType() { push(.ankiTaskType) }
+  func openLessonSettings() { push(.lessonSettings) }
+  func openReviewSettings() { push(.reviewSettings) }
+  func openSubjectInfoSettings() { push(.subjectInfo) }
+  func openLessonOrder() { push(.lessonOrder) }
+  func openLessonBatchSize() { push(.lessonBatchSize) }
+  func openApprenticeLimit() { push(.apprenticeLimit) }
+  func openReviewItemsLimit() { push(.reviewItemsLimit) }
+  func openLeechThreshold() { push(.leechThreshold) }
+  func openReviewOrder() { push(.reviewOrder) }
+  func openTaskOrder() { push(.taskOrder) }
+  func openReviewBatchSize() { push(.reviewBatchSize) }
+  func openInterfaceStyle() { push(.interfaceStyle) }
+  func openFontSize() { push(.fontSize) }
+  func openFonts() { push(.fonts) }
+  func openOfflineAudio() { push(.offlineAudio) }
 
-  // Hub destinations (migrated SwiftUI screens).
-  func openAppearance() {
-    push(TKMHostingController(title: "Appearance", rootView: AppearanceSettingsScreen(nav: self)))
-  }
-
-  func openAudio() {
-    push(TKMHostingController(title: "Audio", rootView: AudioSettingsScreen(nav: self)))
-  }
-
-  func openAccount() {
-    push(TKMHostingController(title: "Account", rootView: AccountSettingsScreen(nav: self)))
-  }
-
-  // Hub destinations (migrated SwiftUI screens).
-  func openDashboard() {
-    push(TKMHostingController(title: "Dashboard", rootView: DashboardSettingsScreen()))
-  }
-
-  func openAnki() {
-    push(TKMHostingController(title: "Anki mode", rootView: AnkiSettingsScreen(nav: self)))
-  }
-
-  func openNotifications() {
-    push(TKMHostingController(title: "Notifications", rootView: NotificationsSettingsScreen()))
-  }
-
-  func openAnkiTaskType() { push(makeAnkiModeTaskTypeViewController()) }
-
-  func openLessonSettings() {
-    push(TKMHostingController(title: "Lessons", rootView: LessonSettingsScreen(nav: self)))
-  }
-
-  func openReviewSettings() {
-    push(TKMHostingController(title: "Reviews", rootView: ReviewSettingsScreen(nav: self)))
-  }
-
-  func openSubjectInfoSettings() {
-    push(TKMHostingController(title: "Subject info", rootView: SubjectDetailsSettingsScreen()))
-  }
-
-  // Lesson-settings sub-pickers (still UIKit).
-  func openLessonOrder() {
-    push(TKMHostingController(title: "Lesson Order", rootView: LessonOrderScreen()))
-  }
-
-  func openLessonBatchSize() { push(makeLessonBatchSizeViewController()) }
-  func openApprenticeLimit() { push(makeApprenticeLessonLimitViewController()) }
-
-  // Review-settings sub-pickers (still UIKit).
-  func openReviewItemsLimit() { push(makeReviewItemsLimitViewController()) }
-  func openLeechThreshold() { push(makeLeechThresholdViewController()) }
-  func openReviewOrder() { push(makeReviewOrderViewController()) }
-  func openTaskOrder() { push(makeTaskOrderViewController()) }
-  func openReviewBatchSize() { push(makeReviewBatchSizeViewController()) }
-
-  func showNoJapaneseKeyboardAlert() {
-    let device = UIDevice.current.model
-    let message = "You must add a Japanese keyboard to your \(device).\nOpen Settings then " +
-      "General ⮕ Keyboard ⮕ Keyboards ⮕ Add New Keyboard."
-    let ac = UIAlertController(title: "No Japanese keyboard", message: message,
-                               preferredStyle: .alert)
-    ac.addAction(UIAlertAction(title: "Close", style: .cancel))
-    present(ac)
-  }
-
-  // Sub-pickers / sub-screens reached from the leaves (still UIKit).
-  func openInterfaceStyle() { push(makeInterfaceStyleViewController()) }
-  func openFontSize() { push(makeFontSizeViewController()) }
-
-  func openFonts() {
-    push(FontsHostingController(services: services))
-  }
-
-  func openOfflineAudio() {
-    push(OfflineAudioHostingController(services: services))
-  }
-
-  // Diagnostics / account actions.
-  func exportDatabase() {
-    present(UIActivityViewController(activityItems: [LocalCachingClient.databaseUrl()],
-                                     applicationActivities: nil))
-  }
-
+  func showNoJapaneseKeyboardAlert() { alert = .noJapaneseKeyboard }
+  func exportDatabase() { shareDatabase = true }
   func clearImageCache() {
     URLCache.shared.removeAllCachedResponses()
-    let c = UIAlertController(title: "Image cache cleared", message: nil, preferredStyle: .alert)
-    c.addAction(UIAlertAction(title: "OK", style: .default))
-    present(c)
+    alert = .imageCacheCleared
   }
 
-  func logOut() {
-    let c = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .alert)
-    c.addAction(UIAlertAction(title: "Log out", style: .destructive) { _ in
-      NotificationCenter.default.post(name: .logout, object: nil)
-    })
-    c.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-    present(c)
+  func logOut() { alert = .logout }
+}
+
+// MARK: - Settings root (nested NavigationStack)
+
+/// The Settings screen, presented as a sheet with its own NavigationStack. Replaces
+/// SettingsHostingController + the UIKit choice-list picker view controllers.
+@available(iOS 16.0, *)
+struct SettingsView: View {
+  @StateObject private var nav: SettingsNavigator
+  @Environment(\.dismiss) private var dismiss
+
+  init(services: TKMServices) {
+    _nav = StateObject(wrappedValue: SettingsNavigator(services: services))
+  }
+
+  var body: some View {
+    NavigationStack(path: $nav.path) {
+      SettingsHubView(nav: nav)
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+          ToolbarItem(placement: .navigationBarTrailing) { Button("Done") { dismiss() } }
+        }
+        .navigationDestination(for: SettingsRoute.self) { destination($0) }
+    }
+    .alert(item: $nav.alert) { which in alert(which) }
+    .sheet(isPresented: $nav.shareDatabase) {
+      ActivityView(items: [LocalCachingClient.databaseUrl()])
+    }
+  }
+
+  @ViewBuilder
+  private func destination(_ route: SettingsRoute) -> some View {
+    switch route {
+    case .appearance: AppearanceSettingsScreen(nav: nav).navigationTitle("Appearance")
+    case .audio: AudioSettingsScreen(nav: nav).navigationTitle("Audio")
+    case .account: AccountSettingsScreen(nav: nav).navigationTitle("Account")
+    case .dashboard: DashboardSettingsScreen().navigationTitle("Dashboard")
+    case .anki: AnkiSettingsScreen(nav: nav).navigationTitle("Anki mode")
+    case .notifications: NotificationsSettingsScreen().navigationTitle("Notifications")
+    case .subjectInfo: SubjectDetailsSettingsScreen().navigationTitle("Subject info")
+    case .lessonSettings: LessonSettingsScreen(nav: nav).navigationTitle("Lessons")
+    case .reviewSettings: ReviewSettingsScreen(nav: nav).navigationTitle("Reviews")
+    case .lessonOrder: LessonOrderScreen().navigationTitle("Lesson Order")
+    case .fonts: FontsScreen(model: FontsModel(services: nav.services)).navigationTitle("Fonts")
+    case .offlineAudio:
+      OfflineAudioScreen(model: OfflineAudioModel(services: nav.services))
+        .navigationTitle("Offline audio")
+    case .interfaceStyle: interfaceStylePicker
+    case .fontSize: fontSizePicker
+    case .ankiTaskType:
+      enumPicker("Anki Mode Applies To", Settings.ankiModeTaskType,
+                 Settings.$ankiModeTaskType.defaultValue) { Settings.ankiModeTaskType = $0 }
+    case .reviewOrder:
+      enumPicker("Review Order", Settings.reviewOrder,
+                 Settings.$reviewOrder.defaultValue) { Settings.reviewOrder = $0 }
+    case .lessonBatchSize: lessonBatchSizePicker
+    case .apprenticeLimit: apprenticeLimitPicker
+    case .reviewItemsLimit: reviewItemsLimitPicker
+    case .leechThreshold: leechThresholdPicker
+    case .taskOrder: taskOrderPicker
+    case .reviewBatchSize: reviewBatchSizePicker
+    }
+  }
+
+  private func alert(_ which: SettingsAlert) -> Alert {
+    switch which {
+    case .logout:
+      return Alert(title: Text("Are you sure?"),
+                   primaryButton: .destructive(Text("Log out")) {
+                     NotificationCenter.default.post(name: .logout, object: nil)
+                   },
+                   secondaryButton: .cancel())
+    case .imageCacheCleared:
+      return Alert(title: Text("Image cache cleared"), dismissButton: .default(Text("OK")))
+    case .noJapaneseKeyboard:
+      return Alert(title: Text("No Japanese keyboard"),
+                   message: Text("You must add a Japanese keyboard to your device.\nOpen Settings "
+                     + "then General ⮕ Keyboard ⮕ Keyboards ⮕ Add New Keyboard."),
+                   dismissButton: .cancel(Text("Close")))
+    }
+  }
+
+  // MARK: Choice-list pickers (replacing the make*ViewController factories)
+
+  private func choice<V: Equatable>(_ choices: [ChoiceListScreen<V>.Choice], _ current: V,
+                                    _ def: V?, _ help: String?,
+                                    set: @escaping (V) -> Void) -> some View {
+    ChoiceListScreen(choices: choices, current: current, defaultValue: def, helpText: help,
+                     onSelect: { set($0)
+                       nav.pop()
+                     })
+  }
+
+  private func enumPicker<T>(_ title: String, _ current: T, _ def: T,
+                             set: @escaping (T) -> Void) -> some View
+    where T: CaseIterable & CustomStringConvertible & Equatable {
+    choice(Array(T.allCases).map { .init(label: $0.description, value: $0) }, current, def, nil,
+           set: set).navigationTitle(title)
+  }
+
+  private var interfaceStylePicker: some View {
+    choice(Array(InterfaceStyle.allCases).map { .init(label: $0.description, value: $0) },
+           Settings.interfaceStyle, Settings.$interfaceStyle.defaultValue, nil) { style in
+      Settings.interfaceStyle = style
+      UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        .flatMap(\.windows).forEach { $0.setInterfaceStyle(style) }
+    }.navigationTitle("Interface Style")
+  }
+
+  private var fontSizePicker: some View {
+    let choices = stride(from: 1.0, through: 2.5, by: 0.25)
+      .map { ChoiceListScreen<Float>.Choice(label: "\(Int(($0 * 100).rounded()))%",
+                                            value: Float($0)) }
+    return choice(choices, Settings.fontSize, Settings.$fontSize.defaultValue, nil) {
+      Settings.fontSize = $0
+    }.navigationTitle("Font Size")
+  }
+
+  private var lessonBatchSizePicker: some View {
+    var choices = [ChoiceListScreen<Int>.Choice(label: "1 lesson", value: 1)]
+    choices += (2 ... 10).map { .init(label: "\($0) lessons", value: $0) }
+    return choice(choices, Settings.lessonBatchSize, Settings.$lessonBatchSize.defaultValue,
+                  "Set the number of new lessons to be introduced before the quiz session.") {
+      Settings.lessonBatchSize = $0
+    }.navigationTitle("Lesson Batch Size")
+  }
+
+  private var apprenticeLimitPicker: some View {
+    var choices = [ChoiceListScreen<Int>.Choice(label: "No limit", value: Int.max)]
+    choices += stride(from: 25, through: 200, by: 25).map { .init(label: "\($0)", value: $0) }
+    return choice(choices, Settings.apprenticeLessonsLimit,
+                  Settings.$apprenticeLessonsLimit.defaultValue,
+                  "Stop yourself from starting new lessons if you have more than this number of "
+                    + "Apprentice-level items already.") {
+      Settings.apprenticeLessonsLimit = $0
+    }.navigationTitle("Apprentice Lessons Limit")
+  }
+
+  private var reviewItemsLimitPicker: some View {
+    let choices = [5, 10, 15, 20, 25, 30, 50, 75, 100]
+      .map { ChoiceListScreen<Int>.Choice(label: "\($0) reviews", value: $0) }
+    return choice(choices, Settings.reviewItemsLimit, Settings.$reviewItemsLimit.defaultValue,
+                  "Set the number of items to review in a session.") {
+      Settings.reviewItemsLimit = $0
+    }.navigationTitle("Review Batch Size")
+  }
+
+  private var leechThresholdPicker: some View {
+    let choices = stride(from: 1.0, through: 5.0, by: 0.25)
+      .map { ChoiceListScreen<Float>.Choice(label: "\($0)", value: Float($0)) }
+    return choice(choices, Settings.leechThreshold, Settings.$leechThreshold.defaultValue,
+                  "Leeches are the items that you regularly get wrong. The lower the leech "
+                    + "threshold value, the more items will be considered leeches.") {
+      Settings.leechThreshold = $0
+    }.navigationTitle("Leech Threshold")
+  }
+
+  private var taskOrderPicker: some View {
+    let choices = [ChoiceListScreen<Bool>.Choice(label: "Meaning then Reading", value: true),
+                   ChoiceListScreen<Bool>.Choice(label: "Reading then Meaning", value: false)]
+    return choice(choices, Settings.meaningFirst, Settings.$meaningFirst.defaultValue, nil) {
+      Settings.meaningFirst = $0
+    }.navigationTitle("Back-to-back Order")
+  }
+
+  private var reviewBatchSizePicker: some View {
+    let name = "Reviews Between Meaning & Reading"
+    let choices = (3 ... 10).map { ChoiceListScreen<Int>.Choice(label: "\($0) reviews", value: $0) }
+    return choice(choices, Settings.reviewBatchSize, Settings.$reviewBatchSize.defaultValue,
+                  "Only used when back-to-back reviews are disabled: how many other items you can "
+                    + "encounter between the reading and meaning of a given item.") {
+      Settings.reviewBatchSize = $0
+    }.navigationTitle(name)
   }
 }
 
-/// Hosts the SwiftUI settings hub. Pushed from `MainViewController` on iOS 15+.
-@available(iOS 15.0, *)
-final class SettingsHostingController: UIHostingController<SettingsHubView>, TKMViewController {
-  private let navigator: SettingsNavigator
-
-  var canSwipeToGoBack: Bool { true }
-
-  init(services: TKMServices) {
-    let navigator = SettingsNavigator(services: services)
-    self.navigator = navigator
-    super.init(rootView: SettingsHubView(nav: navigator))
-    title = "Settings"
-    navigator.presenter = self
+/// UIActivityViewController wrapper for the "export database" share sheet.
+@available(iOS 16.0, *)
+struct ActivityView: UIViewControllerRepresentable {
+  let items: [Any]
+  func makeUIViewController(context _: Context) -> UIActivityViewController {
+    UIActivityViewController(activityItems: items, applicationActivities: nil)
   }
 
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = false
-  }
+  func updateUIViewController(_: UIActivityViewController, context _: Context) {}
 }
 
 // MARK: - Hub

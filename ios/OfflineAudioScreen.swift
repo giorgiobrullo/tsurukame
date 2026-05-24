@@ -175,24 +175,3 @@ struct OfflineAudioScreen: View {
     }
   }
 }
-
-@available(iOS 15.0, *)
-final class OfflineAudioHostingController: UIHostingController<OfflineAudioScreen>,
-  TKMViewController {
-  var canSwipeToGoBack: Bool { true }
-
-  init(services: TKMServices) {
-    super.init(rootView: OfflineAudioScreen(model: OfflineAudioModel(services: services)))
-    title = "Offline audio"
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = false
-  }
-}

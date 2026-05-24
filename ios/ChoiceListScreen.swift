@@ -14,11 +14,9 @@
 
 import Foundation
 import SwiftUI
-import UIKit
 
-// Generic SwiftUI single-choice list, replacing the UIKit SettingChoiceListViewController. The
-// `make*ViewController()` setting factories return one of these hosting controllers, so their call
-// sites are unchanged.
+// Generic SwiftUI single-choice list, used as NavigationStack destinations for the settings
+// pickers (and the dashboard's review-order shortcut).
 
 @available(iOS 15.0, *)
 struct ChoiceListScreen<Value: Equatable>: View {
@@ -60,49 +58,4 @@ struct ChoiceListScreen<Value: Equatable>: View {
     }
     return choice.label
   }
-}
-
-@available(iOS 15.0, *)
-final class ChoiceListHostingController<Value: Equatable>: UIHostingController<ChoiceListScreen<Value>>,
-  TKMViewController {
-  private let onSet: (Value) -> Void
-
-  var canSwipeToGoBack: Bool { true }
-
-  init(title: String, helpText: String? = nil, choices: [ChoiceListScreen<Value>.Choice],
-       current: Value, defaultValue: Value?, set: @escaping (Value) -> Void) {
-    onSet = set
-    super.init(rootView: ChoiceListScreen(choices: choices, current: current,
-                                          defaultValue: defaultValue, helpText: helpText,
-                                          onSelect: { _ in }))
-    self.title = title
-    rootView = ChoiceListScreen(choices: choices, current: current, defaultValue: defaultValue,
-                                helpText: helpText, onSelect: { [weak self] in self?.choose($0) })
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = false
-  }
-
-  private func choose(_ value: Value) {
-    onSet(value)
-    navigationController?.popViewController(animated: true)
-  }
-}
-
-/// Builds a choice list for an enum setting (labels from `description`).
-@available(iOS 15.0, *)
-func makeEnumChoiceList<T>(title: String, current: T, defaultValue: T,
-                           set: @escaping (T) -> Void) -> UIViewController
-  where T: CaseIterable & CustomStringConvertible & Equatable {
-  let choices = Array(T.allCases)
-    .map { ChoiceListScreen<T>.Choice(label: $0.description, value: $0) }
-  return ChoiceListHostingController(title: title, choices: choices, current: current,
-                                     defaultValue: defaultValue, set: set)
 }

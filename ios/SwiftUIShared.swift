@@ -169,34 +169,3 @@ final class SettingsStore: ObservableObject {
   /// return.
   func refresh() { objectWillChange.send() }
 }
-
-// MARK: - Hosting
-
-/// Generic bridge for pushing a SwiftUI screen onto the existing UIKit navigation stack. Conforms
-/// to
-/// `TKMViewController` so the custom swipe-back gesture keeps working, applies the standard
-/// background, and shows the nav bar. Migrated screens are `TKMHostingController(title:rootView:)`.
-@available(iOS 15.0, *)
-final class TKMHostingController<Content: View>: UIHostingController<Content>, TKMViewController {
-  var canSwipeToGoBack: Bool { true }
-
-  init(title: String?, rootView: Content) {
-    super.init(rootView: rootView)
-    self.title = title
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    view.backgroundColor = TKMStyle.Color.background
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = false
-  }
-}

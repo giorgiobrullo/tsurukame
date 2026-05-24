@@ -50,6 +50,10 @@ struct RootView: View {
         break
       }
     }
+    .onReceive(NotificationCenter.default.publisher(for: .logout)) { _ in
+      router.settingsPresented = false
+      state.logOut()
+    }
     .onOpenURL { _ = handleApplink($0) }
     .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
       if let url = activity.webpageURL { _ = handleApplink(url) }
@@ -178,8 +182,7 @@ private struct MainContainer: View {
       .ignoresSafeArea()
     }
     .sheet(isPresented: $router.settingsPresented) {
-      ContainedNav { SettingsHostingController(services: state.services) }
-        .ignoresSafeArea()
+      SettingsView(services: state.services)
     }
   }
 
@@ -213,7 +216,14 @@ private struct MainContainer: View {
                             subjects: ReviewLauncher.reverseSubjects(state.services))
         .navigationTitle("Reverse")
     case .reviewOrder:
-      PlainVC { makeReviewOrderViewController() }
+      ChoiceListScreen(choices: Array(ReviewOrder.allCases)
+        .map { .init(label: $0.description, value: $0) },
+        current: Settings.reviewOrder,
+        defaultValue: Settings.$reviewOrder.defaultValue,
+        helpText: nil,
+        onSelect: { Settings.reviewOrder = $0
+          if !router.path.isEmpty { router.path.removeLast() }
+        })
         .navigationTitle("Review order")
         .navigationBarTitleDisplayMode(.inline)
     }
