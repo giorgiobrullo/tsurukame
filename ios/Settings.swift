@@ -184,6 +184,7 @@ protocol SettingProtocol {
   @Setting(false, #keyPath(notificationSounds)) static var notificationSounds: Bool
 
   @Setting(false, #keyPath(prioritizeCurrentLevel)) static var prioritizeCurrentLevel: Bool
+  @Setting(false, #keyPath(randomLessonOrder)) static var randomLessonOrder: Bool
   @EnumArraySetting([
     .radical,
     .kanji,

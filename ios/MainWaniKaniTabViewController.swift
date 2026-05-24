@@ -551,7 +551,9 @@ class MainWaniKaniTabViewController: UITableViewController {
         return
       }
 
-      items = items.sorted(by: { a, b in a.compareForLessons(other: b) })
+      if !Settings.randomLessonOrder {
+        items = items.sorted(by: { a, b in a.compareForLessons(other: b) })
+      }
       if items.count > Settings.lessonBatchSize {
         items = Array(items[0 ..< Int(Settings.lessonBatchSize)])
       }

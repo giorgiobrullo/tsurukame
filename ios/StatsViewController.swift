@@ -27,6 +27,8 @@ struct StatsData {
 
   let streak: Int
   let accuracy: Double?
+  let meaningAccuracy: Double?
+  let readingAccuracy: Double?
   let avgLevelUpDays: Double?
   let totalItems: Int
   let stages: [Stage]
@@ -55,6 +57,14 @@ struct StatsView: View {
           summaryTile(value: "\(data.totalItems)", caption: "items started",
                       systemImage: "square.stack.3d.up.fill",
                       tint: Color(uiColor: TKMStyle.vocabularyColor2))
+        }
+
+        // Accuracy split by answer type.
+        if data.meaningAccuracy != nil || data.readingAccuracy != nil {
+          HStack(spacing: 12) {
+            accuracySplit("Meaning", data.meaningAccuracy, Color(uiColor: TKMStyle.kanjiColor2))
+            accuracySplit("Reading", data.readingAccuracy, Color(uiColor: TKMStyle.radicalColor2))
+          }
         }
 
         // SRS stage breakdown.
@@ -88,6 +98,18 @@ struct StatsView: View {
       }
       .padding(16)
     }
+  }
+
+  private func accuracySplit(_ label: String, _ value: Double?, _ tint: Color) -> some View {
+    HStack {
+      Text(label).font(.subheadline)
+      Spacer()
+      Text(value.map { "\(Int($0.rounded()))%" } ?? "–")
+        .font(.subheadline.weight(.semibold)).monospacedDigit().foregroundStyle(tint)
+    }
+    .padding(.horizontal, 14).padding(.vertical, 12)
+    .background(Color(uiColor: TKMStyle.Color.cellBackground))
+    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
   }
 
   private func summaryTile(value: String, caption: String, systemImage: String,
@@ -156,7 +178,9 @@ class StatsViewController: UIViewController, TKMViewController {
                                     color: Color(uiColor: color)))
     }
     let total = counts[1 ... 9].reduce(0, +)
+    let byType = client.accuracyByType()
     return StatsData(streak: client.reviewStreak, accuracy: client.overallAccuracy,
+                     meaningAccuracy: byType.meaning, readingAccuracy: byType.reading,
                      avgLevelUpDays: client.averageLevelUpInterval.map { $0 / 86400 },
                      totalItems: total, stages: stages)
   }

@@ -52,6 +52,11 @@ class LessonSettingsViewController: UITableViewController, TKMViewController {
         [unowned self] in
         self.prioritizeCurrentLevelChanged($0)
       })
+    model.add(SwitchModelItem(style: .subtitle,
+                              title: "Random order",
+                              subtitle: "Shuffle lessons instead of ordering by type",
+                              on: Settings.randomLessonOrder) { Settings.randomLessonOrder = $0.isOn
+      })
     model.add(BasicModelItem(style: .value1,
                              title: "Apprentice limit",
                              subtitle: apprenticeLessonsLimitText,

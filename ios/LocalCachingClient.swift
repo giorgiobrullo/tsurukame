@@ -1486,6 +1486,22 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
     }
   }
 
+  /// Lifetime accuracy split into meaning and reading answers (each 0...100, or nil if none).
+  func accuracyByType() -> (meaning: Double?, reading: Double?) {
+    db.inDatabase { db in
+      var mCorrect = 0, mTotal = 0, rCorrect = 0, rTotal = 0
+      for cursor in db.query("SELECT pb FROM review_stats") {
+        guard let stat: TKMReviewStatistic = cursor.proto(forColumnIndex: 0) else { continue }
+        mCorrect += Int(stat.meaningCorrect)
+        mTotal += Int(stat.meaningCorrect + stat.meaningIncorrect)
+        rCorrect += Int(stat.readingCorrect)
+        rTotal += Int(stat.readingCorrect + stat.readingIncorrect)
+      }
+      return (mTotal > 0 ? Double(mCorrect) / Double(mTotal) * 100 : nil,
+              rTotal > 0 ? Double(rCorrect) / Double(rTotal) * 100 : nil)
+    }
+  }
+
   /// Counts per individual SRS stage, indexed by SRSStage.rawValue (1...9; index 0 unused).
   func srsStageCounts() -> [Int] {
     db.inDatabase { db in
