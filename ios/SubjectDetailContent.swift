@@ -116,74 +116,93 @@ private func renderFormatted(_ text: String, isHint: Bool) -> AttributedString {
   return AttributedString(ns)
 }
 
-// MARK: - Chip flow (reuses SubjectChip + calculateSubjectChipFrames)
+// MARK: - Chip flow (pure SwiftUI)
 
-/// Lays out SubjectChip views with the existing flow-layout helper and reports its height back to
-/// SwiftUI so the row sizes correctly.
-private final class ChipFlowUIView: UIView, SubjectChipDelegate {
-  var onTap: ((TKMSubject) -> Void)?
-  var onHeightChange: ((CGFloat) -> Void)?
-  private var chips = [SubjectChip]()
-
-  func setChips(subjects: [TKMSubject], showMeaning: Bool, fontSize: CGFloat) {
-    chips.forEach { $0.removeFromSuperview() }
-    chips = subjects.map {
-      SubjectChip(subject: $0, showMeaning: showMeaning, meaningFontSize: fontSize, delegate: self)
-    }
-    chips.forEach { addSubview($0) }
-    setNeedsLayout()
-  }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    guard bounds.width > 0, !chips.isEmpty else { return }
-    let frames = calculateSubjectChipFrames(chips: chips, width: bounds.width, alignment: .left)
-    for (chip, frame) in zip(chips, frames) { chip.frame = frame }
-    let height = (frames.map(\.maxY).max() ?? 0) + kSubjectChipCollectionEdgeInsets.bottom
-    onHeightChange?(height)
-  }
-
-  func didTapSubjectChip(_ chip: SubjectChip) {
-    if let subject = chip.subject { onTap?(subject) }
-  }
-}
-
-@available(iOS 15.0, *)
-private struct ChipFlow: UIViewRepresentable {
-  let subjects: [TKMSubject]
+/// A brand-gradient subject chip: the subject's Japanese (white, via JapaneseSubjectLabel so
+/// radical
+/// glyph images render) on a gradient rounded rect, optionally followed by its meaning.
+@available(iOS 16.0, *)
+private struct SubjectChipView: View {
+  let subject: TKMSubject
   let showMeaning: Bool
-  let fontSize: CGFloat
-  let onTap: (TKMSubject) -> Void
-  @Binding var height: CGFloat
+  let onTap: () -> Void
 
-  func makeUIView(context _: Context) -> ChipFlowUIView {
-    let view = ChipFlowUIView()
-    view.onTap = onTap
-    view.onHeightChange = { h in
-      if abs(h - height) > 0.5 { DispatchQueue.main.async { height = h } }
-    }
-    view.setChips(subjects: subjects, showMeaning: showMeaning, fontSize: fontSize)
-    return view
+  private var gradient: [Color] {
+    TKMStyle.gradient(forSubject: subject).map { Color(cgColor: $0) }
   }
 
-  func updateUIView(_ view: ChipFlowUIView, context _: Context) {
-    view.onTap = onTap
-    view.setChips(subjects: subjects, showMeaning: showMeaning, fontSize: fontSize)
+  var body: some View {
+    Button(action: onTap) {
+      HStack(spacing: 8) {
+        JapaneseSubjectLabel(subject: subject, size: 18)
+          .fixedSize()
+          .padding(.horizontal, 6)
+          .padding(.vertical, 6)
+          .background(LinearGradient(colors: gradient, startPoint: .leading, endPoint: .trailing))
+          .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+        if showMeaning {
+          Text(subject.primaryMeaning)
+            .font(.system(size: kFontSize))
+            .foregroundStyle(.primary)
+        }
+      }
+    }
+    .buttonStyle(.plain)
   }
 }
 
-@available(iOS 15.0, *)
+/// Left-to-right wrapping layout for the chips (replaces the old calculateSubjectChipFrames).
+@available(iOS 16.0, *)
+private struct ChipFlowLayout: Layout {
+  var spacing: CGFloat = 8
+  var lineSpacing: CGFloat = 6
+
+  func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {
+    let maxWidth = proposal.width ?? .infinity
+    var x: CGFloat = 0, y: CGFloat = 0, lineHeight: CGFloat = 0
+    for subview in subviews {
+      let size = subview.sizeThatFits(.unspecified)
+      if x + size.width > maxWidth, x > 0 {
+        x = 0
+        y += lineHeight + lineSpacing
+        lineHeight = 0
+      }
+      x += size.width + spacing
+      lineHeight = max(lineHeight, size.height)
+    }
+    return CGSize(width: maxWidth.isFinite ? maxWidth : x, height: y + lineHeight)
+  }
+
+  func placeSubviews(in bounds: CGRect, proposal _: ProposedViewSize, subviews: Subviews,
+                     cache _: inout ()) {
+    var x = bounds.minX, y = bounds.minY, lineHeight: CGFloat = 0
+    for subview in subviews {
+      let size = subview.sizeThatFits(.unspecified)
+      if x + size.width > bounds.maxX, x > bounds.minX {
+        x = bounds.minX
+        y += lineHeight + lineSpacing
+        lineHeight = 0
+      }
+      subview.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
+      x += size.width + spacing
+      lineHeight = max(lineHeight, size.height)
+    }
+  }
+}
+
+@available(iOS 16.0, *)
 private struct ChipFlowRow: View {
   let subjects: [TKMSubject]
   let showMeaning: Bool
   let onTap: (TKMSubject) -> Void
-  @State private var height: CGFloat = 44
 
   var body: some View {
-    ChipFlow(subjects: subjects, showMeaning: showMeaning, fontSize: kFontSize,
-             onTap: onTap, height: $height)
-      .frame(height: height)
-      .frame(maxWidth: .infinity, alignment: .leading)
+    ChipFlowLayout {
+      ForEach(subjects, id: \.id) { subject in
+        SubjectChipView(subject: subject, showMeaning: showMeaning) { onTap(subject) }
+      }
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
   }
 }
 
