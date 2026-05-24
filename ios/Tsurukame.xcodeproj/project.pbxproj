@@ -195,6 +195,7 @@
 		BB0F6B0C216698F800CB1306 /* TKMKanaInputTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0F6B0B216698F800CB1306 /* TKMKanaInputTest.m */; };
 		BBE4E32E2172576B003A200E /* FontLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4E32D2172576B003A200E /* FontLoader.swift */; };
 		BEAD8427C0788080A9079A3A /* WidgetSharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567140C7E2E45E06417AC4EC /* WidgetSharedData.swift */; };
+		C0CE8B4A3DBE0D3E5A1838CF /* DashboardScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3DC07308404843022FAA86F /* DashboardScreen.swift */; };
 		C904455D2395DBAE001BC48B /* AnswerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C904455C2395DBAE001BC48B /* AnswerTextField.swift */; };
 		C904455E2395DBAE001BC48B /* AnswerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C904455C2395DBAE001BC48B /* AnswerTextField.swift */; };
 		C90846B0237F1C770068A272 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C90846AE237F1C770068A272 /* Interface.storyboard */; };
@@ -467,6 +468,7 @@
 		BB0F6B10216B333700CB1306 /* TKMKanaInput+Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TKMKanaInput+Internals.h"; sourceTree = "<group>"; };
 		BB2909A5217FAF8B00B1816F /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		BBE4E32D2172576B003A200E /* FontLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontLoader.swift; sourceTree = "<group>"; };
+		C3DC07308404843022FAA86F /* DashboardScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DashboardScreen.swift; sourceTree = "<group>"; };
 		C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		C7938DF5181DE860640CD5EE /* Pods-FontScreenshotter-FontScreenshotterUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotter-FontScreenshotterUITests.debug.xcconfig"; path = "Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C904455C2395DBAE001BC48B /* AnswerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerTextField.swift; sourceTree = "<group>"; };
@@ -723,6 +725,7 @@
 				C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */,
 				52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */,
 				3883E995E322FAB70B794289 /* ReversePracticeViewController.swift */,
+				C3DC07308404843022FAA86F /* DashboardScreen.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1025,6 +1028,7 @@
 				C90846AA237F1C770068A272 /* Resources */,
 				C90846CC237F1C790068A272 /* Embed Foundation Extensions */,
 				8F3DEAB308F195FC9FA151DD /* Frameworks */,
+				A2D7753528BEAF59F4B24032 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -1578,6 +1582,7 @@
 				9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */,
 				D28FEA675E5018672491666D /* ListeningPracticeViewController.swift in Sources */,
 				6B8D5451D91FCC7E27FF1402 /* ReversePracticeViewController.swift in Sources */,
+				C0CE8B4A3DBE0D3E5A1838CF /* DashboardScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1634,6 +1639,13 @@
 				4820306724D849E100B40FDD /* Settings.swift in Sources */,
 				631CAD68234AFAA5008CEA73 /* AnswerChecker.swift in Sources */,
 				63996B44259438C400149414 /* FMDatabase+Assert.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A2D7753528BEAF59F4B24032 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

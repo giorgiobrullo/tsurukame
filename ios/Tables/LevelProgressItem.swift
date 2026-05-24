@@ -101,6 +101,45 @@ struct LevelProgressView: View {
 }
 
 @available(iOS 15.0, *)
+extension LevelProgressView {
+  /// Builds the radicals / kanji / vocabulary progress rows from a level's assignments. Shared by
+  /// the dashboard table cell and the SwiftUI dashboard so the two stay in lock-step.
+  static func rows(from assignments: [TKMAssignment]) -> [Row] {
+    [makeRow(label: "Radicals", type: .radical, assignments: assignments),
+     makeRow(label: "Kanji", type: .kanji, assignments: assignments),
+     makeRow(label: "Vocabulary", type: .vocabulary, assignments: assignments)]
+  }
+
+  private static func makeRow(label: String, type: TKMSubject.TypeEnum,
+                              assignments: [TKMAssignment]) -> Row {
+    var locked = 0, lesson = 0, apprentice = 0, guru = 0
+    for assignment in assignments {
+      guard assignment.hasSubjectType, assignment.subjectType == type else { continue }
+      if assignment.isLessonStage {
+        lesson += 1
+      } else if !assignment.hasSrsStageNumber {
+        locked += 1
+      } else if assignment.srsStage < .guru1 {
+        apprentice += 1
+      } else {
+        guru += 1
+      }
+    }
+
+    let base = TKMStyle.color2(forSubjectType: type)
+    // Left-to-right: most progressed first.
+    let segments = [
+      Segment(value: guru, color: Color(uiColor: base)),
+      Segment(value: apprentice, color: Color(uiColor: base).opacity(0.5)),
+      Segment(value: lesson, color: Color(uiColor: TKMStyle.Color.grey66)),
+      Segment(value: locked, color: Color(uiColor: TKMStyle.Color.grey80)),
+    ]
+    return Row(label: label, passed: guru,
+               total: locked + lesson + apprentice + guru, segments: segments)
+  }
+}
+
+@available(iOS 15.0, *)
 class LevelProgressCell: TableModelCell {
   @TypedModelItem var item: LevelProgressItem
 
@@ -117,40 +156,8 @@ class LevelProgressCell: TableModelCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  private func row(label: String, type: TKMSubject.TypeEnum) -> LevelProgressView.Row {
-    var locked = 0, lesson = 0, apprentice = 0, guru = 0
-    for assignment in item.assignments {
-      guard assignment.hasSubjectType, assignment.subjectType == type else { continue }
-      if assignment.isLessonStage {
-        lesson += 1
-      } else if !assignment.hasSrsStageNumber {
-        locked += 1
-      } else if assignment.srsStage < .guru1 {
-        apprentice += 1
-      } else {
-        guru += 1
-      }
-    }
-
-    let base = TKMStyle.color2(forSubjectType: type)
-    // Left-to-right: most progressed first.
-    let segments = [
-      LevelProgressView.Segment(value: guru, color: Color(uiColor: base)),
-      LevelProgressView.Segment(value: apprentice, color: Color(uiColor: base).opacity(0.5)),
-      LevelProgressView.Segment(value: lesson, color: Color(uiColor: TKMStyle.Color.grey66)),
-      LevelProgressView.Segment(value: locked, color: Color(uiColor: TKMStyle.Color.grey80)),
-    ]
-    return LevelProgressView.Row(label: label, passed: guru,
-                                 total: locked + lesson + apprentice + guru, segments: segments)
-  }
-
   override func update() {
-    let rows = [
-      row(label: "Radicals", type: .radical),
-      row(label: "Kanji", type: .kanji),
-      row(label: "Vocabulary", type: .vocabulary),
-    ]
-    let view = LevelProgressView(rows: rows)
+    let view = LevelProgressView(rows: LevelProgressView.rows(from: item.assignments))
     if let hostingController = hostingController {
       hostingController.rootView = view
     } else {

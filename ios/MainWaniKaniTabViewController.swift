@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import Foundation
+import SwiftUI
 import WaniKaniAPI
 
 private func setTableViewCellCount(_ item: BasicModelItem, count: Int,
@@ -48,12 +49,26 @@ class MainWaniKaniTabViewController: UITableViewController {
   private var itemsByID = [String: any TableModelItem]()
   private var hasLoadedOnce = false
 
+  // SwiftUI dashboard (the native rewrite). When `Settings.useSwiftUIDashboard` is on we host a
+  // `DashboardScreen` over the (disabled) table instead of building table rows. `dashboardModelBox`
+  // is the `DashboardModel` kept as AnyObject so it can be stored without an availability
+  // attribute.
+  private var dashboardHostVC: UIViewController?
+  private var dashboardModelBox: AnyObject?
+  private var usingSwiftUIDashboard = false
+
   func setup(services: TKMServices, delegate: Delegate?) {
     self.services = services
     self.delegate = delegate
   }
 
   override func viewDidLoad() {
+    if Settings.useSwiftUIDashboard, #available(iOS 15.0, *) {
+      usingSwiftUIDashboard = true
+      installSwiftUIDashboard()
+      return
+    }
+
     // Add a refresh control for when the user pulls down.
     let refreshControl = UIRefreshControl()
     refreshControl.tintColor = TKMStyle.Color.label
@@ -70,7 +85,77 @@ class MainWaniKaniTabViewController: UITableViewController {
   }
 
   func update() {
-    recreateTableModel()
+    if usingSwiftUIDashboard, #available(iOS 15.0, *) {
+      refreshDashboardData()
+    } else {
+      recreateTableModel()
+    }
+  }
+
+  // MARK: - SwiftUI dashboard (native rewrite)
+
+  @available(iOS 15.0, *)
+  private func installSwiftUIDashboard() {
+    let model = DashboardModel()
+    model.actions = makeDashboardActions()
+    dashboardModelBox = model
+
+    let host = UIHostingController(rootView: DashboardScreen(model: model,
+                                                             onRefresh: { [weak self] in
+                                                               self?.delegate?.didPullToRefresh()
+                                                             }))
+    host.view.backgroundColor = .clear
+    addChild(host)
+    host.view.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(host.view)
+    NSLayoutConstraint.activate([
+      host.view.topAnchor.constraint(equalTo: tableView.frameLayoutGuide.topAnchor),
+      host.view.bottomAnchor.constraint(equalTo: tableView.frameLayoutGuide.bottomAnchor),
+      host.view.leadingAnchor.constraint(equalTo: tableView.frameLayoutGuide.leadingAnchor),
+      host.view.trailingAnchor.constraint(equalTo: tableView.frameLayoutGuide.trailingAnchor),
+    ])
+    host.didMove(toParent: self)
+    dashboardHostVC = host
+
+    tableView.isScrollEnabled = false
+    tableView.separatorStyle = .none
+    tableView.backgroundColor = TKMStyle.Color.background
+    refreshDashboardData()
+  }
+
+  @available(iOS 15.0, *)
+  private func refreshDashboardData() {
+    let data = DashboardData.make(from: services)
+    hasLessons = data?.lessonsEnabled ?? false
+    hasReviews = data?.reviewsEnabled ?? false
+    (dashboardModelBox as? DashboardModel)?.data = data
+  }
+
+  @available(iOS 15.0, *)
+  private func makeDashboardActions() -> DashboardActions {
+    var a = DashboardActions()
+    a.startLessons = { [weak self] in if self?.hasLessons == true { self?.startLessons() } }
+    a.startReviews = { [weak self] in if self?.hasReviews == true { self?.startReviews() } }
+    a.showLessonPicker = { [weak self] in self?.showLessonPicker() }
+    a.showReviewOrder = { [weak self] in
+      guard let self = self else { return }
+      self.navigationController?.pushViewController(makeReviewOrderViewController(), animated: true)
+    }
+    a.openForecast = { [weak self] in self?.showTableForecast() }
+    a.selfStudy = { [weak self] in self?.startSelfStudyCurrentLevel() }
+    a.listening = { [weak self] in self?.startListeningPractice() }
+    a.reverse = { [weak self] in self?.startReversePractice() }
+    a.recentLessons = { [weak self] in self?.startRecentLessonReviews() }
+    a.recentMistakes = { [weak self] in self?.startRecentMistakeReviews() }
+    a.apprenticeLeeches = { [weak self] in self?.startAlreadyPassedApprenticeReviews() }
+    a.allLeeches = { [weak self] in self?.startAllLeechReviews() }
+    a.openStatistics = { [weak self] in
+      guard let self = self else { return }
+      let vc = StatsViewController()
+      vc.setup(services: self.services)
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
+    return a
   }
 
   // MARK: - Diffable data source

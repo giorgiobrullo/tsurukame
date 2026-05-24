@@ -103,6 +103,21 @@ struct SRSDistributionView: View {
 }
 
 @available(iOS 15.0, *)
+extension SRSDistributionView {
+  /// Builds the apprentice...burned stage entries from category counts (indexed by
+  /// `SRSStageCategory.rawValue`). Shared by the table cell and the SwiftUI dashboard.
+  static func stages(from counts: [Int]) -> [Stage] {
+    var stages = [Stage]()
+    for category in SRSStageCategory.apprentice ... SRSStageCategory.burned {
+      let count = category.rawValue < counts.count ? counts[category.rawValue] : 0
+      stages.append(Stage(name: category.description, count: count,
+                          color: Color(uiColor: TKMStyle.color(forSRSStageCategory: category))))
+    }
+    return stages
+  }
+}
+
+@available(iOS 15.0, *)
 class SRSDistributionCell: TableModelCell {
   @TypedModelItem var item: SRSDistributionItem
 
@@ -120,14 +135,8 @@ class SRSDistributionCell: TableModelCell {
   }
 
   override func update() {
-    var stages = [SRSDistributionView.Stage]()
-    for category in SRSStageCategory.apprentice ... SRSStageCategory.burned {
-      let count = category.rawValue < item.counts.count ? item.counts[category.rawValue] : 0
-      stages.append(SRSDistributionView.Stage(name: category.description, count: count,
-                                              color: Color(uiColor: TKMStyle
-                                                .color(forSRSStageCategory: category))))
-    }
-    let view = SRSDistributionView(stages: stages, accuracy: item.accuracy)
+    let view = SRSDistributionView(stages: SRSDistributionView.stages(from: item.counts),
+                                   accuracy: item.accuracy)
     if let hostingController = hostingController {
       hostingController.rootView = view
     } else {

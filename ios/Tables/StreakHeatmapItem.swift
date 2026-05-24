@@ -91,28 +91,11 @@ struct ActivityHeatmapView: View {
     default: return base
     }
   }
-}
-
-@available(iOS 15.0, *)
-class StreakHeatmapCell: TableModelCell {
-  @TypedModelItem var item: StreakHeatmapItem
-
-  private var hostingController: UIHostingController<ActivityHeatmapView>?
-
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-    selectionStyle = .none
-    backgroundColor = TKMStyle.Color.cellBackground
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
 
   /// Builds 18 week-columns of day counts ending with the current week, aligned to the locale's
-  /// first weekday. -1 marks days in the future.
-  private static func buildColumns(dailyCounts: [String: Int]) -> [[Int]] {
+  /// first weekday. -1 marks days in the future. Shared by the table cell and the SwiftUI
+  /// dashboard.
+  static func columns(from dailyCounts: [String: Int]) -> [[Int]] {
     let weeks = 18
     let calendar = Calendar.current
     let formatter = DateFormatter()
@@ -145,11 +128,28 @@ class StreakHeatmapCell: TableModelCell {
     }
     return columns
   }
+}
+
+@available(iOS 15.0, *)
+class StreakHeatmapCell: TableModelCell {
+  @TypedModelItem var item: StreakHeatmapItem
+
+  private var hostingController: UIHostingController<ActivityHeatmapView>?
+
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    selectionStyle = .none
+    backgroundColor = TKMStyle.Color.cellBackground
+  }
+
+  @available(*, unavailable)
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func update() {
     let view = ActivityHeatmapView(streak: item.streak,
-                                   columns: StreakHeatmapCell.buildColumns(dailyCounts: item
-                                     .dailyCounts))
+                                   columns: ActivityHeatmapView.columns(from: item.dailyCounts))
     if let hostingController = hostingController {
       hostingController.rootView = view
     } else {

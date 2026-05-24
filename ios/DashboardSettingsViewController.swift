@@ -35,6 +35,15 @@ class DashboardSettingsViewController: UITableViewController, TKMViewController 
   private func rerender() {
     let model = MutableTableModel(tableView: tableView)
 
+    model.add(section: "Layout",
+              footer: "The new SwiftUI dashboard is the in-progress native redesign. Turn it off to use the classic dashboard.")
+    model.add(SwitchModelItem(style: .subtitle,
+                              title: "New SwiftUI dashboard (beta)",
+                              subtitle: "Native redesign of the home screen",
+                              on: Settings.useSwiftUIDashboard) {
+        Settings.useSwiftUIDashboard = $0.isOn
+      })
+
     model.add(section: "Widgets",
               footer: "Choose which widgets appear on the main dashboard.")
     model.add(SwitchModelItem(style: .subtitle,
