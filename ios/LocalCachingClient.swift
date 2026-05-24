@@ -1428,20 +1428,27 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
     }
   }
 
-  /// Daily review counts keyed by local-day string ("yyyy-MM-dd").
+  /// Daily activity counts (reviews + lessons) keyed by local-day string ("yyyy-MM-dd"). Reviews
+  /// come from the synced review history; lessons from each assignment's started_at. Counting
+  /// lessons matters for new accounts that have done lessons but no reviews yet.
   func reviewActivityByDay() -> [String: Int] {
-    db.inDatabase { db in
-      var ret = [String: Int]()
+    var ret: [String: Int] = db.inDatabase { db in
+      var counts = [String: Int]()
       for cursor in db.query("SELECT day, review_count FROM review_history") {
         if let day = cursor.string(forColumnIndex: 0) {
-          ret[day] = Int(cursor.int(forColumnIndex: 1))
+          counts[day] = Int(cursor.int(forColumnIndex: 1))
         }
       }
-      return ret
+      return counts
     }
+    let formatter = LocalCachingClient.reviewDayKeyFormatter
+    for assignment in getAllAssignments() where assignment.hasStartedAt {
+      ret[formatter.string(from: assignment.startedAtDate), default: 0] += 1
+    }
+    return ret
   }
 
-  /// Current consecutive-day review streak, ending today (or yesterday if today has no reviews
+  /// Current consecutive-day activity streak, ending today (or yesterday if today has no activity
   /// yet).
   var reviewStreak: Int {
     let counts = reviewActivityByDay()
