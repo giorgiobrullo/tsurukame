@@ -178,5 +178,8 @@ struct SubjectListScreen: View {
       }
     }
     .listStyle(.plain)
+    // Let each gradient row size to its content. The default minimum row height centers short
+    // (reading-less) rows in a taller slot, leaving the list background showing above and below.
+    .environment(\.defaultMinListRowHeight, 0)
   }
 }
