@@ -184,6 +184,7 @@
 		79D887472B419609003D8F99 /* String+SHA256Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D887462B419609003D8F99 /* String+SHA256Test.swift */; };
 		79D887482B419672003D8F99 /* String+SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D887442B41949F003D8F99 /* String+SHA256.swift */; };
 		8ABD6EE815EB4D624D42A837 /* SettingsScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B7110F2ABB9D5EA2B62E82 /* SettingsScreens.swift */; };
+		8E7FF16575EEA160A41E6B73 /* ReviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6545C730ACCB6BD99476C9 /* ReviewScreen.swift */; };
 		8F73DA6B4E6C360412C51110 /* LevelProgressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD3D849CDB443FDA6A69FF4 /* LevelProgressItem.swift */; };
 		93B59B2A2367AF130097533C /* UpcomingReviewsChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B59B292367AF130097533C /* UpcomingReviewsChartItem.swift */; };
 		94EA616D908E10AE08AF1445 /* DashboardSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F14CBADD63065BA53E4AB /* DashboardSettingsViewController.swift */; };
@@ -302,6 +303,7 @@
 		4874562E261DD28E00F33AA3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		489894D423670CB000A20AF8 /* Tsurukame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tsurukame.entitlements; sourceTree = "<group>"; };
 		48F4B1DB268CB9850033860E /* UpcomingReviewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpcomingReviewsViewController.swift; sourceTree = "<group>"; };
+		4A6545C730ACCB6BD99476C9 /* ReviewScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReviewScreen.swift; sourceTree = "<group>"; };
 		4B8236EC341CF1BA18D16857 /* Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; sourceTree = "<group>"; };
 		4CBF551BE56C28C5F75B375A /* SettingsSwiftUI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsSwiftUI.swift; sourceTree = "<group>"; };
 		4D84B3516DD7DB536A88D91C /* TsurukameApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TsurukameApp.swift; sourceTree = "<group>"; };
@@ -747,6 +749,7 @@
 				222F3E8F49AC9A9A1936D56B /* UpcomingReviewsScreen.swift */,
 				4D84B3516DD7DB536A88D91C /* TsurukameApp.swift */,
 				A3EC114D4A65CB5055FE264B /* SubjectSearchSwiftUI.swift */,
+				4A6545C730ACCB6BD99476C9 /* ReviewScreen.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1611,6 +1614,7 @@
 				9AC49743E27B72F17DFFCFDC /* UpcomingReviewsScreen.swift in Sources */,
 				F4E7AA3C569ADB71A7BFCA1F /* TsurukameApp.swift in Sources */,
 				157A0EB88FBC954C6CE8DD0E /* SubjectSearchSwiftUI.swift in Sources */,
+				8E7FF16575EEA160A41E6B73 /* ReviewScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

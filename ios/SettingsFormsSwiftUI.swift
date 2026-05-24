@@ -77,6 +77,15 @@ struct ReviewSettingsScreen: View {
   var body: some View {
     List {
       Section {
+        Toggle(isOn: store.bind(Settings.useSwiftUIReviews) { Settings.useSwiftUIReviews = $0 }) {
+          SubtitleLabel("SwiftUI reviews (beta)",
+                        "Native review engine, in progress. Exercised via Self-study current level.")
+        }
+      } footer: {
+        Text("The SwiftUI review engine is an in-progress rewrite. While on, Self-study uses it (no SRS impact); the classic engine is still used everywhere else.")
+      }
+
+      Section {
         Toggle(isOn: store
           .bind(Settings.reviewItemsLimitEnabled) { Settings.reviewItemsLimitEnabled = $0 }) {
             SubtitleLabel("Review items in batches", "Limit the number of items in review sessions")

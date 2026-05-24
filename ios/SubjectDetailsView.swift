@@ -123,9 +123,18 @@ class SubjectDetailsView: UITableView, SubjectChipDelegate {
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
+    configureSectionMetrics()
+  }
 
+  // Programmatic initializer so the view can be created outside a storyboard (e.g. embedded in the
+  // SwiftUI review screen via UIViewRepresentable).
+  override init(frame: CGRect, style: UITableView.Style) {
+    super.init(frame: frame, style: style)
+    configureSectionMetrics()
+  }
+
+  private func configureSectionMetrics() {
     let scaledSectionHeaderHeight = UIFontMetrics.default.scaledValue(for: kSectionHeaderHeight)
-
     sectionHeaderHeight = scaledSectionHeaderHeight
     estimatedSectionHeaderHeight = scaledSectionHeaderHeight
     sectionFooterHeight = kSectionFooterHeight

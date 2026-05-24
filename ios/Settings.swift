@@ -227,6 +227,8 @@ protocol SettingProtocol {
 
   // Dashboard widget visibility.
   @Setting(false, #keyPath(useSwiftUIDashboard)) static var useSwiftUIDashboard: Bool
+  // SwiftUI review/lesson engine (in-progress native rewrite; off by default while it's tested).
+  @Setting(false, #keyPath(useSwiftUIReviews)) static var useSwiftUIReviews: Bool
   @Setting(true, #keyPath(showActivityWidget)) static var showActivityWidget: Bool
   @Setting(true, #keyPath(showAccuracyStat)) static var showAccuracyStat: Bool
   @Setting(true, #keyPath(showForecastChart)) static var showForecastChart: Bool

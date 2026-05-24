@@ -798,6 +798,13 @@ class MainWaniKaniTabViewController: UITableViewController {
       .shuffled()
     guard !items.isEmpty else { return }
     // Practice session: no SRS impact, and works regardless of whether items are currently due.
+    // Safe place to exercise the SwiftUI review engine (no SRS consequences) while it's in beta.
+    if Settings.useSwiftUIReviews, #available(iOS 15.0, *) {
+      let vc = SwiftUIReviewHostingController(services: services, items: items,
+                                              isPracticeSession: true)
+      navigationController?.pushViewController(vc, animated: true)
+      return
+    }
     let vc = StoryboardScene.ReviewContainer.initialScene.instantiate()
     vc.setup(services: services, items: items, isPracticeSession: true)
     navigationController?.pushViewController(vc, animated: true)
