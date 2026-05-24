@@ -132,7 +132,12 @@ class MainWaniKaniTabViewController: UITableViewController {
         var iid = item.diffIdentifier
         while usedItemIDs.contains(iid) { iid += "#" }
         usedItemIDs.insert(iid)
-        newItemsByID[iid] = item
+        // Reuse the previous instance for unchanged ids. Diffable doesn't re-provide cells whose id
+        // is unchanged, so such a cell keeps its (weak) baseItem pointing at the old instance; if
+        // we
+        // dropped that instance the weak ref would become nil and tapping the row would crash. Same
+        // id == same content, so reusing the old instance is safe.
+        newItemsByID[iid] = itemsByID[iid] ?? item
         itemIDs.append(iid)
       }
       snapshot.appendItems(itemIDs, toSection: sid)

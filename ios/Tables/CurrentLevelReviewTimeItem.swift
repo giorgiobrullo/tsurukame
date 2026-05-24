@@ -94,5 +94,6 @@ private func intervalString(_ date: Date) -> String {
     }
   }
 
-  return formatter.string(from: components)!
+  // string(from:) can return nil (e.g. when every component rounds to zero); don't force-unwrap.
+  return formatter.string(from: components) ?? "Now"
 }
