@@ -15,37 +15,6 @@
 import Foundation
 import SwiftUI
 import UIKit
-
-/// A clean, modern upcoming-reviews forecast: hourly bars for the next 24 hours plus a cumulative
-/// line, drawn with SwiftUI Canvas in the WaniKani brand colours. Used on iOS 15+; older systems
-/// fall back to `UpcomingReviewsChartItem`.
-@available(iOS 15.0, *)
-class ForecastChartItem: TableModelItem {
-  let upcomingReviews: [Int]
-  let currentReviewCount: Int
-  let date: Date
-  let tapHandler: () -> Void
-
-  init(upcomingReviews: [Int], currentReviewCount: Int, date: Date,
-       tapHandler: @escaping () -> Void) {
-    self.upcomingReviews = upcomingReviews
-    self.currentReviewCount = currentReviewCount
-    self.date = date
-    self.tapHandler = tapHandler
-  }
-
-  var cellFactory: TableModelCellFactory {
-    .fromDefaultConstructor(cellClass: ForecastChartCell.self)
-  }
-
-  var rowHeight: CGFloat? { 150 }
-
-  var diffIdentifier: String {
-    "forecast|\(currentReviewCount)|" + upcomingReviews.prefix(24).map(String.init)
-      .joined(separator: ",")
-  }
-}
-
 @available(iOS 15.0, *)
 struct ForecastChartView: View {
   let upcoming: [Int]
@@ -118,49 +87,5 @@ struct ForecastChartView: View {
       }
     }
     .padding(.vertical, 4)
-  }
-}
-
-@available(iOS 15.0, *)
-class ForecastChartCell: TableModelCell {
-  @TypedModelItem var item: ForecastChartItem
-
-  private var hostingController: UIHostingController<ForecastChartView>?
-
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-    selectionStyle = .none
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func update() {
-    let view = ForecastChartView(upcoming: item.upcomingReviews,
-                                 currentCount: item.currentReviewCount)
-    if let hostingController = hostingController {
-      hostingController.rootView = view
-    } else {
-      let hc = UIHostingController(rootView: view)
-      hc.view.backgroundColor = .clear
-      // The chart has no interactive elements; let taps fall through to the table row so the
-      // existing "open full forecast" navigation still fires.
-      hc.view.isUserInteractionEnabled = false
-      hc.view.translatesAutoresizingMaskIntoConstraints = false
-      contentView.addSubview(hc.view)
-      NSLayoutConstraint.activate([
-        hc.view.topAnchor.constraint(equalTo: contentView.topAnchor),
-        hc.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-        hc.view.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-        hc.view.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-      ])
-      hostingController = hc
-    }
-  }
-
-  override func didSelect() {
-    item.tapHandler()
   }
 }

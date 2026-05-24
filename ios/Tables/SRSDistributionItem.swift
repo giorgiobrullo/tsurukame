@@ -16,33 +16,6 @@ import Foundation
 import SwiftUI
 import UIKit
 import WaniKaniAPI
-
-/// A compact stacked bar summarising how the user's items are distributed across the SRS stage
-/// categories (Apprentice → Burned), shown above the per-category rows in the "All levels" section.
-@available(iOS 15.0, *)
-class SRSDistributionItem: TableModelItem {
-  /// Counts indexed by `SRSStageCategory.rawValue` (apprentice...burned).
-  let counts: [Int]
-  /// Lifetime review accuracy (0...100), or nil if unknown.
-  let accuracy: Double?
-
-  init(counts: [Int], accuracy: Double?) {
-    self.counts = counts
-    self.accuracy = accuracy
-  }
-
-  var cellFactory: TableModelCellFactory {
-    .fromDefaultConstructor(cellClass: SRSDistributionCell.self)
-  }
-
-  var rowHeight: CGFloat? { accuracy == nil ? 86 : 112 }
-
-  var diffIdentifier: String {
-    "srsdist|" + counts.map(String.init).joined(separator: ",")
-      + "|" + (accuracy.map { String(Int($0.rounded())) } ?? "-")
-  }
-}
-
 @available(iOS 15.0, *)
 struct SRSDistributionView: View {
   struct Stage: Identifiable {
@@ -114,44 +87,5 @@ extension SRSDistributionView {
                           color: Color(uiColor: TKMStyle.color(forSRSStageCategory: category))))
     }
     return stages
-  }
-}
-
-@available(iOS 15.0, *)
-class SRSDistributionCell: TableModelCell {
-  @TypedModelItem var item: SRSDistributionItem
-
-  private var hostingController: UIHostingController<SRSDistributionView>?
-
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-    selectionStyle = .none
-    backgroundColor = TKMStyle.Color.cellBackground
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func update() {
-    let view = SRSDistributionView(stages: SRSDistributionView.stages(from: item.counts),
-                                   accuracy: item.accuracy)
-    if let hostingController = hostingController {
-      hostingController.rootView = view
-    } else {
-      let hc = UIHostingController(rootView: view)
-      hc.view.backgroundColor = .clear
-      hc.view.isUserInteractionEnabled = false
-      hc.view.translatesAutoresizingMaskIntoConstraints = false
-      contentView.addSubview(hc.view)
-      NSLayoutConstraint.activate([
-        hc.view.topAnchor.constraint(equalTo: contentView.topAnchor),
-        hc.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-        hc.view.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-        hc.view.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-      ])
-      hostingController = hc
-    }
   }
 }

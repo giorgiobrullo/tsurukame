@@ -15,32 +15,6 @@
 import Foundation
 import SwiftUI
 import UIKit
-
-/// Daily review streak + a GitHub-style activity heatmap of the last ~18 weeks. Driven by the
-/// `review_history` cache table. iOS 15+.
-@available(iOS 15.0, *)
-class StreakHeatmapItem: TableModelItem {
-  let streak: Int
-  let dailyCounts: [String: Int]
-
-  init(streak: Int, dailyCounts: [String: Int]) {
-    self.streak = streak
-    self.dailyCounts = dailyCounts
-  }
-
-  var cellFactory: TableModelCellFactory {
-    .fromDefaultConstructor(cellClass: StreakHeatmapCell.self)
-  }
-
-  var rowHeight: CGFloat? { 170 }
-
-  var diffIdentifier: String {
-    let digest = dailyCounts.sorted { $0.key < $1.key }
-      .map { "\($0.key):\($0.value)" }.joined(separator: ",").hashValue
-    return "streak|\(streak)|\(digest)"
-  }
-}
-
 @available(iOS 15.0, *)
 struct ActivityHeatmapView: View {
   let streak: Int
@@ -127,44 +101,5 @@ struct ActivityHeatmapView: View {
       columns.append(column)
     }
     return columns
-  }
-}
-
-@available(iOS 15.0, *)
-class StreakHeatmapCell: TableModelCell {
-  @TypedModelItem var item: StreakHeatmapItem
-
-  private var hostingController: UIHostingController<ActivityHeatmapView>?
-
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-    selectionStyle = .none
-    backgroundColor = TKMStyle.Color.cellBackground
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func update() {
-    let view = ActivityHeatmapView(streak: item.streak,
-                                   columns: ActivityHeatmapView.columns(from: item.dailyCounts))
-    if let hostingController = hostingController {
-      hostingController.rootView = view
-    } else {
-      let hc = UIHostingController(rootView: view)
-      hc.view.backgroundColor = .clear
-      hc.view.isUserInteractionEnabled = false
-      hc.view.translatesAutoresizingMaskIntoConstraints = false
-      contentView.addSubview(hc.view)
-      NSLayoutConstraint.activate([
-        hc.view.topAnchor.constraint(equalTo: contentView.topAnchor),
-        hc.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-        hc.view.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-        hc.view.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-      ])
-      hostingController = hc
-    }
   }
 }

@@ -135,31 +135,18 @@ struct StatsView: View {
   }
 }
 
-class StatsViewController: UIViewController, TKMViewController {
-  private var services: TKMServices!
-
+@available(iOS 15.0, *)
+final class StatsViewController: UIHostingController<StatsView>, TKMViewController {
   var canSwipeToGoBack: Bool { true }
 
-  func setup(services: TKMServices) { self.services = services }
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  init(services: TKMServices) {
+    super.init(rootView: StatsView(data: StatsViewController.makeData(services: services)))
     title = "Statistics"
-    view.backgroundColor = TKMStyle.Color.background
+  }
 
-    guard #available(iOS 15.0, *) else { return }
-    let host = UIHostingController(rootView: StatsView(data: makeData()))
-    host.view.backgroundColor = .clear
-    addChild(host)
-    host.view.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(host.view)
-    NSLayoutConstraint.activate([
-      host.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      host.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      host.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      host.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-    ])
-    host.didMove(toParent: self)
+  @available(*, unavailable)
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -167,8 +154,7 @@ class StatsViewController: UIViewController, TKMViewController {
     navigationController?.isNavigationBarHidden = false
   }
 
-  @available(iOS 15.0, *)
-  private func makeData() -> StatsData {
+  private static func makeData(services: TKMServices) -> StatsData {
     let client = services.localCachingClient!
     let counts = client.srsStageCounts()
     let names = ["", "Apprentice 1", "Apprentice 2", "Apprentice 3", "Apprentice 4",

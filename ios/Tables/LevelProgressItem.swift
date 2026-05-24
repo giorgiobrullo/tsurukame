@@ -16,34 +16,6 @@ import Foundation
 import SwiftUI
 import UIKit
 import WaniKaniAPI
-
-/// Modern current-level progress: one segmented bar per subject type (radicals / kanji / vocab)
-/// showing Guru'd / Apprentice / Lesson / Locked proportions in the brand colour. Replaces the old
-/// three-pie-chart cell on iOS 15+ (older systems fall back to `CurrentLevelChartItem`).
-@available(iOS 15.0, *)
-class LevelProgressItem: TableModelItem {
-  let assignments: [TKMAssignment]
-
-  init(currentLevelAssignments: [TKMAssignment]) {
-    assignments = currentLevelAssignments
-  }
-
-  var cellFactory: TableModelCellFactory {
-    .fromDefaultConstructor(cellClass: LevelProgressCell.self)
-  }
-
-  var rowHeight: CGFloat? { 128 }
-
-  var diffIdentifier: String {
-    var digest = assignments.count
-    for assignment in assignments {
-      digest = digest &* 31 &+ Int(assignment.subjectType.rawValue) &* 11
-        &+ Int(assignment.srsStageNumber)
-    }
-    return "level-\(digest)"
-  }
-}
-
 @available(iOS 15.0, *)
 struct LevelProgressView: View {
   struct Segment: Identifiable {
@@ -136,43 +108,5 @@ extension LevelProgressView {
     ]
     return Row(label: label, passed: guru,
                total: locked + lesson + apprentice + guru, segments: segments)
-  }
-}
-
-@available(iOS 15.0, *)
-class LevelProgressCell: TableModelCell {
-  @TypedModelItem var item: LevelProgressItem
-
-  private var hostingController: UIHostingController<LevelProgressView>?
-
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-    selectionStyle = .none
-    backgroundColor = TKMStyle.Color.cellBackground
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func update() {
-    let view = LevelProgressView(rows: LevelProgressView.rows(from: item.assignments))
-    if let hostingController = hostingController {
-      hostingController.rootView = view
-    } else {
-      let hc = UIHostingController(rootView: view)
-      hc.view.backgroundColor = .clear
-      hc.view.isUserInteractionEnabled = false
-      hc.view.translatesAutoresizingMaskIntoConstraints = false
-      contentView.addSubview(hc.view)
-      NSLayoutConstraint.activate([
-        hc.view.topAnchor.constraint(equalTo: contentView.topAnchor),
-        hc.view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-        hc.view.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-        hc.view.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-      ])
-      hostingController = hc
-    }
   }
 }

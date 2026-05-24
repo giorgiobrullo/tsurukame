@@ -267,9 +267,8 @@ final class MainHostingController: UIHostingController<MainScreen>, TKMViewContr
     a.allLeeches = { [weak self] in self?.startAllLeechReviews() }
     a.openStatistics = { [weak self] in
       guard let self = self else { return }
-      let vc = StatsViewController()
-      vc.setup(services: self.services)
-      self.navigationController?.pushViewController(vc, animated: true)
+      self.navigationController?.pushViewController(StatsViewController(services: self.services),
+                                                    animated: true)
     }
     a.showAllCurrentLevel = { [weak self] in
       guard let self = self,
