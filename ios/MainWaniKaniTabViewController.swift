@@ -155,6 +155,14 @@ class MainWaniKaniTabViewController: UITableViewController {
       vc.setup(services: self.services)
       self.navigationController?.pushViewController(vc, animated: true)
     }
+    a.showAllCurrentLevel = { [weak self] in
+      guard let self = self,
+            let level = self.services.localCachingClient.getUserInfo().map({ Int($0.currentLevel) })
+      else { return }
+      let vc = SubjectListHostingController(services: self.services, title: "Level \(level)",
+                                            source: .level(level))
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
     return a
   }
 

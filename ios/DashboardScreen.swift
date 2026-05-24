@@ -132,6 +132,7 @@ struct DashboardActions {
   var apprenticeLeeches: () -> Void = {}
   var allLeeches: () -> Void = {}
   var openStatistics: () -> Void = {}
+  var showAllCurrentLevel: () -> Void = {}
 }
 
 @available(iOS 15.0, *)
@@ -182,7 +183,11 @@ struct DashboardScreen: View {
       }
 
       TKMSection("Current level \(data.level)") {
-        LevelProgressView(rows: data.levelRows).tkmCard()
+        VStack(spacing: 10) {
+          LevelProgressView(rows: data.levelRows).tkmCard()
+          TKMNavRow("Show all items", systemImage: "square.grid.2x2",
+                    action: model.actions.showAllCurrentLevel)
+        }
       }
 
       allLevelsSection(data)
