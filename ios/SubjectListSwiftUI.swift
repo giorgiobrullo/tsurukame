@@ -21,7 +21,7 @@ import WaniKaniAPI
 // by-level and by-SRS-category screens. Each row is a brand-gradient chip (the same look as the old
 // SubjectModelItem cell); tapping pushes the existing UIKit subject-detail screen.
 
-enum SubjectListSource {
+enum SubjectListSource: Hashable {
   case level(Int)
   case category(SRSStageCategory)
 }
