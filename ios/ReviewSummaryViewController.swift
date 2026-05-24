@@ -18,6 +18,7 @@ import WaniKaniAPI
 class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
   private var services: TKMServices!
   private var model: TableModel!
+  private var incorrectItems: [ReviewItem] = []
 
   func setup(services: TKMServices, items: [ReviewItem]) {
     self.services = services
@@ -32,6 +33,7 @@ class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
       }
       incorrectItemsByLevel[item.assignment.level, default: []].append(item)
     }
+    incorrectItems = incorrectItemsByLevel.values.flatMap { $0 }
 
     let model = MutableTableModel(tableView: tableView)
 
@@ -45,6 +47,19 @@ class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
     }
     model.add(section: "Summary")
     model.add(BasicModelItem(style: .value1, title: "Correct answers", subtitle: summaryText))
+
+    // Immediately re-review the items you got wrong (#335), as a no-SRS practice round.
+    if !incorrectItems.isEmpty {
+      let reReviewItem = BasicModelItem(style: .value1, title: "Re-review incorrect items",
+                                        subtitle: "\(incorrectItems.count)",
+                                        accessoryType: .disclosureIndicator) { [unowned self] in
+        self.startReReview()
+      }
+      reReviewItem.textColor = TKMStyle.defaultTintColor
+      reReviewItem.image = UIImage(systemName: "arrow.clockwise")
+      reReviewItem.imageTintColor = TKMStyle.defaultTintColor
+      model.add(reReviewItem)
+    }
 
     // Add a section for each level.
     let incorrectItemLevels = incorrectItemsByLevel.keys.sorted { a, b -> Bool in
@@ -81,6 +96,17 @@ class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
 
   @IBAction private func doneClicked() {
     navigationController?.popToRootViewController(animated: true)
+  }
+
+  private func startReReview() {
+    // Fresh ReviewItems (reset answer state) so the re-review starts clean. Practice session, so it
+    // doesn't touch SRS — these were already marked in the main session.
+    let freshItems = incorrectItems.map { ReviewItem(assignment: $0.assignment, subject: $0.subject)
+    }
+    guard !freshItems.isEmpty else { return }
+    let vc = StoryboardScene.ReviewContainer.initialScene.instantiate()
+    vc.setup(services: services, items: freshItems.shuffled(), isPracticeSession: true)
+    navigationController?.pushViewController(vc, animated: true)
   }
 
   override var canBecomeFirstResponder: Bool {
