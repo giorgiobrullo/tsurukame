@@ -1391,31 +1391,40 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
       }
       return ""
     }
-    // On the first sync, bound the backlog to roughly the last year so we don't fetch a user's
-    // entire review history (which can be tens of thousands of records).
+    // On the first sync, bound the backlog to the heatmap window (plus margin) so we don't page
+    // through a user's entire history. After that the cursor advances and only new reviews are
+    // fetched.
     if updatedAfter.isEmpty {
-      let oneYearAgo = Calendar.current.date(byAdding: .day, value: -365, to: Date()) ?? Date()
-      updatedAfter = ISO8601DateFormatter().string(from: oneYearAgo)
+      let start = Calendar.current.date(byAdding: .day, value: -140, to: Date()) ?? Date()
+      updatedAfter = ISO8601DateFormatter().string(from: start)
     }
 
-    return firstly { () -> Promise<WaniKaniAPIClient.ReviewHistory> in
-      client.reviews(progress: progress, updatedAfter: updatedAfter)
-    }.done { reviewDates, updatedAt in
-      NSLog("Updated %d reviews at %@", reviewDates.count, updatedAt)
-      var dailyCounts = [String: Int]()
-      for date in reviewDates {
-        dailyCounts[LocalCachingClient.reviewDayKeyFormatter.string(from: date), default: 0] += 1
-      }
-      self.db.inTransaction { db in
-        for (day, count) in dailyCounts {
-          db.mustExecuteUpdate("INSERT INTO review_history (day, review_count) VALUES (?, ?) " +
-            "ON CONFLICT(day) DO UPDATE SET review_count = review_count + ?",
-            args: [day, count, count])
+    let cursorFormatter = ISO8601DateFormatter()
+    // Write each page as it arrives and advance the cursor to that page's latest review, so a
+    // rate-limit interruption keeps the data fetched so far and the next sync resumes from there
+    // rather than starting over (which is what previously left the table empty).
+    return client.fetchReviewsByPage(progress: progress, updatedAfter: updatedAfter) { [weak self]
+      dates in
+        guard let self = self, !dates.isEmpty else { return }
+        var dailyCounts = [String: Int]()
+        var maxDate = Date.distantPast
+        for date in dates {
+          dailyCounts[LocalCachingClient.reviewDayKeyFormatter.string(from: date), default: 0] += 1
+          if date > maxDate { maxDate = date }
         }
-        if !updatedAt.isEmpty {
-          db.mustExecuteUpdate("UPDATE sync SET reviews_updated_after = ?", args: [updatedAt])
+        self.db.inTransaction { db in
+          for (day, count) in dailyCounts {
+            db.mustExecuteUpdate("INSERT INTO review_history (day, review_count) VALUES (?, ?) " +
+              "ON CONFLICT(day) DO UPDATE SET review_count = review_count + ?",
+              args: [day, count, count])
+          }
+          db.mustExecuteUpdate("UPDATE sync SET reviews_updated_after = ?",
+                               args: [cursorFormatter.string(from: maxDate)])
         }
-      }
+    }.recover { (error: Error) -> Promise<Void> in
+      // Don't let a review-history hiccup break the rest of the sync; resume next time.
+      NSLog("Review history fetch interrupted (will resume next sync): \(error)")
+      return Promise.value(())
     }
   }
 
@@ -1556,8 +1565,11 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
         self.fetchLevelProgression(progress: childProgress(1)),
         self.fetchVoiceActors(progress: childProgress(1)),
         self.fetchReviewStatistics(progress: childProgress(1)),
-        self.fetchReviewHistory(progress: childProgress(1)),
       ])
+    }.then { _ -> Promise<Void> in
+      // Review history runs on its own (not in the concurrent group above) so it has the rate-limit
+      // budget to page through the backlog. It recovers internally, so it never fails the sync.
+      self.fetchReviewHistory(progress: childProgress(1))
     }.ensure {
       // we need to make sure that our current, local batch of recent mistakes go up to the cloud
       let mergedMistakes = RecentMistakeHandler.mergeMistakes(original: recentMistakes,

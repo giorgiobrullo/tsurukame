@@ -351,23 +351,33 @@ public class WaniKaniAPIClient: NSObject {
     }
   }
 
-  public typealias ReviewHistory = (reviewDates: [Date], updatedAt: String)
   /**
-   * Fetches review records for the activity heatmap / streak, returning just their creation dates.
-   * If updatedAfter is set, returns only reviews created after that time.
+   * Pages through /reviews (optionally only those updated after `updatedAfter`), invoking
+   * `pageHandler` with each page's review creation dates as that page arrives. Writing per-page
+   * means a rate-limit interruption keeps the data already fetched (the caller can persist a cursor
+   * and resume). Resolves once every page has been delivered.
    */
-  public func reviews(progress: Progress,
-                      updatedAfter: String = "") -> Promise<ReviewHistory> {
+  public func fetchReviewsByPage(progress: Progress, updatedAfter: String = "",
+                                 pageHandler: @escaping ([Date]) -> Void) -> Promise<Void> {
     var url = URLComponents(string: "\(kBaseUrl)/reviews")!
     if !updatedAfter.isEmpty {
       url.queryItems = [URLQueryItem(name: "updated_after", value: updatedAfter)]
     }
+    return pageThroughReviews(url: url.url!, progress: progress, pageHandler: pageHandler)
+  }
 
-    return firstly {
-      pagedQuery(url: url.url!, progress: progress)
-    }.map { (allData: Response<[Response<ReviewData>]>) -> ReviewHistory in
-      let dates = allData.data.map { $0.data.created_at.date }
-      return (reviewDates: dates, updatedAt: allData.data_updated_at ?? updatedAfter)
+  private func pageThroughReviews(url: URL, progress: Progress,
+                                  pageHandler: @escaping ([Date]) -> Void) -> Promise<Void> {
+    firstly {
+      query(authorize(url))
+    }.then { (response: PaginatedResponse<[Response<ReviewData>]>) -> Promise<Void> in
+      pageHandler(response.data.map { $0.data.created_at.date })
+      progress.completedUnitCount += 1
+      if let pages = response.pages, let nextURLString = pages.next_url,
+         let nextURL = URL(string: nextURLString) {
+        return self.pageThroughReviews(url: nextURL, progress: progress, pageHandler: pageHandler)
+      }
+      return .value(())
     }
   }
 
