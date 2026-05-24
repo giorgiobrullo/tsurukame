@@ -208,6 +208,7 @@
 		C92AB972237F2E8200F79904 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92AB971237F2E8200F79904 /* DataManager.swift */; };
 		C943D5B02380D59B004A7969 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C943D5AF2380D59A004A7969 /* SettingsController.swift */; };
 		C970BC0323D262CE001F3735 /* SiriShortcutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */; };
+		D28FEA675E5018672491666D /* ListeningPracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */; };
 		E881943B2A6BC0CF002C2E1C /* ArtworkModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881943A2A6BC0CF002C2E1C /* ArtworkModelItem.swift */; };
 		E881943F2A6BC38A002C2E1C /* ArtworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881943E2A6BC38A002C2E1C /* ArtworkManager.swift */; };
 		EC6A5487F6875EC64C63B6B2 /* Pods_FontScreenshotter_FontScreenshotterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404461BC39B4A19B128F9E69 /* Pods_FontScreenshotter_FontScreenshotterUITests.framework */; };
@@ -291,6 +292,7 @@
 		489894D423670CB000A20AF8 /* Tsurukame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tsurukame.entitlements; sourceTree = "<group>"; };
 		48F4B1DB268CB9850033860E /* UpcomingReviewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpcomingReviewsViewController.swift; sourceTree = "<group>"; };
 		4B8236EC341CF1BA18D16857 /* Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; sourceTree = "<group>"; };
+		52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListeningPracticeViewController.swift; sourceTree = "<group>"; };
 		567140C7E2E45E06417AC4EC /* WidgetSharedData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetSharedData.swift; sourceTree = "<group>"; };
 		630EB10925C561A900783E54 /* NSMutableAttributedString+Replacements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Replacements.swift"; sourceTree = "<group>"; };
 		630EB12025C5652400783E54 /* LessonsPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonsPageControl.swift; sourceTree = "<group>"; };
@@ -717,6 +719,7 @@
 				83B7110F2ABB9D5EA2B62E82 /* SettingsScreens.swift */,
 				567140C7E2E45E06417AC4EC /* WidgetSharedData.swift */,
 				C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */,
+				52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1570,6 +1573,7 @@
 				8ABD6EE815EB4D624D42A837 /* SettingsScreens.swift in Sources */,
 				BEAD8427C0788080A9079A3A /* WidgetSharedData.swift in Sources */,
 				9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */,
+				D28FEA675E5018672491666D /* ListeningPracticeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

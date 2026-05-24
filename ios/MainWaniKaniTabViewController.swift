@@ -249,6 +249,13 @@ class MainWaniKaniTabViewController: UITableViewController {
           self.startSelfStudyCurrentLevel()
         }
         model.add(selfStudyItem)
+
+        let listeningItem = BasicModelItem(style: .default, title: "Listening practice",
+                                           accessoryType: .disclosureIndicator) { [unowned self] in
+          self.startListeningPractice()
+        }
+        listeningItem.image = UIImage(systemName: "headphones")
+        model.add(listeningItem)
       }
 
       model.add(section: "Upcoming reviews")
@@ -663,6 +670,12 @@ class MainWaniKaniTabViewController: UITableViewController {
 
   @objc func startBurnedItemReviews() {
     perform(segue: StoryboardSegue.Main.startBurnedItemReviews, sender: self)
+  }
+
+  @objc func startListeningPractice() {
+    let vc = ListeningPracticeViewController()
+    vc.setup(services: services)
+    navigationController?.pushViewController(vc, animated: true)
   }
 
   @objc func startSelfStudyCurrentLevel() {
