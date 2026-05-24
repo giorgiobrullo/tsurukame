@@ -91,11 +91,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
     handleApplink(url: url)
   }
 
-  private func findMainWaniKaniTabViewController() -> MainWaniKaniTabViewController? {
+  private func findMainWaniKaniTabViewController() -> MainHostingController? {
     for vc in navigationController.viewControllers {
-      if let vc = vc as? MainViewController {
-        return vc.tabBarViewController?.waniKaniViewController
-      }
+      if let vc = vc as? MainHostingController { return vc }
     }
     return nil
   }
@@ -127,8 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
     }
 
     let pushMainViewController = { () in
-      let vc = StoryboardScene.Main.initialScene.instantiate()
-      vc.setup(services: self.services)
+      let vc = MainHostingController(services: self.services)
       self.navigationController.setViewControllers([vc], animated: animated)
     }
 
@@ -165,7 +162,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
   func applicationDidBecomeActive(_: UIApplication) {
     services?.reachability.startNotifier()
 
-    if let vc = navigationController?.topViewController as? MainViewController {
+    if let vc = navigationController?.topViewController as? MainHostingController {
       vc.refresh(quick: true)
     }
   }
