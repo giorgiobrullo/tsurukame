@@ -16,6 +16,16 @@ import Foundation
 import UIKit
 
 extension UIWindow {
+  /// Applies the user's saved `Settings.interfaceStyle` to every window. Call at launch and when
+  /// the setting changes (the SwiftUI app has no AppDelegate to do this on bootstrap anymore).
+  static func applySavedInterfaceStyle() {
+    let style = Settings.interfaceStyle
+    UIApplication.shared.connectedScenes
+      .compactMap { $0 as? UIWindowScene }
+      .flatMap(\.windows)
+      .forEach { $0.setInterfaceStyle(style) }
+  }
+
   @objc func setInterfaceStyle(_ style: InterfaceStyle) {
     if #available(iOS 13.0, *) {
       switch style {

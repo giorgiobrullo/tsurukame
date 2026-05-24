@@ -36,10 +36,12 @@ struct RootView: View {
           .ignoresSafeArea()
       }
     }
+    .onAppear { DispatchQueue.main.async { UIWindow.applySavedInterfaceStyle() } }
     .onChange(of: scenePhase) { phase in
       switch phase {
       case .active:
         state.services.reachability.startNotifier()
+        UIWindow.applySavedInterfaceStyle()
       case .background:
         state.services.reachability.stopNotifier()
         if state.loggedIn {
