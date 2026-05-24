@@ -136,25 +136,9 @@ struct StatsView: View {
 }
 
 @available(iOS 15.0, *)
-final class StatsViewController: UIHostingController<StatsView>, TKMViewController {
-  var canSwipeToGoBack: Bool { true }
-
-  init(services: TKMServices) {
-    super.init(rootView: StatsView(data: StatsViewController.makeData(services: services)))
-    title = "Statistics"
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = false
-  }
-
-  static func makeData(services: TKMServices) -> StatsData {
+extension StatsData {
+  /// Builds the statistics from the local caching client. (Was StatsViewController.makeData.)
+  static func make(services: TKMServices) -> StatsData {
     let client = services.localCachingClient!
     let counts = client.srsStageCounts()
     let names = ["", "Apprentice 1", "Apprentice 2", "Apprentice 3", "Apprentice 4",

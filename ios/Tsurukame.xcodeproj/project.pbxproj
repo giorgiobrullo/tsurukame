@@ -117,6 +117,7 @@
 		9AC49743E27B72F17DFFCFDC /* UpcomingReviewsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3E8F49AC9A9A1936D56B /* UpcomingReviewsScreen.swift */; };
 		9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */; };
 		9B7316316073E0401D83D462 /* ListSeparatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D379814392404D5D6536DD7 /* ListSeparatorItem.swift */; };
+		A36B07E6043B3DD77C1611D9 /* ReviewFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FAF984637222EDCAAFA18F /* ReviewFlow.swift */; };
 		A3E56CC7FBE9617EF0CDA843 /* PracticeScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DC07004753E2A4C64CA590 /* PracticeScreens.swift */; };
 		A75D1BE70DD1B297F3CF4EE9 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68F8852A5EE8CAA57DADC52 /* MainScreen.swift */; };
 		A911927ACBB6FD4087DA08DF /* SRSDistributionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4FADC867BA88EE5ABC964 /* SRSDistributionItem.swift */; };
@@ -139,7 +140,6 @@
 		C943D5B02380D59B004A7969 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C943D5AF2380D59A004A7969 /* SettingsController.swift */; };
 		C970BC0323D262CE001F3735 /* SiriShortcutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */; };
 		D6EC58909D84938EF126D38B /* ChoiceListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077CB5969812B99064F6116B /* ChoiceListScreen.swift */; };
-		DB029EEBDBA9D4CCD7C6B34E /* SubjectDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */; };
 		DD42836B15916FD422C5D31A /* KanaInputTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B2C3A3AB0D017D2223642A /* KanaInputTest.swift */; };
 		E4CE2EAFCEBA9D43DAED09B7 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CABB5E9D9671A518F44BE /* AppRouter.swift */; };
 		E881943F2A6BC38A002C2E1C /* ArtworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881943E2A6BC38A002C2E1C /* ArtworkManager.swift */; };
@@ -323,6 +323,7 @@
 		89F7A8B924FCC773780D9F12 /* String+LevenshteinDistance.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "String+LevenshteinDistance.swift"; sourceTree = "<group>"; };
 		97A120DE2D9C467100D19CAE /* ReviewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUtils.swift; sourceTree = "<group>"; };
 		9CFD97ACE7ABC2C904715D83 /* Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		A0FAF984637222EDCAAFA18F /* ReviewFlow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReviewFlow.swift; sourceTree = "<group>"; };
 		A3EC114D4A65CB5055FE264B /* SubjectSearchSwiftUI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubjectSearchSwiftUI.swift; sourceTree = "<group>"; };
 		A453454F899E6016F1B7DD25 /* SettingsFormsSwiftUI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsFormsSwiftUI.swift; sourceTree = "<group>"; };
 		A5B081F6524EE2D60A1B4605 /* ReviewSummaryScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReviewSummaryScreen.swift; sourceTree = "<group>"; };
@@ -349,7 +350,6 @@
 		C943D5AF2380D59A004A7969 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriShortcutHelper.swift; sourceTree = "<group>"; };
 		CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
-		D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubjectDetailScreen.swift; sourceTree = "<group>"; };
 		D92B2884DCEEDBE09A3CC74E /* NotificationScheduler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
 		D9929E537851D24D07F47938 /* Pods-Tsurukame (App Store screenshots).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame (App Store screenshots).release.xcconfig"; path = "Target Support Files/Pods-Tsurukame (App Store screenshots)/Pods-Tsurukame (App Store screenshots).release.xcconfig"; sourceTree = "<group>"; };
 		DAA4FADC867BA88EE5ABC964 /* SRSDistributionItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SRSDistributionItem.swift; sourceTree = "<group>"; };
@@ -533,7 +533,6 @@
 				A3EC114D4A65CB5055FE264B /* SubjectSearchSwiftUI.swift */,
 				4A6545C730ACCB6BD99476C9 /* ReviewScreen.swift */,
 				487A9BD775597B87B1FEFE4D /* LessonsScreen.swift */,
-				D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */,
 				A5B081F6524EE2D60A1B4605 /* ReviewSummaryScreen.swift */,
 				077CB5969812B99064F6116B /* ChoiceListScreen.swift */,
 				AE9DBC70C6B76C3884829AEE /* LessonPickerSwiftUI.swift */,
@@ -547,6 +546,7 @@
 				662CABB5E9D9671A518F44BE /* AppRouter.swift */,
 				6A9A2ED25B3836C6B0F3F434 /* RootView.swift */,
 				D92B2884DCEEDBE09A3CC74E /* NotificationScheduler.swift */,
+				A0FAF984637222EDCAAFA18F /* ReviewFlow.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1250,7 +1250,6 @@
 				157A0EB88FBC954C6CE8DD0E /* SubjectSearchSwiftUI.swift in Sources */,
 				8E7FF16575EEA160A41E6B73 /* ReviewScreen.swift in Sources */,
 				FE4B54D1B940F93D9D0433FD /* LessonsScreen.swift in Sources */,
-				DB029EEBDBA9D4CCD7C6B34E /* SubjectDetailScreen.swift in Sources */,
 				99E57BF758A0680193BDAA08 /* ReviewSummaryScreen.swift in Sources */,
 				D6EC58909D84938EF126D38B /* ChoiceListScreen.swift in Sources */,
 				0F78B49963977BC7357557F6 /* LessonPickerSwiftUI.swift in Sources */,
@@ -1265,6 +1264,7 @@
 				E4CE2EAFCEBA9D43DAED09B7 /* AppRouter.swift in Sources */,
 				34B180C8D36ED393C48B5667 /* RootView.swift in Sources */,
 				FC681840C34BE724C66997A8 /* NotificationScheduler.swift in Sources */,
+				A36B07E6043B3DD77C1611D9 /* ReviewFlow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

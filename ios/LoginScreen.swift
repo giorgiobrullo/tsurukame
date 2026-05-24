@@ -248,36 +248,3 @@ struct LoginView: View {
     .foregroundStyle(.white)
   }
 }
-
-/// Hosts `LoginView` and exposes the same `delegate` / `forcedEmail` surface as the old
-/// `LoginViewController`, so `AppDelegate` can swap one for the other.
-@available(iOS 15.0, *)
-final class LoginHostingController: UIHostingController<LoginView>, TKMViewController {
-  let model: LoginModel
-
-  var canSwipeToGoBack: Bool { false }
-
-  weak var delegate: LoginViewControllerDelegate? {
-    didSet { model.delegate = delegate }
-  }
-
-  var forcedEmail: String? {
-    didSet { model.forcedEmail = forcedEmail }
-  }
-
-  init() {
-    let model = LoginModel()
-    self.model = model
-    super.init(rootView: LoginView(model: model))
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = true
-  }
-}

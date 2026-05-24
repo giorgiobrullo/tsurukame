@@ -165,21 +165,10 @@ private struct MainContainer: View {
       router.reauthenticate = true
     }
     .fullScreenCover(item: $router.review) { launch in
-      ContainedNav {
-        let vc = SwiftUIReviewHostingController(services: state.services, items: launch.items,
-                                                isPracticeSession: launch.isPracticeSession)
-        vc.onClose = { router.review = nil }
-        return vc
-      }
-      .ignoresSafeArea()
+      ReviewFlowView(services: state.services, launch: launch) { router.review = nil }
     }
     .fullScreenCover(item: $router.lessons) { launch in
-      ContainedNav {
-        let vc = LessonsHostingController(services: state.services, items: launch.items)
-        vc.onClose = { router.lessons = nil }
-        return vc
-      }
-      .ignoresSafeArea()
+      LessonFlowView(services: state.services, launch: launch) { router.lessons = nil }
     }
     .sheet(isPresented: $router.settingsPresented) {
       SettingsView(services: state.services)
@@ -192,7 +181,7 @@ private struct MainContainer: View {
   private func destination(for route: AppRoute) -> some View {
     switch route {
     case .statistics:
-      StatsView(data: StatsViewController.makeData(services: state.services))
+      StatsView(data: StatsData.make(services: state.services))
         .navigationTitle("Statistics")
     case let .subjectDetail(id):
       SubjectDetailRoute(services: state.services, router: router, subjectID: id)
@@ -345,47 +334,33 @@ private final class Searcher: ObservableObject {
 
 // MARK: - UIKit bridges for the modal / login flows
 
-/// Wraps a view controller in a fresh UINavigationController for modal presentation, so the reused
-/// review / lessons / settings / login controllers keep their internal push/pop navigation.
+/// The login screen (pure SwiftUI). Used as the logged-out root and the re-authentication cover.
+/// Login is a single screen with no internal navigation, so it needs no NavigationStack.
 @available(iOS 16.0, *)
-struct ContainedNav: UIViewControllerRepresentable {
-  let make: () -> UIViewController
-  func makeUIViewController(context _: Context) -> UINavigationController {
-    UINavigationController(rootViewController: make())
+struct LoginContainer: View {
+  @StateObject private var holder: LoginHolder
+
+  init(forcedEmail: String? = nil, onComplete: @escaping () -> Void) {
+    _holder = StateObject(wrappedValue: LoginHolder(forcedEmail: forcedEmail,
+                                                    onComplete: onComplete))
   }
 
-  func updateUIViewController(_: UINavigationController, context _: Context) {}
+  var body: some View {
+    LoginView(model: holder.model)
+  }
 }
 
-/// Wraps a self-contained view controller (no internal navigation) for a NavigationStack route.
+/// Owns the LoginModel and bridges its delegate callback to a SwiftUI completion closure.
 @available(iOS 16.0, *)
-private struct PlainVC: UIViewControllerRepresentable {
-  let make: () -> UIViewController
-  func makeUIViewController(context _: Context) -> UIViewController { make() }
-  func updateUIViewController(_: UIViewController, context _: Context) {}
-}
+final class LoginHolder: ObservableObject, LoginViewControllerDelegate {
+  let model = LoginModel()
+  private let onComplete: () -> Void
 
-/// The login screen, hosted in its own UINavigationController. Used as the logged-out root and the
-/// re-authentication cover.
-@available(iOS 16.0, *)
-struct LoginContainer: UIViewControllerRepresentable {
-  var forcedEmail: String?
-  let onComplete: () -> Void
-
-  func makeCoordinator() -> Coordinator { Coordinator(onComplete: onComplete) }
-
-  func makeUIViewController(context: Context) -> UINavigationController {
-    let vc = LoginHostingController()
-    vc.forcedEmail = forcedEmail
-    vc.delegate = context.coordinator
-    return UINavigationController(rootViewController: vc)
+  init(forcedEmail: String?, onComplete: @escaping () -> Void) {
+    self.onComplete = onComplete
+    model.forcedEmail = forcedEmail
+    model.delegate = self
   }
 
-  func updateUIViewController(_: UINavigationController, context _: Context) {}
-
-  final class Coordinator: NSObject, LoginViewControllerDelegate {
-    let onComplete: () -> Void
-    init(onComplete: @escaping () -> Void) { self.onComplete = onComplete }
-    func loginComplete() { onComplete() }
-  }
+  func loginComplete() { onComplete() }
 }
