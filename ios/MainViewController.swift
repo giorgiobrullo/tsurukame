@@ -43,7 +43,7 @@ class MainViewController: UIViewController, LoginViewControllerDelegate,
   @IBOutlet var headerGradient: GradientView!
 
   var searchController: UISearchController!
-  weak var searchResultsViewController: SearchResultViewController!
+  weak var searchResultsViewController: UIViewController!
   weak var tabBarViewController: MainTabBarViewController?
 
   var hourlyRefreshTimer = Timer()
@@ -59,14 +59,13 @@ class MainViewController: UIViewController, LoginViewControllerDelegate,
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    // Create the search results view controller.
-    let searchResultsVC = StoryboardScene.SearchResult.initialScene.instantiate()
-    searchResultsVC.setup(services: services, delegate: self)
+    // Create the search results view controller (SwiftUI, hosted; reuses the subject row).
+    let searchResultsVC = SubjectSearchResultsController(services: services, delegate: self)
     searchResultsViewController = searchResultsVC
 
     // Create the search controller.
-    searchController = UISearchController(searchResultsController: searchResultsViewController)
-    searchController.searchResultsUpdater = searchResultsViewController
+    searchController = UISearchController(searchResultsController: searchResultsVC)
+    searchController.searchResultsUpdater = searchResultsVC
     searchController.delegate = self
 
     // On iOS 26 the default behaviour squishes the navigation bar up under the safe area when the
