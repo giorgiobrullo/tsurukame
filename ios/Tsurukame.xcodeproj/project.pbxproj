@@ -65,7 +65,6 @@
 		63B63FF727733ABC0098DAAD /* NotificationDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B63FF627733ABC0098DAAD /* NotificationDispatcher.swift */; };
 		63BEBF9725C57D4000123147 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BEBF9625C57D4000123147 /* SearchResultViewController.swift */; };
 		63BFA78B218EB1B30058E885 /* DownloadModelItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63BFA78A218EB1B30058E885 /* DownloadModelItem.xib */; };
-		63C0400E28DD581F0068F53D /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 63C0400D28DD581F0068F53D /* Charts */; };
 		63C42A2821B6A28D008CA938 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C42A2721B6A28D008CA938 /* ViewController.swift */; };
 		63C42A3021B6A290008CA938 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63C42A2E21B6A290008CA938 /* LaunchScreen.storyboard */; };
 		63C42A4721B6AE7E008CA938 /* DownloadModelItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63BFA78A218EB1B30058E885 /* DownloadModelItem.xib */; };
@@ -357,7 +356,6 @@
 				63EF56DE26060B980038551A /* WaniKaniAPI in Frameworks */,
 				637E636E242E137C00F0B5CA /* Intents.framework in Frameworks */,
 				63CAB5012605FB1B0057E1C2 /* PromiseKit in Frameworks */,
-				63C0400E28DD581F0068F53D /* Charts in Frameworks */,
 				63CAAB111FD7FACD00E09DA1 /* SystemConfiguration.framework in Frameworks */,
 				480B243123D6830300FC2A82 /* Rexy in Frameworks */,
 				637CA18725D7F5A10082580E /* SwiftProtobuf in Frameworks */,
@@ -707,7 +705,6 @@
 				637CA18625D7F5A10082580E /* SwiftProtobuf */,
 				63CAB5002605FB1B0057E1C2 /* PromiseKit */,
 				63EF56DD26060B980038551A /* WaniKaniAPI */,
-				63C0400D28DD581F0068F53D /* Charts */,
 				63A702142C2920D500AB0504 /* WaniKaniAPI */,
 				6324AE402F9DCEAD0089066C /* SVGKit */,
 			);
@@ -891,7 +888,6 @@
 				480B242F23D6830300FC2A82 /* XCRemoteSwiftPackageReference "Rexy" */,
 				637CA18525D7F5A10082580E /* XCRemoteSwiftPackageReference "swift-protobuf" */,
 				63CAB4FF2605FB1B0057E1C2 /* XCRemoteSwiftPackageReference "PromiseKit" */,
-				63C0400C28DD581F0068F53D /* XCRemoteSwiftPackageReference "Charts" */,
 				63A702132C2920D500AB0504 /* XCLocalSwiftPackageReference "WaniKaniAPI" */,
 				6324AE3F2F9DCEAD0089066C /* XCRemoteSwiftPackageReference "SVGKit" */,
 			);
@@ -2005,14 +2001,6 @@
 				minimumVersion = 1.15.0;
 			};
 		};
-		63C0400C28DD581F0068F53D /* XCRemoteSwiftPackageReference "Charts" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/danielgindi/Charts";
-			requirement = {
-				kind = exactVersion;
-				version = 4.1.0;
-			};
-		};
 		63CAB4FF2605FB1B0057E1C2 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mxcl/PromiseKit";
@@ -2042,11 +2030,6 @@
 		63A702142C2920D500AB0504 /* WaniKaniAPI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WaniKaniAPI;
-		};
-		63C0400D28DD581F0068F53D /* Charts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63C0400C28DD581F0068F53D /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = Charts;
 		};
 		63CAB5002605FB1B0057E1C2 /* PromiseKit */ = {
 			isa = XCSwiftPackageProductDependency;
