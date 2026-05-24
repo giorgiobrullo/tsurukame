@@ -57,6 +57,13 @@ class SubjectDetailsViewController: UIViewController, SubjectDelegate, TKMViewCo
 
     if hideBackButton {
       backButton.isHidden = true
+    } else if #available(iOS 26.0, *) {
+      // Liquid Glass back button floating over the coloured subject header.
+      var config = UIButton.Configuration.glass()
+      config.image = backButton.image(for: .normal)
+      config.cornerStyle = .capsule
+      config.baseForegroundColor = .white
+      backButton.configuration = config
     }
 
     let nc = NotificationCenter.default
