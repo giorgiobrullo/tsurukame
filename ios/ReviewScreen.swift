@@ -141,6 +141,35 @@ final class ReviewViewModel: ObservableObject {
     session.activeSubject?.subjectType == .vocabulary && Settings.allowExcludeItems
   }
 
+  // MARK: Anki mode (reveal then self-mark, no typing)
+
+  var isAnkiMode: Bool {
+    guard Settings.ankiMode else { return false }
+    switch Settings.ankiModeTaskType {
+    case .both: return true
+    case .readingOnly: return taskType == .reading
+    case .meaningOnly: return taskType == .meaning
+    @unknown default: return false
+    }
+  }
+
+  /// Reveal the answer in Anki mode. Records an attempt as incorrect (overridable via "Correct").
+  func ankiShowAnswer() {
+    guard phase == .answering else { return }
+    _ = session.markAnswer(.Incorrect, isPracticeSession: isPracticeSession)
+    phase = .revealed
+  }
+
+  func ankiCorrect() { overrideCorrect() }
+  func ankiIncorrect() { advanceToNext() } // already marked incorrect; it returns later
+
+  // MARK: Session control
+
+  var canWrapUp: Bool { session.canWrapUp }
+  var isWrappingUp: Bool { session.wrappingUp }
+  func wrapUp() { session.wrappingUp = true }
+  func endSession() { onFinished() }
+
   func playCurrentAudio() {
     guard let subject = session.activeSubject else { return }
     services.audio.play(subjectID: subject.id, delegate: nil)
@@ -303,6 +332,10 @@ struct ReviewScreen: View {
       if model.canExclude {
         Button("Exclude this item", role: .destructive) { model.excludeItem() }
       }
+      if model.canWrapUp, !model.isWrappingUp {
+        Button("Wrap up") { model.wrapUp() }
+      }
+      Button("End session", role: .destructive) { model.endSession() }
       Button("Cancel", role: .cancel) {}
     }
     .alert("Add synonym", isPresented: $showSynonymAlert) {
@@ -372,25 +405,40 @@ struct ReviewScreen: View {
   @ViewBuilder
   private var controls: some View {
     VStack(spacing: 10) {
-      AnswerFieldView(text: $model.answer,
-                      isReading: model.isReading,
-                      isEnabled: model.phase == .answering,
-                      onSubmit: { model.submit() })
-        .frame(height: 44)
-        .modifier(ShakeEffect(animatableData: model.shakeToggle ? 1 : 0))
+      if !model.isAnkiMode {
+        AnswerFieldView(text: $model.answer,
+                        isReading: model.isReading,
+                        isEnabled: model.phase == .answering,
+                        onSubmit: { model.submit() })
+          .frame(height: 44)
+          .modifier(ShakeEffect(animatableData: model.shakeToggle ? 1 : 0))
+      }
 
-      switch model.phase {
-      case .answering:
-        button("Submit", systemImage: "arrow.right") { model.submit() }
-      case .markedWrong:
-        HStack(spacing: 10) {
-          button("I was right", systemImage: "checkmark", tint: .green) { model.overrideCorrect() }
-          button("Reveal answer", systemImage: "eye") { model.reveal() }
+      if model.isAnkiMode {
+        if model.phase == .answering {
+          button("Show answer", systemImage: "eye") { model.ankiShowAnswer() }
+        } else {
+          HStack(spacing: 10) {
+            button("Incorrect", systemImage: "xmark", tint: .red) { model.ankiIncorrect() }
+            button("Correct", systemImage: "checkmark", tint: .green) { model.ankiCorrect() }
+          }
         }
-      case .revealed:
-        HStack(spacing: 10) {
-          button("I was right", systemImage: "checkmark", tint: .green) { model.overrideCorrect() }
-          button("Next", systemImage: "arrow.right") { model.next() }
+      } else {
+        switch model.phase {
+        case .answering:
+          button("Submit", systemImage: "arrow.right") { model.submit() }
+        case .markedWrong:
+          HStack(spacing: 10) {
+            button("I was right", systemImage: "checkmark",
+                   tint: .green) { model.overrideCorrect() }
+            button("Reveal answer", systemImage: "eye") { model.reveal() }
+          }
+        case .revealed:
+          HStack(spacing: 10) {
+            button("I was right", systemImage: "checkmark",
+                   tint: .green) { model.overrideCorrect() }
+            button("Next", systemImage: "arrow.right") { model.next() }
+          }
         }
       }
     }
