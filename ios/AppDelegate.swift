@@ -105,9 +105,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
   }
 
   private func pushLoginViewController() {
-    let vc = StoryboardScene.Login.initialScene.instantiate()
-    vc.delegate = self
-    navigationController.setViewControllers([vc], animated: false)
+    if #available(iOS 15.0, *) {
+      // SwiftUI login (the native rewrite). The storyboard login remains the pre-iOS-15 fallback.
+      let vc = LoginHostingController()
+      vc.delegate = self
+      navigationController.setViewControllers([vc], animated: false)
+    } else {
+      let vc = StoryboardScene.Login.initialScene.instantiate()
+      vc.delegate = self
+      navigationController.setViewControllers([vc], animated: false)
+    }
   }
 
   private func setMainViewControllerAnimated(animated: Bool, clearUserData: Bool) {

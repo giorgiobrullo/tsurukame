@@ -14,6 +14,7 @@
 		4820306724D849E100B40FDD /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633632EE201F3490006D582B /* Settings.swift */; };
 		483EBFDC261DD7190043C804 /* FontScreenshotterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */; };
 		48F4B1DC268CB9850033860E /* UpcomingReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4B1DB268CB9850033860E /* UpcomingReviewsViewController.swift */; };
+		498851B92054E89630420A58 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */; };
 		5C82B2908507339A293B0E59 /* Pods_FontScreenshotter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F33812F134DC80E5D981C40E /* Pods_FontScreenshotter.framework */; };
 		630EB10A25C561A900783E54 /* NSMutableAttributedString+Replacements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630EB10925C561A900783E54 /* NSMutableAttributedString+Replacements.swift */; };
 		630EB12125C5652400783E54 /* LessonsPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630EB12025C5652400783E54 /* LessonsPageControl.swift */; };
@@ -188,6 +189,7 @@
 		9721708A2DBAF247001DFFED /* SubjectsExcludedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972170892DBAF247001DFFED /* SubjectsExcludedViewController.swift */; };
 		9721708C2DBAF3A6001DFFED /* SubjectsExcluded.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9721708B2DBAF3A6001DFFED /* SubjectsExcluded.storyboard */; };
 		97A120DF2D9C467100D19CAE /* ReviewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A120DE2D9C467100D19CAE /* ReviewUtils.swift */; };
+		98AAB5751B5F257ABB2868D5 /* SwiftUIShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCA11FE235A9D94A9810A8C /* SwiftUIShared.swift */; };
 		9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */; };
 		A46A3E6C91EE60C1C3052FA7 /* DashboardActionCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED9656EF825F08588F17905 /* DashboardActionCardItem.swift */; };
 		A911927ACBB6FD4087DA08DF /* SRSDistributionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4FADC867BA88EE5ABC964 /* SRSDistributionItem.swift */; };
@@ -447,6 +449,7 @@
 		6978F17AB58C6447CED81564 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		6C937AD9C0B6866E7A0D8FC5 /* StreakHeatmapItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StreakHeatmapItem.swift; sourceTree = "<group>"; };
 		6ED9656EF825F08588F17905 /* DashboardActionCardItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DashboardActionCardItem.swift; sourceTree = "<group>"; };
+		6FCA11FE235A9D94A9810A8C /* SwiftUIShared.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SwiftUIShared.swift; sourceTree = "<group>"; };
 		791B8B5B2D657E2A000C8142 /* CommonErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonErrors.swift; sourceTree = "<group>"; };
 		791B8B5D2D6584C9000C8142 /* RecentMistakeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMistakeHandler.swift; sourceTree = "<group>"; };
 		791B8B602D659106000C8142 /* RecentMistakesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMistakesTest.swift; sourceTree = "<group>"; };
@@ -485,6 +488,7 @@
 		C92AB971237F2E8200F79904 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		C943D5AF2380D59A004A7969 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriShortcutHelper.swift; sourceTree = "<group>"; };
+		CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		D9929E537851D24D07F47938 /* Pods-Tsurukame (App Store screenshots).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame (App Store screenshots).release.xcconfig"; path = "Target Support Files/Pods-Tsurukame (App Store screenshots)/Pods-Tsurukame (App Store screenshots).release.xcconfig"; sourceTree = "<group>"; };
 		DAA4FADC867BA88EE5ABC964 /* SRSDistributionItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SRSDistributionItem.swift; sourceTree = "<group>"; };
 		DBD3D849CDB443FDA6A69FF4 /* LevelProgressItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LevelProgressItem.swift; sourceTree = "<group>"; };
@@ -726,6 +730,8 @@
 				52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */,
 				3883E995E322FAB70B794289 /* ReversePracticeViewController.swift */,
 				C3DC07308404843022FAA86F /* DashboardScreen.swift */,
+				6FCA11FE235A9D94A9810A8C /* SwiftUIShared.swift */,
+				CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1583,6 +1589,8 @@
 				D28FEA675E5018672491666D /* ListeningPracticeViewController.swift in Sources */,
 				6B8D5451D91FCC7E27FF1402 /* ReversePracticeViewController.swift in Sources */,
 				C0CE8B4A3DBE0D3E5A1838CF /* DashboardScreen.swift in Sources */,
+				98AAB5751B5F257ABB2868D5 /* SwiftUIShared.swift in Sources */,
+				498851B92054E89630420A58 /* LoginScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -176,13 +176,13 @@ struct DashboardScreen: View {
       }
 
       if data.showActivity {
-        section("Activity") {
-          card { ActivityHeatmapView(streak: data.streak, columns: data.heatmapColumns) }
+        TKMSection("Activity") {
+          ActivityHeatmapView(streak: data.streak, columns: data.heatmapColumns).tkmCard()
         }
       }
 
-      section("Current level \(data.level)") {
-        card { LevelProgressView(rows: data.levelRows) }
+      TKMSection("Current level \(data.level)") {
+        LevelProgressView(rows: data.levelRows).tkmCard()
       }
 
       allLevelsSection(data)
@@ -204,39 +204,37 @@ struct DashboardScreen: View {
                    action: model.actions.startReviews)
       }
       if data.showLessonPicker {
-        row("Lesson Picker", systemImage: "square.grid.2x2", action: model.actions.showLessonPicker)
+        TKMNavRow("Lesson Picker", systemImage: "square.grid.2x2",
+                  action: model.actions.showLessonPicker)
       }
       if data.showReviewOrder {
-        row("Review order", subtitle: data.reviewOrder, systemImage: "arrow.up.arrow.down",
-            action: model.actions.showReviewOrder)
+        TKMNavRow("Review order", subtitle: data.reviewOrder, systemImage: "arrow.up.arrow.down",
+                  action: model.actions.showReviewOrder)
       }
     }
   }
 
   private func practiceSection(_ data: DashboardData) -> some View {
-    section("Practice") {
+    TKMSection("Practice") {
       VStack(spacing: 10) {
-        row("Self-study current level", subtitle: "\(data.selfStudyCount)",
-            systemImage: "rectangle.stack", action: model.actions.selfStudy)
-        row("Listening practice", systemImage: "headphones", action: model.actions.listening)
-        row("Reverse practice", systemImage: "arrow.left.arrow.right",
-            action: model.actions.reverse)
+        TKMNavRow("Self-study current level", subtitle: "\(data.selfStudyCount)",
+                  systemImage: "rectangle.stack", action: model.actions.selfStudy)
+        TKMNavRow("Listening practice", systemImage: "headphones",
+                  action: model.actions.listening)
+        TKMNavRow("Reverse practice", systemImage: "arrow.left.arrow.right",
+                  action: model.actions.reverse)
       }
     }
   }
 
   private func forecastSection(_ data: DashboardData) -> some View {
-    section("Upcoming reviews") {
-      VStack(spacing: 10) {
-        if data.showForecast {
-          Button(action: model.actions.openForecast) {
-            card {
-              ForecastChartView(upcoming: data.upcomingReviews,
-                                currentCount: data.totalReviewCount)
-            }
-          }
-          .buttonStyle(.plain)
+    TKMSection("Upcoming reviews") {
+      if data.showForecast {
+        Button(action: model.actions.openForecast) {
+          ForecastChartView(upcoming: data.upcomingReviews, currentCount: data.totalReviewCount)
+            .tkmCard()
         }
+        .buttonStyle(.plain)
       }
     }
   }
@@ -248,73 +246,54 @@ struct DashboardScreen: View {
     if hasAny {
       VStack(spacing: 10) {
         if data.recentLessons > 0 {
-          row("Review recent lessons", subtitle: "\(data.recentLessons)",
-              systemImage: "clock.arrow.circlepath", action: model.actions.recentLessons)
+          TKMNavRow("Review recent lessons", subtitle: "\(data.recentLessons)",
+                    systemImage: "clock.arrow.circlepath", action: model.actions.recentLessons)
         }
         if data.recentMistakes > 0 {
-          row("Review recent mistakes", subtitle: "\(data.recentMistakes)",
-              systemImage: "xmark.circle", action: model.actions.recentMistakes)
+          TKMNavRow("Review recent mistakes", subtitle: "\(data.recentMistakes)",
+                    systemImage: "xmark.circle", action: model.actions.recentMistakes)
         }
         if data.apprenticeLeeches > 0 {
-          row("Review apprentice leeches", subtitle: "\(data.apprenticeLeeches)",
-              systemImage: "leaf", action: model.actions.apprenticeLeeches)
+          TKMNavRow("Review apprentice leeches", subtitle: "\(data.apprenticeLeeches)",
+                    systemImage: "leaf", action: model.actions.apprenticeLeeches)
         }
         if data.leeches > 0 {
-          row("Review all leeches", subtitle: "\(data.leeches)",
-              systemImage: "ant", action: model.actions.allLeeches)
+          TKMNavRow("Review all leeches", subtitle: "\(data.leeches)",
+                    systemImage: "ant", action: model.actions.allLeeches)
         }
       }
     }
   }
 
   private func allLevelsSection(_ data: DashboardData) -> some View {
-    section("All levels") {
+    TKMSection("All levels") {
       VStack(spacing: 10) {
-        card { SRSDistributionView(stages: data.srsStages, accuracy: data.accuracy) }
-        row("Statistics", systemImage: "chart.bar.xaxis",
-            tint: Color(uiColor: TKMStyle.vocabularyColor1), action: model.actions.openStatistics)
+        SRSDistributionView(stages: data.srsStages, accuracy: data.accuracy).tkmCard()
+        TKMNavRow("Statistics", systemImage: "chart.bar.xaxis",
+                  tint: Color(uiColor: TKMStyle.vocabularyColor1),
+                  action: model.actions.openStatistics)
       }
     }
   }
 
   private var vacationBanner: some View {
-    card {
-      HStack(spacing: 12) {
-        Image(systemName: "beach.umbrella.fill")
-          .font(.title2)
-          .foregroundStyle(Color(uiColor: TKMStyle.radicalColor2))
-        VStack(alignment: .leading, spacing: 2) {
-          Text("Vacation mode")
-            .font(.headline)
-          Text("Reviews are paused until you turn it off.")
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
-        }
-        Spacer()
+    HStack(spacing: 12) {
+      Image(systemName: "beach.umbrella.fill")
+        .font(.title2)
+        .foregroundStyle(Color.tkmRadical)
+      VStack(alignment: .leading, spacing: 2) {
+        Text("Vacation mode")
+          .font(.headline)
+        Text("Reviews are paused until you turn it off.")
+          .font(.subheadline)
+          .foregroundStyle(.secondary)
       }
+      Spacer()
     }
+    .tkmCard()
   }
 
-  // MARK: Building blocks
-
-  @ViewBuilder
-  private func section<Content: View>(_ title: String,
-                                      @ViewBuilder _ content: () -> Content) -> some View {
-    VStack(alignment: .leading, spacing: 8) {
-      Text(title.uppercased())
-        .font(.caption.weight(.semibold))
-        .foregroundStyle(.secondary)
-      content()
-    }
-  }
-
-  private func card<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
-    content()
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .padding(16)
-      .background(Color(uiColor: TKMStyle.Color.cellBackground))
-      .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-  }
+  // MARK: Action cards
 
   private func actionCard(title: String, count: Int, subtitle: String, enabled: Bool,
                           gradient: [UIColor], action: @escaping () -> Void) -> some View {
