@@ -17,6 +17,7 @@
 		483EBFDC261DD7190043C804 /* FontScreenshotterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */; };
 		498851B92054E89630420A58 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */; };
 		4C2F1B19821592C7C0A3DBB7 /* FontsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA30736CAB5795DD378F8CE7 /* FontsScreen.swift */; };
+		4E5A7AE15C65A2F2F6C8BF76 /* ListSeparatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA41C6C5B9D7A4768FF67B7B /* ListSeparatorItem.swift */; };
 		5A4B3B2F57BC19839BD23FBB /* SettingsFormsSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A453454F899E6016F1B7DD25 /* SettingsFormsSwiftUI.swift */; };
 		5C82B2908507339A293B0E59 /* Pods_FontScreenshotter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F33812F134DC80E5D981C40E /* Pods_FontScreenshotter.framework */; };
 		630EB10A25C561A900783E54 /* NSMutableAttributedString+Replacements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630EB10925C561A900783E54 /* NSMutableAttributedString+Replacements.swift */; };
@@ -61,7 +62,6 @@
 		636A63E7238A607A00902269 /* VacationModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636A63E6238A607A00902269 /* VacationModeView.swift */; };
 		637740142C26A10C00A4F6EE /* TableModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637740132C26A10C00A4F6EE /* TableModelItem.swift */; };
 		637A4EDF2D8ACDF0006F7F93 /* TableModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637740132C26A10C00A4F6EE /* TableModelItem.swift */; };
-		637A4EE02D8ACE0F006F7F93 /* ListSeparatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C4EA802C269AA3003D3C0B /* ListSeparatorItem.swift */; };
 		637A4EE12D8ACE4F006F7F93 /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C4EA792C267C85003D3C0B /* XCAssets+Generated.swift */; };
 		637CA18725D7F5A10082580E /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = 637CA18625D7F5A10082580E /* SwiftProtobuf */; };
 		637E636E242E137C00F0B5CA /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6364A10A242DFB6F000ABF32 /* Intents.framework */; };
@@ -99,7 +99,6 @@
 		63C4EA562C257F57003D3C0B /* IB-Segues+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C4EA532C257F57003D3C0B /* IB-Segues+Generated.swift */; };
 		63C4EA7A2C267C85003D3C0B /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C4EA792C267C85003D3C0B /* XCAssets+Generated.swift */; };
 		63C4EA812C269AA3003D3C0B /* ListSeparatorItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63C4EA7F2C269AA3003D3C0B /* ListSeparatorItem.xib */; };
-		63C4EA822C269AA3003D3C0B /* ListSeparatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C4EA802C269AA3003D3C0B /* ListSeparatorItem.swift */; };
 		63C74BC825C822C9004F6C99 /* SubjectModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C74BC725C822C9004F6C99 /* SubjectModelItem.swift */; };
 		63C74BD125C82B1D004F6C99 /* SubjectCollectionModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C74BD025C82B1D004F6C99 /* SubjectCollectionModelItem.swift */; };
 		63C74C6825C96088004F6C99 /* SubjectChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C74C6725C96088004F6C99 /* SubjectChip.swift */; };
@@ -140,7 +139,6 @@
 		8E7FF16575EEA160A41E6B73 /* ReviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6545C730ACCB6BD99476C9 /* ReviewScreen.swift */; };
 		8F73DA6B4E6C360412C51110 /* LevelProgressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD3D849CDB443FDA6A69FF4 /* LevelProgressItem.swift */; };
 		93B59B2A2367AF130097533C /* UpcomingReviewsChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B59B292367AF130097533C /* UpcomingReviewsChartItem.swift */; };
-		96A335072EEF5F800017BC70 /* BottomSheetAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A335062EEF5F800017BC70 /* BottomSheetAction.swift */; };
 		9721708C2DBAF3A6001DFFED /* SubjectsExcluded.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9721708B2DBAF3A6001DFFED /* SubjectsExcluded.storyboard */; };
 		97A120DF2D9C467100D19CAE /* ReviewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A120DE2D9C467100D19CAE /* ReviewUtils.swift */; };
 		98AAB5751B5F257ABB2868D5 /* SwiftUIShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCA11FE235A9D94A9810A8C /* SwiftUIShared.swift */; };
@@ -338,7 +336,6 @@
 		63C4EA532C257F57003D3C0B /* IB-Segues+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IB-Segues+Generated.swift"; sourceTree = "<group>"; };
 		63C4EA792C267C85003D3C0B /* XCAssets+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		63C4EA7F2C269AA3003D3C0B /* ListSeparatorItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListSeparatorItem.xib; sourceTree = "<group>"; };
-		63C4EA802C269AA3003D3C0B /* ListSeparatorItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSeparatorItem.swift; sourceTree = "<group>"; };
 		63C74BC725C822C9004F6C99 /* SubjectModelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectModelItem.swift; sourceTree = "<group>"; };
 		63C74BD025C82B1D004F6C99 /* SubjectCollectionModelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCollectionModelItem.swift; sourceTree = "<group>"; };
 		63C74C6725C96088004F6C99 /* SubjectChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectChip.swift; sourceTree = "<group>"; };
@@ -379,7 +376,6 @@
 		7E3A3B65C3A0B280B5FF32D3 /* Pods-Tsurukame (App Store screenshots).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame (App Store screenshots).debug.xcconfig"; path = "Target Support Files/Pods-Tsurukame (App Store screenshots)/Pods-Tsurukame (App Store screenshots).debug.xcconfig"; sourceTree = "<group>"; };
 		82721E7B5A9C5562CC8D3B9B /* Pods-FontScreenshotter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotter.release.xcconfig"; path = "Target Support Files/Pods-FontScreenshotter/Pods-FontScreenshotter.release.xcconfig"; sourceTree = "<group>"; };
 		93B59B292367AF130097533C /* UpcomingReviewsChartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingReviewsChartItem.swift; sourceTree = "<group>"; };
-		96A335062EEF5F800017BC70 /* BottomSheetAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetAction.swift; sourceTree = "<group>"; };
 		9721708B2DBAF3A6001DFFED /* SubjectsExcluded.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SubjectsExcluded.storyboard; sourceTree = "<group>"; };
 		97A120DE2D9C467100D19CAE /* ReviewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUtils.swift; sourceTree = "<group>"; };
 		9CFD97ACE7ABC2C904715D83 /* Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -410,6 +406,7 @@
 		C92AB971237F2E8200F79904 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		C943D5AF2380D59A004A7969 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriShortcutHelper.swift; sourceTree = "<group>"; };
+		CA41C6C5B9D7A4768FF67B7B /* ListSeparatorItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ListSeparatorItem.swift; path = Tables/ListSeparatorItem.swift; sourceTree = "<group>"; };
 		CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubjectDetailScreen.swift; sourceTree = "<group>"; };
 		D9929E537851D24D07F47938 /* Pods-Tsurukame (App Store screenshots).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame (App Store screenshots).release.xcconfig"; path = "Target Support Files/Pods-Tsurukame (App Store screenshots)/Pods-Tsurukame (App Store screenshots).release.xcconfig"; sourceTree = "<group>"; };
@@ -533,7 +530,6 @@
 			isa = PBXGroup;
 			children = (
 				6324AE3D2F9DC7FF0089066C /* RadicalCharacterImages.swift */,
-				96A335062EEF5F800017BC70 /* BottomSheetAction.swift */,
 				9721708B2DBAF3A6001DFFED /* SubjectsExcluded.storyboard */,
 				631CAD62234AD5FC008CEA73 /* AnswerChecker.swift */,
 				C904455C2395DBAE001BC48B /* AnswerTextField.swift */,
@@ -624,6 +620,7 @@
 				C265F759457BA3AF64194999 /* OfflineAudioScreen.swift */,
 				BA30736CAB5795DD378F8CE7 /* FontsScreen.swift */,
 				E68F8852A5EE8CAA57DADC52 /* MainScreen.swift */,
+				CA41C6C5B9D7A4768FF67B7B /* ListSeparatorItem.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -676,7 +673,6 @@
 				63CBFF2127730ED00086BA5F /* DownloadModelItem.swift */,
 				63BFA78A218EB1B30058E885 /* DownloadModelItem.xib */,
 				63ED9A0E2725037200937944 /* EditableTextModelItem.swift */,
-				63C4EA802C269AA3003D3C0B /* ListSeparatorItem.swift */,
 				63C4EA7F2C269AA3003D3C0B /* ListSeparatorItem.xib */,
 				638D197425C6AA4B00B80544 /* MarkupModelItem.swift */,
 				6332528D2727F32800ABBA04 /* PillModelItem.swift */,
@@ -1351,7 +1347,6 @@
 				63ED9A0F2725037200937944 /* EditableTextModelItem.swift in Sources */,
 				C92AB96F237F280300F79904 /* WatchHelper.swift in Sources */,
 				63D2DAEE275C5D4100D5F6FF /* UIControl+addAction.swift in Sources */,
-				96A335072EEF5F800017BC70 /* BottomSheetAction.swift in Sources */,
 				63F7F51F23D3F335006A31FB /* ReadingModelItem.swift in Sources */,
 				E881943F2A6BC38A002C2E1C /* ArtworkManager.swift in Sources */,
 				633AFAE62352B6F2004F732F /* VocabularyHighlighter.swift in Sources */,
@@ -1405,7 +1400,6 @@
 				633DE95D20C5635A00AC25F4 /* TKMKanaInput.m in Sources */,
 				E881943B2A6BC0CF002C2E1C /* ArtworkModelItem.swift in Sources */,
 				633252922728131100ABBA04 /* TableModel.swift in Sources */,
-				63C4EA822C269AA3003D3C0B /* ListSeparatorItem.swift in Sources */,
 				630EB10A25C561A900783E54 /* NSMutableAttributedString+Replacements.swift in Sources */,
 				63C74BD125C82B1D004F6C99 /* SubjectCollectionModelItem.swift in Sources */,
 				63FCAE78237F75CC00DB1418 /* Style.swift in Sources */,
@@ -1439,6 +1433,7 @@
 				64F54E146916585487C62F61 /* OfflineAudioScreen.swift in Sources */,
 				4C2F1B19821592C7C0A3DBB7 /* FontsScreen.swift in Sources */,
 				A75D1BE70DD1B297F3CF4EE9 /* MainScreen.swift in Sources */,
+				4E5A7AE15C65A2F2F6C8BF76 /* ListSeparatorItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1455,7 +1450,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				637A4EE02D8ACE0F006F7F93 /* ListSeparatorItem.swift in Sources */,
 				634EB1A221B6BBD600E1831C /* Settings.swift in Sources */,
 				C904455E2395DBAE001BC48B /* AnswerTextField.swift in Sources */,
 				63C42A2821B6A28D008CA938 /* ViewController.swift in Sources */,
