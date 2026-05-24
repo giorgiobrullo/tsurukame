@@ -14,6 +14,7 @@
 
 import CoreText
 import Foundation
+import UIKit
 
 struct FontDefinition {
   var fontName: String

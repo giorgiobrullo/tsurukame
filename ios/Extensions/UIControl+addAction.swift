@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import Foundation
+import UIKit
 
 extension UIControl {
   /** You MUST take a weak reference to `self` in the closure. */

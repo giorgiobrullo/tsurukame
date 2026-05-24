@@ -14,6 +14,7 @@
 
 import Accelerate
 import Foundation
+import UIKit
 
 extension CGContext {
   // Creates a new CGContext that draws to a bitmap suitable for drawing on the given UIScreen.

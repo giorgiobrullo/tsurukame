@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import Foundation
+import UIKit
 
 enum TableModelCellFactory {
   case fromInterfaceBuilder(nibName: String)

@@ -14,6 +14,7 @@
 
 import AudioToolbox
 import Foundation
+import UIKit
 
 private let kHideShowAnimation: UITableView.RowAnimation = .fade
 

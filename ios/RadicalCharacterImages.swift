@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import SVGKit
+import UIKit
 import WaniKaniAPI
 
 class RadicalCharacterImages {

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import Foundation
+import UIKit
 
 class ListSeparatorItem: TableModelItem {
   var label: String
