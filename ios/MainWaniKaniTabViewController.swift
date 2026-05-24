@@ -217,6 +217,17 @@ class MainWaniKaniTabViewController: UITableViewController {
           })
       }
 
+      // Quick access to the review order without going into Settings (#340).
+      if reviews > 0 {
+        model.add(BasicModelItem(style: .value1,
+                                 title: "Review order",
+                                 subtitle: Settings.reviewOrder.description,
+                                 accessoryType: .disclosureIndicator) { [unowned self] in
+            self.navigationController?.pushViewController(makeReviewOrderViewController(),
+                                                          animated: true)
+          })
+      }
+
       model.add(section: "Upcoming reviews")
       if #available(iOS 15.0, *) {
         model.add(ForecastChartItem(upcomingReviews: upcomingReviews,
