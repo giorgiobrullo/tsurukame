@@ -222,6 +222,7 @@
 		EC6A5487F6875EC64C63B6B2 /* Pods_FontScreenshotter_FontScreenshotterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404461BC39B4A19B128F9E69 /* Pods_FontScreenshotter_FontScreenshotterUITests.framework */; };
 		F4E7AA3C569ADB71A7BFCA1F /* TsurukameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84B3516DD7DB536A88D91C /* TsurukameApp.swift */; };
 		F5D365098AA2DFD8560F2405 /* SettingsSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF551BE56C28C5F75B375A /* SettingsSwiftUI.swift */; };
+		FE4B54D1B940F93D9D0433FD /* LessonsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487A9BD775597B87B1FEFE4D /* LessonsScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -301,6 +302,7 @@
 		481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLevelReviewTimeItem.swift; sourceTree = "<group>"; };
 		4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontScreenshotterUITests.swift; sourceTree = "<group>"; };
 		4874562E261DD28E00F33AA3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		487A9BD775597B87B1FEFE4D /* LessonsScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LessonsScreen.swift; sourceTree = "<group>"; };
 		489894D423670CB000A20AF8 /* Tsurukame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tsurukame.entitlements; sourceTree = "<group>"; };
 		48F4B1DB268CB9850033860E /* UpcomingReviewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpcomingReviewsViewController.swift; sourceTree = "<group>"; };
 		4A6545C730ACCB6BD99476C9 /* ReviewScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReviewScreen.swift; sourceTree = "<group>"; };
@@ -750,6 +752,7 @@
 				4D84B3516DD7DB536A88D91C /* TsurukameApp.swift */,
 				A3EC114D4A65CB5055FE264B /* SubjectSearchSwiftUI.swift */,
 				4A6545C730ACCB6BD99476C9 /* ReviewScreen.swift */,
+				487A9BD775597B87B1FEFE4D /* LessonsScreen.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1615,6 +1618,7 @@
 				F4E7AA3C569ADB71A7BFCA1F /* TsurukameApp.swift in Sources */,
 				157A0EB88FBC954C6CE8DD0E /* SubjectSearchSwiftUI.swift in Sources */,
 				8E7FF16575EEA160A41E6B73 /* ReviewScreen.swift in Sources */,
+				FE4B54D1B940F93D9D0433FD /* LessonsScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -750,7 +750,19 @@ class MainWaniKaniTabViewController: UITableViewController {
   }
 
   @objc func startLessons() {
-    perform(segue: StoryboardSegue.Main.startLessons, sender: self)
+    let assignments = services.localCachingClient.getNonExcludedAssignments()
+    var items = ReviewItem.readyForLessons(assignments: assignments,
+                                           localCachingClient: services.localCachingClient)
+      .shuffled()
+    guard !items.isEmpty else { return }
+    if !Settings.randomLessonOrder {
+      items = items.sorted(by: { a, b in a.compareForLessons(other: b) })
+    }
+    if items.count > Settings.lessonBatchSize {
+      items = Array(items[0 ..< Int(Settings.lessonBatchSize)])
+    }
+    let vc = LessonsHostingController(services: services, items: items)
+    navigationController?.pushViewController(vc, animated: true)
   }
 
   @objc func showLessonPicker() {
