@@ -213,6 +213,9 @@ class MainWaniKaniTabViewController: UITableViewController {
     addShowRemainingAllItems(model: model, level: Int(user.currentLevel))
 
     model.add(section: "All levels")
+    if #available(iOS 15.0, *) {
+      model.add(SRSDistributionItem(counts: services.localCachingClient.srsCategoryCounts))
+    }
     for category in SRSStageCategory.apprentice ... SRSStageCategory.burned {
       let count = services.localCachingClient.srsCategoryCounts[category.rawValue]
       let item = SRSStageCategoryItem(stageCategory: category, count: Int(count),
