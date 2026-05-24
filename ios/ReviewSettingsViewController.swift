@@ -361,12 +361,15 @@ class ReviewSettingsViewController: UITableViewController, TKMViewController {
 }
 
 func makeFontSizeViewController() -> UIViewController {
-  let vc = SettingChoiceListViewController(setting: Settings.$fontSize, title: "Font Size")
+  var choices = [ChoiceListScreen<Float>.Choice]()
   for size in stride(from: 1.0, through: 2.5, by: 0.25) {
-    let percent = Int((size * 100).rounded())
-    vc.addChoice(name: "\(percent)%", value: Float(size))
+    choices.append(.init(label: "\(Int((size * 100).rounded()))%", value: Float(size)))
   }
-  return vc
+  return ChoiceListHostingController(title: "Font Size", choices: choices,
+                                     current: Settings.fontSize,
+                                     defaultValue: Settings.$fontSize.defaultValue) {
+    Settings.fontSize = $0
+  }
 }
 
 func makeReviewBatchSizeViewController() -> UIViewController {
@@ -374,57 +377,61 @@ func makeReviewBatchSizeViewController() -> UIViewController {
   let description =
     "The \"\(name)\" setting is ONLY used when \"back-to-back\" reviews are disabled.\n\n" +
     "When \"back-to-back\" reviews are disabled, you might be asked to review the meaning of an item and then " +
-
     "later after reviewing some other items, be asked to review the reading of that item. \nThe \"\(name)\" setting " +
-
     "controls the number of different review items you can encounter between reviewing the reading and " +
-
     "meaning for a given item."
-  let vc = SettingChoiceListViewController(setting: Settings.$reviewBatchSize,
-                                           title: name,
-                                           helpText: description)
-  vc.addChoicesFromRange(3 ... 10, suffix: " reviews")
-  return vc
+  let choices = (3 ... 10).map { ChoiceListScreen<Int>.Choice(label: "\($0) reviews", value: $0) }
+  return ChoiceListHostingController(title: name, helpText: description, choices: choices,
+                                     current: Settings.reviewBatchSize,
+                                     defaultValue: Settings.$reviewBatchSize.defaultValue) {
+    Settings.reviewBatchSize = $0
+  }
 }
 
 func makeReviewItemsLimitViewController() -> UIViewController {
-  let vc = SettingChoiceListViewController(setting: Settings.$reviewItemsLimit,
-                                           title: "Review Batch Size",
-                                           helpText: "Set the number of items to review in a session.")
-  let defaultChoices = [5, 10, 15, 20, 25, 30, 50, 75, 100]
-  vc.addChoicesFromRange(defaultChoices, suffix: " reviews")
-  return vc
+  let choices = [5, 10, 15, 20, 25, 30, 50, 75, 100]
+    .map { ChoiceListScreen<Int>.Choice(label: "\($0) reviews", value: $0) }
+  return ChoiceListHostingController(title: "Review Batch Size",
+                                     helpText: "Set the number of items to review in a session.",
+                                     choices: choices, current: Settings.reviewItemsLimit,
+                                     defaultValue: Settings.$reviewItemsLimit.defaultValue) {
+    Settings.reviewItemsLimit = $0
+  }
 }
 
 func makeLeechThresholdViewController() -> UIViewController {
-  let vc = SettingChoiceListViewController(setting: Settings.$leechThreshold,
-                                           title: "Leech Threshold",
-                                           helpText: "Leeches are the items that you regularly get wrong. The lower the leech threshold value, the more items will be considered leeches. Leeches are considered a leech if (incorrect / currentStreak^1.5 >= threshold) is true.")
+  var choices = [ChoiceListScreen<Float>.Choice]()
   for threshold in stride(from: 1.0, through: 5.0, by: 0.25) {
-    vc.addChoice(name: "\(threshold)", value: Float(threshold))
+    choices.append(.init(label: "\(threshold)", value: Float(threshold)))
   }
-  return vc
+  return ChoiceListHostingController(title: "Leech Threshold",
+                                     helpText: "Leeches are the items that you regularly get wrong. The lower the leech threshold value, the more items will be considered leeches. Leeches are considered a leech if (incorrect / currentStreak^1.5 >= threshold) is true.",
+                                     choices: choices, current: Settings.leechThreshold,
+                                     defaultValue: Settings.$leechThreshold.defaultValue) {
+    Settings.leechThreshold = $0
+  }
 }
 
 func makeReviewOrderViewController() -> UIViewController {
-  let vc = SettingChoiceListViewController(setting: Settings.$reviewOrder, title: "Review Order")
-  vc.addChoicesFromEnum()
-  return vc
+  makeEnumChoiceList(title: "Review Order", current: Settings.reviewOrder,
+                     defaultValue: Settings.$reviewOrder.defaultValue) { Settings.reviewOrder = $0 }
 }
 
 func makeTaskOrderViewController() -> UIViewController {
-  let vc = SettingChoiceListViewController(setting: Settings.$meaningFirst,
-                                           title: "Back-to-back Order")
-  vc.addChoices([
-    "Meaning then Reading": true,
-    "Reading then Meaning": false,
-  ])
-  return vc
+  let choices = [
+    ChoiceListScreen<Bool>.Choice(label: "Meaning then Reading", value: true),
+    ChoiceListScreen<Bool>.Choice(label: "Reading then Meaning", value: false),
+  ]
+  return ChoiceListHostingController(title: "Back-to-back Order", choices: choices,
+                                     current: Settings.meaningFirst,
+                                     defaultValue: Settings.$meaningFirst.defaultValue) {
+    Settings.meaningFirst = $0
+  }
 }
 
 func makeAnkiModeTaskTypeViewController() -> UIViewController {
-  let vc = SettingChoiceListViewController(setting: Settings.$ankiModeTaskType,
-                                           title: "Anki Mode Applies To")
-  vc.addChoicesFromEnum()
-  return vc
+  makeEnumChoiceList(title: "Anki Mode Applies To", current: Settings.ankiModeTaskType,
+                     defaultValue: Settings.$ankiModeTaskType.defaultValue) {
+    Settings.ankiModeTaskType = $0
+  }
 }

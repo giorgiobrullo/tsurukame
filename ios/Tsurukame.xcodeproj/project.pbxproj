@@ -218,6 +218,7 @@
 		C943D5B02380D59B004A7969 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C943D5AF2380D59A004A7969 /* SettingsController.swift */; };
 		C970BC0323D262CE001F3735 /* SiriShortcutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */; };
 		D28FEA675E5018672491666D /* ListeningPracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */; };
+		D6EC58909D84938EF126D38B /* ChoiceListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077CB5969812B99064F6116B /* ChoiceListScreen.swift */; };
 		DB029EEBDBA9D4CCD7C6B34E /* SubjectDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */; };
 		E881943B2A6BC0CF002C2E1C /* ArtworkModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881943A2A6BC0CF002C2E1C /* ArtworkModelItem.swift */; };
 		E881943F2A6BC38A002C2E1C /* ArtworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881943E2A6BC38A002C2E1C /* ArtworkManager.swift */; };
@@ -291,6 +292,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		077CB5969812B99064F6116B /* ChoiceListScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ChoiceListScreen.swift; sourceTree = "<group>"; };
 		10E5709643045C62AD6AC427 /* Pods_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		116070EC9485A78089387729 /* Pods-FontScreenshotterUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotterUITests.debug.xcconfig"; path = "Target Support Files/Pods-FontScreenshotterUITests/Pods-FontScreenshotterUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		1BBBD142815F6A55FA9D2C21 /* libPods-Tsurukame Complication Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tsurukame Complication Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -759,6 +761,7 @@
 				487A9BD775597B87B1FEFE4D /* LessonsScreen.swift */,
 				D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */,
 				A5B081F6524EE2D60A1B4605 /* ReviewSummaryScreen.swift */,
+				077CB5969812B99064F6116B /* ChoiceListScreen.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1627,6 +1630,7 @@
 				FE4B54D1B940F93D9D0433FD /* LessonsScreen.swift in Sources */,
 				DB029EEBDBA9D4CCD7C6B34E /* SubjectDetailScreen.swift in Sources */,
 				99E57BF758A0680193BDAA08 /* ReviewSummaryScreen.swift in Sources */,
+				D6EC58909D84938EF126D38B /* ChoiceListScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

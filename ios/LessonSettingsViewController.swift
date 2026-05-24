@@ -133,23 +133,24 @@ class LessonSettingsViewController: UITableViewController, TKMViewController {
 }
 
 func makeLessonBatchSizeViewController() -> UIViewController {
-  let vc = SettingChoiceListViewController(setting: Settings.$lessonBatchSize,
-                                           title: "Lesson Batch Size",
-                                           helpText: "Set the number of new lessons to be " +
-                                             "introduced before the quiz session.")
-  vc.addChoice(name: "1 lesson", value: 1)
-  vc.addChoicesFromRange(2 ... 10, suffix: " lessons")
-
-  return vc
+  var choices = [ChoiceListScreen<Int>.Choice(label: "1 lesson", value: 1)]
+  choices += (2 ... 10).map { ChoiceListScreen<Int>.Choice(label: "\($0) lessons", value: $0) }
+  return ChoiceListHostingController(title: "Lesson Batch Size",
+                                     helpText: "Set the number of new lessons to be introduced before the quiz session.",
+                                     choices: choices, current: Settings.lessonBatchSize,
+                                     defaultValue: Settings.$lessonBatchSize.defaultValue) {
+    Settings.lessonBatchSize = $0
+  }
 }
 
 func makeApprenticeLessonLimitViewController() -> UIViewController {
-  let vc = SettingChoiceListViewController(setting: Settings.$apprenticeLessonsLimit,
-                                           title: "Apprentice Lessons Limit",
-                                           helpText: "Stop yourself from starting new lessons " +
-                                             "if you have more than this number of " +
-                                             "Apprentice-level items already")
-  vc.addChoice(name: "No limit", value: Int.max)
-  vc.addChoicesFromRange(stride(from: 25, through: 200, by: 25), suffix: "")
-  return vc
+  var choices = [ChoiceListScreen<Int>.Choice(label: "No limit", value: Int.max)]
+  choices += stride(from: 25, through: 200, by: 25)
+    .map { ChoiceListScreen<Int>.Choice(label: "\($0)", value: $0) }
+  return ChoiceListHostingController(title: "Apprentice Lessons Limit",
+                                     helpText: "Stop yourself from starting new lessons if you have more than this number of Apprentice-level items already.",
+                                     choices: choices, current: Settings.apprenticeLessonsLimit,
+                                     defaultValue: Settings.$apprenticeLessonsLimit.defaultValue) {
+    Settings.apprenticeLessonsLimit = $0
+  }
 }

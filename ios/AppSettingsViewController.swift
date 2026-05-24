@@ -175,9 +175,12 @@ class AppSettingsViewController: UITableViewController, TKMViewController {
 }
 
 func makeInterfaceStyleViewController() -> UIViewController {
-  let vc = SettingChoiceListViewController(setting: Settings.$interfaceStyle,
-                                           title: "Interface Style")
-  vc.addChoicesFromEnum()
-  vc.saveFn = { [unowned vc] in vc.view.window!.setInterfaceStyle($0) }
-  return vc
+  makeEnumChoiceList(title: "Interface Style", current: Settings.interfaceStyle,
+                     defaultValue: Settings.$interfaceStyle.defaultValue) { style in
+    Settings.interfaceStyle = style
+    UIApplication.shared.connectedScenes
+      .compactMap { $0 as? UIWindowScene }
+      .flatMap { $0.windows }
+      .forEach { $0.setInterfaceStyle(style) }
+  }
 }
