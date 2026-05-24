@@ -20,8 +20,6 @@
 // gone.
 #import <UIKit/UIKit.h>
 
-#import "Extensions/NSString+LevenshteinDistance.h"
-
 #import <WatchConnectivity/WatchConnectivity.h>
 
 #endif /* Tsurukame_Bridging_Header_h */

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A943349E17FA7889EFEE41F /* Pods_Tsurukame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC80AAF9736A570E3C4CC09E /* Pods_Tsurukame.framework */; };
+		0D4585B985B67D9CC53E4AD2 /* String+LevenshteinDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F7A8B924FCC773780D9F12 /* String+LevenshteinDistance.swift */; };
 		0F78B49963977BC7357557F6 /* LessonPickerSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9DBC70C6B76C3884829AEE /* LessonPickerSwiftUI.swift */; };
 		157A0EB88FBC954C6CE8DD0E /* SubjectSearchSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EC114D4A65CB5055FE264B /* SubjectSearchSwiftUI.swift */; };
 		1BE3D02A850A8976E5B478BC /* ForecastChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8AA5A9B922F77E82A0774 /* ForecastChartItem.swift */; };
@@ -19,6 +20,7 @@
 		498851B92054E89630420A58 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */; };
 		4C2F1B19821592C7C0A3DBB7 /* FontsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA30736CAB5795DD378F8CE7 /* FontsScreen.swift */; };
 		4E5A7AE15C65A2F2F6C8BF76 /* ListSeparatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA41C6C5B9D7A4768FF67B7B /* ListSeparatorItem.swift */; };
+		57CFD7549BB9D47590153458 /* String+LevenshteinDistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F7A8B924FCC773780D9F12 /* String+LevenshteinDistance.swift */; };
 		5A4B3B2F57BC19839BD23FBB /* SettingsFormsSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A453454F899E6016F1B7DD25 /* SettingsFormsSwiftUI.swift */; };
 		5C82B2908507339A293B0E59 /* Pods_FontScreenshotter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F33812F134DC80E5D981C40E /* Pods_FontScreenshotter.framework */; };
 		5EC585B4BABAB8BF2042B002 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D923B45B9236457C5D85F4 /* NetworkMonitor.swift */; };
@@ -103,7 +105,6 @@
 		63C74BD125C82B1D004F6C99 /* SubjectCollectionModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C74BD025C82B1D004F6C99 /* SubjectCollectionModelItem.swift */; };
 		63C74C6825C96088004F6C99 /* SubjectChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C74C6725C96088004F6C99 /* SubjectChip.swift */; };
 		63C74C7F25C96F58004F6C99 /* SubjectDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C74C7E25C96F58004F6C99 /* SubjectDelegate.swift */; };
-		63CAAB091FD2C66100E09DA1 /* NSString+LevenshteinDistance.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CAAB081FD2C66100E09DA1 /* NSString+LevenshteinDistance.m */; };
 		63CAAB0B1FD2CBD900E09DA1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63CAAB0A1FD2CBD900E09DA1 /* LaunchScreen.storyboard */; };
 		63CAAB111FD7FACD00E09DA1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63CAAB101FD7FAC600E09DA1 /* SystemConfiguration.framework */; };
 		63CAB3FB2604A1450057E1C2 /* URLRequest+SetBodyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CAB3FA2604A1450057E1C2 /* URLRequest+SetBodyTest.swift */; };
@@ -336,8 +337,6 @@
 		63C74BD025C82B1D004F6C99 /* SubjectCollectionModelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCollectionModelItem.swift; sourceTree = "<group>"; };
 		63C74C6725C96088004F6C99 /* SubjectChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectChip.swift; sourceTree = "<group>"; };
 		63C74C7E25C96F58004F6C99 /* SubjectDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectDelegate.swift; sourceTree = "<group>"; };
-		63CAAB071FD2C66100E09DA1 /* NSString+LevenshteinDistance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+LevenshteinDistance.h"; sourceTree = "<group>"; };
-		63CAAB081FD2C66100E09DA1 /* NSString+LevenshteinDistance.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+LevenshteinDistance.m"; sourceTree = "<group>"; };
 		63CAAB0A1FD2CBD900E09DA1 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		63CAAB101FD7FAC600E09DA1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		63CAB3FA2604A1450057E1C2 /* URLRequest+SetBodyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+SetBodyTest.swift"; sourceTree = "<group>"; };
@@ -372,6 +371,7 @@
 		7E3A3B65C3A0B280B5FF32D3 /* Pods-Tsurukame (App Store screenshots).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame (App Store screenshots).debug.xcconfig"; path = "Target Support Files/Pods-Tsurukame (App Store screenshots)/Pods-Tsurukame (App Store screenshots).debug.xcconfig"; sourceTree = "<group>"; };
 		82721E7B5A9C5562CC8D3B9B /* Pods-FontScreenshotter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotter.release.xcconfig"; path = "Target Support Files/Pods-FontScreenshotter/Pods-FontScreenshotter.release.xcconfig"; sourceTree = "<group>"; };
 		87D923B45B9236457C5D85F4 /* NetworkMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		89F7A8B924FCC773780D9F12 /* String+LevenshteinDistance.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "String+LevenshteinDistance.swift"; sourceTree = "<group>"; };
 		93B59B292367AF130097533C /* UpcomingReviewsChartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingReviewsChartItem.swift; sourceTree = "<group>"; };
 		97A120DE2D9C467100D19CAE /* ReviewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUtils.swift; sourceTree = "<group>"; };
 		9CFD97ACE7ABC2C904715D83 /* Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -502,11 +502,10 @@
 				63A16770253AD8AD00B5BCD6 /* FMDatabase+Assert.swift */,
 				63B63FFC2773581E0098DAAD /* MMDrawerController+setAnimatingDrawer.h */,
 				630EB10925C561A900783E54 /* NSMutableAttributedString+Replacements.swift */,
-				63CAAB071FD2C66100E09DA1 /* NSString+LevenshteinDistance.h */,
-				63CAAB081FD2C66100E09DA1 /* NSString+LevenshteinDistance.m */,
 				63D2DAED275C5D4100D5F6FF /* UIControl+addAction.swift */,
 				63D1026823D7ED3200838F7C /* UIWindow+InterfaceStyle.swift */,
 				79D887442B41949F003D8F99 /* String+SHA256.swift */,
+				89F7A8B924FCC773780D9F12 /* String+LevenshteinDistance.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1293,7 +1292,6 @@
 				63C74C6825C96088004F6C99 /* SubjectChip.swift in Sources */,
 				63358E9E273664F50013A2AC /* BasicModelItem.swift in Sources */,
 				6335B4E723CF14280071671E /* Screenshotter.swift in Sources */,
-				63CAAB091FD2C66100E09DA1 /* NSString+LevenshteinDistance.m in Sources */,
 				636A63DE238A107A00902269 /* CurrentLevelChartItem.swift in Sources */,
 				BBE4E32E2172576B003A200E /* FontLoader.swift in Sources */,
 				631F34D72C36B7FE0071E983 /* BiggerTapAreaButton.swift in Sources */,
@@ -1372,6 +1370,7 @@
 				A3E56CC7FBE9617EF0CDA843 /* PracticeScreens.swift in Sources */,
 				6630EF229FD72F74AB685B68 /* KanaInput.swift in Sources */,
 				63881B8F52A0969A93A075B7 /* NetworkMonitor.swift in Sources */,
+				57CFD7549BB9D47590153458 /* String+LevenshteinDistance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1429,6 +1428,7 @@
 				3042DA924455D50AD7B75AB3 /* KanaInput.swift in Sources */,
 				DD42836B15916FD422C5D31A /* KanaInputTest.swift in Sources */,
 				5EC585B4BABAB8BF2042B002 /* NetworkMonitor.swift in Sources */,
+				0D4585B985B67D9CC53E4AD2 /* String+LevenshteinDistance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
