@@ -21,37 +21,33 @@ import WaniKaniAPI
 private let kMaxLocalNotifications = 64
 
 class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelegate {
-  var window: UIWindow?
-
-  private var storyboard: UIStoryboard!
   private var navigationController: UINavigationController!
   private var services: TKMServices!
 
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil)
     -> Bool {
-    // Uncomment to slow the animation speed on a real device.
-    // window?.layer.speed = .1
-
     Screenshotter.setUp()
-
-    window?.setInterfaceStyle(Settings.interfaceStyle)
     application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
-
-    storyboard = window!.rootViewController!.storyboard
-    navigationController = (window!.rootViewController as! UINavigationController)
     services = TKMServices()
 
-    let nc = NotificationCenter.default
-    nc.addObserver(self, selector: #selector(logout), name: .logout, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .logout,
+                                           object: nil)
+    return true
+  }
+
+  /// Called by the SwiftUI app shell (`TsurukameApp`) with the root navigation controller it hosts.
+  /// Replaces the old window/storyboard bootstrap now that the SwiftUI `App` owns the window: apply
+  /// the interface style and show either the login or the main screen.
+  func bootstrap(navigationController nav: UINavigationController) {
+    navigationController = nav
+    DispatchQueue.main.async { nav.view.window?.setInterfaceStyle(Settings.interfaceStyle) }
 
     if !Settings.userApiToken.isEmpty {
       setMainViewControllerAnimated(animated: false, clearUserData: false)
     } else {
       pushLoginViewController()
     }
-
-    return true
   }
 
   func application(_: UIApplication,
@@ -167,15 +163,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
   }
 
   func applicationDidBecomeActive(_: UIApplication) {
-    services.reachability.startNotifier()
+    services?.reachability.startNotifier()
 
-    if let vc = navigationController.topViewController as? MainViewController {
+    if let vc = navigationController?.topViewController as? MainViewController {
       vc.refresh(quick: true)
     }
   }
 
   func applicationWillResignActive(_: UIApplication) {
-    services.reachability.stopNotifier()
+    services?.reachability.stopNotifier()
     updateAppBadgeCount()
   }
 
