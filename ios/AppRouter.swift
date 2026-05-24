@@ -25,6 +25,7 @@ import WaniKaniAPI
 /// `NavigationPath`.
 enum AppRoute: Hashable {
   case statistics
+  case search
   case subjectDetail(Int64) // subject id
   case subjectList(SubjectListSource, title: String)
   case lessonPicker

@@ -129,8 +129,6 @@ private struct MainContainer: View {
   @ObservedObject var state: AppState
   @ObservedObject var router: AppRouter
   @StateObject private var model: MainModel
-  @StateObject private var searcher = Searcher()
-  @State private var searchText = ""
 
   init(state: AppState, router: AppRouter) {
     self.state = state
@@ -140,24 +138,11 @@ private struct MainContainer: View {
 
   var body: some View {
     NavigationStack(path: $router.path) {
-      Group {
-        if searchText.isEmpty {
-          MainScreen(model: model)
-        } else {
-          SubjectSearchScreen(model: searcher.results) { router.push(.subjectDetail($0.id)) }
-        }
-      }
-      .navigationTitle("Tsurukame")
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-          Button { router.settingsPresented = true } label: { Image(systemName: "gearshape") }
-        }
-      }
-      .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always),
-                  prompt: "Search subjects")
-      .onChange(of: searchText) { searcher.update(query: $0, services: state.services) }
-      .navigationDestination(for: AppRoute.self) { route in destination(for: route) }
+      MainScreen(model: model,
+                 onSearch: { router.push(.search) },
+                 onSettings: { router.settingsPresented = true })
+        .toolbar(.hidden, for: .navigationBar)
+        .navigationDestination(for: AppRoute.self) { route in destination(for: route) }
     }
     .onAppear {
       model.dashboardModel.actions = makeActions()
@@ -185,6 +170,8 @@ private struct MainContainer: View {
     case .statistics:
       StatsView(data: StatsData.make(services: state.services))
         .navigationTitle("Statistics")
+    case .search:
+      SubjectSearchView(services: state.services) { router.push(.subjectDetail($0.id)) }
     case let .subjectDetail(id):
       SubjectDetailRoute(services: state.services, router: router, subjectID: id)
     case let .subjectList(source, title):
@@ -322,6 +309,25 @@ private struct LessonPickerRoute: View {
 }
 
 // MARK: - Search
+
+/// A pushed search screen: a `.searchable` field over the subject results list.
+@available(iOS 16.0, *)
+private struct SubjectSearchView: View {
+  let services: TKMServices
+  let onTapSubject: (TKMSubject) -> Void
+  @StateObject private var searcher = Searcher()
+  @State private var query = ""
+
+  var body: some View {
+    SubjectSearchScreen(model: searcher.results, onTap: onTapSubject)
+      .searchable(text: $query, prompt: "Search subjects")
+      .onChange(of: query) { searcher.update(query: $0, services: services) }
+      .textInputAutocapitalization(.never)
+      .autocorrectionDisabled()
+      .navigationTitle("Search")
+      .navigationBarTitleDisplayMode(.inline)
+  }
+}
 
 @available(iOS 16.0, *)
 private final class Searcher: ObservableObject {

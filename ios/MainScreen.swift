@@ -132,6 +132,8 @@ final class MainModel: ObservableObject {
 @available(iOS 15.0, *)
 struct MainScreen: View {
   @ObservedObject var model: MainModel
+  var onSearch: () -> Void = {}
+  var onSettings: () -> Void = {}
 
   var body: some View {
     VStack(spacing: 0) {
@@ -147,35 +149,48 @@ struct MainScreen: View {
   }
 
   private var header: some View {
-    ZStack(alignment: .leading) {
-      LinearGradient(colors: TKMStyle.radicalGradient.map { Color(cgColor: $0) },
-                     startPoint: .top, endPoint: .bottom)
-      HStack(spacing: 12) {
-        AsyncImage(url: model.user?.avatarURL) { image in
-          image.resizable().scaledToFill()
-        } placeholder: {
-          Color.white.opacity(0.2)
-        }
-        .frame(width: 48, height: 48)
-        .clipShape(Circle())
-        .overlay(Circle().stroke(.white.opacity(0.6), lineWidth: 1))
-
-        VStack(alignment: .leading, spacing: 2) {
-          Text(model.user?.username ?? " ")
-            .font(.headline)
-            .foregroundStyle(.white)
-          Text("Level \(model.user?.level ?? 0) · learned \(model.user?.guruKanji ?? 0) kanji")
-            .font(.caption)
-            .foregroundStyle(.white.opacity(0.9))
-        }
-        Spacer()
-        if model.user?.onVacation == true {
-          Image(systemName: "beach.umbrella.fill").foregroundStyle(.white)
-        }
+    HStack(spacing: 12) {
+      AsyncImage(url: model.user?.avatarURL) { image in
+        image.resizable().scaledToFill()
+      } placeholder: {
+        Color.white.opacity(0.2)
       }
-      .padding(.horizontal, 16)
-      .padding(.vertical, 12)
+      .frame(width: 48, height: 48)
+      .clipShape(Circle())
+      .overlay(Circle().stroke(.white.opacity(0.6), lineWidth: 1))
+
+      VStack(alignment: .leading, spacing: 2) {
+        Text(model.user?.username ?? " ")
+          .font(.headline)
+          .foregroundStyle(.white)
+        Text("Level \(model.user?.level ?? 0) · learned \(model.user?.guruKanji ?? 0) kanji")
+          .font(.caption)
+          .foregroundStyle(.white.opacity(0.9))
+      }
+
+      Spacer(minLength: 8)
+
+      if model.user?.onVacation == true {
+        Image(systemName: "beach.umbrella.fill").foregroundStyle(.white)
+      }
+      headerButton("magnifyingglass", action: onSearch)
+      headerButton("gearshape", action: onSettings)
     }
-    .frame(height: 76)
+    .padding(.horizontal, 16)
+    .padding(.vertical, 12)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(LinearGradient(colors: TKMStyle.radicalGradient.map { Color(cgColor: $0) },
+                               startPoint: .top, endPoint: .bottom)
+        .ignoresSafeArea(edges: .top))
+  }
+
+  private func headerButton(_ systemImage: String, action: @escaping () -> Void) -> some View {
+    Button(action: action) {
+      Image(systemName: systemImage)
+        .font(.system(size: 17, weight: .semibold))
+        .foregroundStyle(.white)
+        .frame(width: 34, height: 34)
+        .contentShape(Rectangle())
+    }
   }
 }
