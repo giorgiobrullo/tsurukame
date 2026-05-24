@@ -113,12 +113,7 @@ class MainViewController: UIViewController, LoginViewControllerDelegate,
   }
 
   private func updateGradientColors() {
-    // Signature WaniKani brand gradient (radical blue → kanji pink → vocabulary purple), diagonal.
-    headerGradient.colors = [TKMStyle.radicalColor1.cgColor,
-                             TKMStyle.kanjiColor1.cgColor,
-                             TKMStyle.vocabularyColor1.cgColor]
-    headerGradient.layer.startPoint = CGPoint(x: 0, y: 0)
-    headerGradient.layer.endPoint = CGPoint(x: 1, y: 1)
+    headerGradient.colors = TKMStyle.radicalGradient
   }
 
   private func scheduleTableModelUpdate() {

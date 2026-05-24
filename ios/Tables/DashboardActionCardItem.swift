@@ -49,7 +49,7 @@ class DashboardActionCardsItem: TableModelItem {
 }
 
 /// A single rounded gradient card with a title, a big count and a subtitle.
-private class DashboardActionCard: UIControl {
+private class DashboardActionCard: UIView {
   private let gradient = GradientView(frame: .zero, colors: [])
   private let titleLabel = UILabel()
   private let countLabel = UILabel()
@@ -57,6 +57,7 @@ private class DashboardActionCard: UIControl {
   private let iconView = UIImageView()
 
   var tapHandler: (() -> Void)?
+  private var isCardEnabled = true
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -110,7 +111,9 @@ private class DashboardActionCard: UIControl {
       subtitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),
     ])
 
-    addTarget(self, action: #selector(didTap), for: .touchUpInside)
+    // Use a tap gesture rather than UIControl touch-tracking so a vertical drag that starts on a
+    // card scrolls the table cleanly instead of getting swallowed by the control.
+    addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTap)))
   }
 
   @available(*, unavailable)
@@ -128,18 +131,20 @@ private class DashboardActionCard: UIControl {
     subtitleLabel.text = subtitle
     iconView.image = UIImage(systemName: symbol)
     gradient.colors = gradientColors
-    isEnabled = enabled
+    isCardEnabled = enabled
+    isUserInteractionEnabled = enabled
     alpha = enabled ? 1.0 : 0.55
   }
 
-  @objc private func didTap() { tapHandler?() }
-
-  override var isHighlighted: Bool {
-    didSet {
-      UIView.animate(withDuration: 0.1) {
-        self.transform = self.isHighlighted ? CGAffineTransform(scaleX: 0.97, y: 0.97) : .identity
-      }
-    }
+  @objc private func didTap() {
+    guard isCardEnabled else { return }
+    // A quick tactile bounce on tap.
+    UIView.animate(withDuration: 0.08, animations: {
+      self.transform = CGAffineTransform(scaleX: 0.97, y: 0.97)
+    }, completion: { _ in
+      UIView.animate(withDuration: 0.08) { self.transform = .identity }
+    })
+    tapHandler?()
   }
 }
 
