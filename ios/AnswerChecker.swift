@@ -151,7 +151,7 @@ class AnswerChecker: NSObject {
   }
 
   class func normalizedString(_ text: String, taskType: TaskType,
-                              alphabet: TKMAlphabet = TKMAlphabet.hiragana) -> String {
+                              alphabet: KanaAlphabet = KanaAlphabet.hiragana) -> String {
     var s =
       text.trimmingCharacters(in: CharacterSet.whitespaces)
         .lowercased()
@@ -160,10 +160,10 @@ class AnswerChecker: NSObject {
         .replacingOccurrences(of: "'", with: "")
         .replacingOccurrences(of: "/", with: "")
     if taskType == .reading {
-      s = s.replacingOccurrences(of: "n", with: alphabet == TKMAlphabet.hiragana ? "ん" : "ン")
+      s = s.replacingOccurrences(of: "n", with: alphabet == KanaAlphabet.hiragana ? "ん" : "ン")
 
       // Gboard Godan layout uses "ｎ" or Unicode code point U+FF4E.
-      s = s.replacingOccurrences(of: "ｎ", with: alphabet == TKMAlphabet.hiragana ? "ん" : "ン")
+      s = s.replacingOccurrences(of: "ｎ", with: alphabet == KanaAlphabet.hiragana ? "ん" : "ン")
 
       s = s.replacingOccurrences(of: " ", with: "")
     }

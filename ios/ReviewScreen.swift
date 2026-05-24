@@ -277,7 +277,7 @@ struct AnswerFieldView: UIViewRepresentable {
   final class Coordinator: NSObject, UITextFieldDelegate {
     var parent: AnswerFieldView
     weak var field: AnswerTextField?
-    lazy var kanaInput = TKMKanaInput(delegate: self)
+    lazy var kanaInput = KanaInput(delegate: self)
 
     init(_ parent: AnswerFieldView) { self.parent = parent }
 

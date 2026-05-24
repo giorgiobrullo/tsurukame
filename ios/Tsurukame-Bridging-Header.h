@@ -15,8 +15,12 @@
 #ifndef Tsurukame_Bridging_Header_h
 #define Tsurukame_Bridging_Header_h
 
+// Many Swift files rely on UIKit being visible without an explicit `import UIKit`. This used to be
+// provided transitively by the Haneke / TKMKanaInput headers; import it directly now that those are
+// gone.
+#import <UIKit/UIKit.h>
+
 #import "Extensions/NSString+LevenshteinDistance.h"
-#import "TKMKanaInput.h"
 
 #import <WatchConnectivity/WatchConnectivity.h>
 

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import Foundation
-import Network
 import WaniKaniAPI
 
 class TKMServices {
@@ -31,52 +30,5 @@ class TKMServices {
     offlineAudio = OfflineAudio(services: self)
     audio = Audio(services: self)
     radicalCharacterImages = RadicalCharacterImages(services: self)
-  }
-}
-
-/// Network-reachability monitor built on the modern Network framework (`NWPathMonitor`),
-/// replacing the legacy Reachability CocoaPod. Keeps the same `isReachable()` /
-/// `startNotifier()` / `stopNotifier()` surface the rest of the app already calls.
-final class NetworkMonitor {
-  private let queue = DispatchQueue(label: "com.tsurukame.network-monitor")
-  private let lock = NSLock()
-  private var monitor: NWPathMonitor?
-  // Optimistically assume connectivity until the first path update arrives.
-  private var reachable = true
-
-  init() {
-    startNotifier()
-  }
-
-  deinit {
-    monitor?.cancel()
-  }
-
-  func startNotifier() {
-    lock.lock()
-    defer { lock.unlock() }
-    guard monitor == nil else { return }
-    let monitor = NWPathMonitor()
-    monitor.pathUpdateHandler = { [weak self] path in
-      guard let self = self else { return }
-      self.lock.lock()
-      self.reachable = path.status == .satisfied
-      self.lock.unlock()
-    }
-    monitor.start(queue: queue)
-    self.monitor = monitor
-  }
-
-  func stopNotifier() {
-    lock.lock()
-    defer { lock.unlock() }
-    monitor?.cancel()
-    monitor = nil
-  }
-
-  func isReachable() -> Bool {
-    lock.lock()
-    defer { lock.unlock() }
-    return reachable
   }
 }
