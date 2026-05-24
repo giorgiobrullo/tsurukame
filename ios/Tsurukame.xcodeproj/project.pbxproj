@@ -179,6 +179,7 @@
 		79D887452B41949F003D8F99 /* String+SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D887442B41949F003D8F99 /* String+SHA256.swift */; };
 		79D887472B419609003D8F99 /* String+SHA256Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D887462B419609003D8F99 /* String+SHA256Test.swift */; };
 		79D887482B419672003D8F99 /* String+SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D887442B41949F003D8F99 /* String+SHA256.swift */; };
+		8F73DA6B4E6C360412C51110 /* LevelProgressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD3D849CDB443FDA6A69FF4 /* LevelProgressItem.swift */; };
 		93B59B2A2367AF130097533C /* UpcomingReviewsChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B59B292367AF130097533C /* UpcomingReviewsChartItem.swift */; };
 		96A335072EEF5F800017BC70 /* BottomSheetAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A335062EEF5F800017BC70 /* BottomSheetAction.swift */; };
 		9721708A2DBAF247001DFFED /* SubjectsExcludedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972170892DBAF247001DFFED /* SubjectsExcludedViewController.swift */; };
@@ -468,6 +469,7 @@
 		C943D5AF2380D59A004A7969 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriShortcutHelper.swift; sourceTree = "<group>"; };
 		D9929E537851D24D07F47938 /* Pods-Tsurukame (App Store screenshots).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame (App Store screenshots).release.xcconfig"; path = "Target Support Files/Pods-Tsurukame (App Store screenshots)/Pods-Tsurukame (App Store screenshots).release.xcconfig"; sourceTree = "<group>"; };
+		DBD3D849CDB443FDA6A69FF4 /* LevelProgressItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LevelProgressItem.swift; sourceTree = "<group>"; };
 		E0AAF9AA4EFECB4B5DB94C29 /* Pods-FontScreenshotterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotterUITests.release.xcconfig"; path = "Target Support Files/Pods-FontScreenshotterUITests/Pods-FontScreenshotterUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E76D291A2528193C74A43C60 /* Pods-FontScreenshotter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotter.debug.xcconfig"; path = "Target Support Files/Pods-FontScreenshotter/Pods-FontScreenshotter.debug.xcconfig"; sourceTree = "<group>"; };
 		E881943A2A6BC0CF002C2E1C /* ArtworkModelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkModelItem.swift; sourceTree = "<group>"; };
@@ -772,6 +774,7 @@
 				93B59B292367AF130097533C /* UpcomingReviewsChartItem.swift */,
 				6ED9656EF825F08588F17905 /* DashboardActionCardItem.swift */,
 				7CA8AA5A9B922F77E82A0774 /* ForecastChartItem.swift */,
+				DBD3D849CDB443FDA6A69FF4 /* LevelProgressItem.swift */,
 			);
 			path = Tables;
 			sourceTree = "<group>";
@@ -1542,6 +1545,7 @@
 				63D1026923D7ED3200838F7C /* UIWindow+InterfaceStyle.swift in Sources */,
 				A46A3E6C91EE60C1C3052FA7 /* DashboardActionCardItem.swift in Sources */,
 				1BE3D02A850A8976E5B478BC /* ForecastChartItem.swift in Sources */,
+				8F73DA6B4E6C360412C51110 /* LevelProgressItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

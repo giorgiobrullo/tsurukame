@@ -195,7 +195,7 @@ class MainWaniKaniTabViewController: UITableViewController {
         .add(section: "Previous level (\(user.currentLevel - 1))")
       let currentGraphLevelAssignments = services.localCachingClient
         .getAssignments(level: previousLevel)
-      model.add(CurrentLevelChartItem(currentLevelAssignments: currentGraphLevelAssignments))
+      addLevelProgress(to: model, assignments: currentGraphLevelAssignments)
       addShowRemainingAllItems(model: model, level: previousLevel)
       // add header for next section; graph and other items will be added after this if/else block
       model.add(section: "Current level (\(user.currentLevel))")
@@ -203,7 +203,7 @@ class MainWaniKaniTabViewController: UITableViewController {
       model.add(section: "Current level")
     }
 
-    model.add(CurrentLevelChartItem(currentLevelAssignments: currentLevelAssignments))
+    addLevelProgress(to: model, assignments: currentLevelAssignments)
 
     if !user.hasVacationStartedAt {
       model
@@ -256,6 +256,14 @@ class MainWaniKaniTabViewController: UITableViewController {
 
     self.model = model
     tableView.reloadData()
+  }
+
+  private func addLevelProgress(to model: MutableTableModel, assignments: [TKMAssignment]) {
+    if #available(iOS 15.0, *) {
+      model.add(LevelProgressItem(currentLevelAssignments: assignments))
+    } else {
+      model.add(CurrentLevelChartItem(currentLevelAssignments: assignments))
+    }
   }
 
   private func addShowRemainingAllItems(model: MutableTableModel, level: Int) {
