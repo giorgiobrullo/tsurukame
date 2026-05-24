@@ -30,6 +30,7 @@ class Audio: NSObject {
   private var player: AVPlayer?
   private var lastPlayedAudioIndex: Int = 0
   private var waitingToPlay = false
+  private var isObservingPlayer = false
   private weak var delegate: AudioDelegate?
 
   private let nd = NotificationDispatcher()
@@ -119,12 +120,30 @@ class Audio: NSObject {
     self.delegate = delegate
 
     if player == nil || player?.status == .failed {
+      // Detach the observer from the old player before replacing it. Without this, the old
+      // AVPlayer deallocates while we're still registered as a KVO observer, which crashes
+      // ("deallocated while key value observers were still registered") — this is the crash some
+      // users hit at the end of a session, especially when an audio item fails to load.
+      removePlayerObserver()
       player = AVPlayer()
       player?.addObserver(self, forKeyPath: "currentItem.status", options: [], context: nil)
+      isObservingPlayer = true
     }
 
     player?.replaceCurrentItem(with: AVPlayerItem(url: url))
     waitingToPlay = true
+  }
+
+  private func removePlayerObserver() {
+    if isObservingPlayer {
+      player?.removeObserver(self, forKeyPath: "currentItem.status")
+      isObservingPlayer = false
+    }
+  }
+
+  deinit {
+    removePlayerObserver()
+    player?.replaceCurrentItem(with: nil)
   }
 
   func stopPlayback() {
@@ -145,7 +164,7 @@ class Audio: NSObject {
 
       switch currentItem.status {
       case .failed:
-        showErrorDialog(currentItem.error!)
+        if let error = currentItem.error { showErrorDialog(error) }
         currentState = .finished
       case .unknown:
         currentState = .loading
@@ -178,10 +197,14 @@ class Audio: NSObject {
   }
 
   private func showDialog(title: String, message: String) {
+    let keyWindow = UIApplication.shared.connectedScenes
+      .compactMap { $0 as? UIWindowScene }
+      .flatMap { $0.windows }
+      .first { $0.isKeyWindow }
+    guard let vc = keyWindow?.rootViewController else { return }
+
     let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
     ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-
-    let vc = UIApplication.shared.keyWindow!.rootViewController!
     vc.present(ac, animated: true, completion: nil)
   }
 
