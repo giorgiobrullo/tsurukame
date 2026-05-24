@@ -39,6 +39,11 @@ class ForecastChartItem: TableModelItem {
   }
 
   var rowHeight: CGFloat? { 150 }
+
+  var diffIdentifier: String {
+    "forecast|\(currentReviewCount)|" + upcomingReviews.prefix(24).map(String.init)
+      .joined(separator: ",")
+  }
 }
 
 @available(iOS 15.0, *)

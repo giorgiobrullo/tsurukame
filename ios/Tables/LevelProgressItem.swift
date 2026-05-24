@@ -33,6 +33,15 @@ class LevelProgressItem: TableModelItem {
   }
 
   var rowHeight: CGFloat? { 128 }
+
+  var diffIdentifier: String {
+    var digest = assignments.count
+    for assignment in assignments {
+      digest = digest &* 31 &+ Int(assignment.subjectType.rawValue) &* 11
+        &+ Int(assignment.srsStageNumber)
+    }
+    return "level-\(digest)"
+  }
 }
 
 @available(iOS 15.0, *)

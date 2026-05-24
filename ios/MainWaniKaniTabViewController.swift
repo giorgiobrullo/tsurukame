@@ -33,7 +33,6 @@ class MainWaniKaniTabViewController: UITableViewController {
   }
 
   var services: TKMServices!
-  var model: TableModel!
   weak var delegate: Delegate?
 
   var selectedSubjectCatalogLevel = -1
@@ -42,9 +41,12 @@ class MainWaniKaniTabViewController: UITableViewController {
   var hasLessons = false
   var hasReviews = false
 
-  // When a sync-triggered rebuild arrives while the user is scrolling, we defer it until scrolling
-  // ends so the reload doesn't interrupt the scroll.
-  private var pendingReload = false
+  // Diffable data source so dashboard updates apply in place (only the rows whose content actually
+  // changed are refreshed) instead of a full reloadData, which used to interrupt scrolling during a
+  // sync. Each item's `diffIdentifier` encodes its content, so unchanged rows are left untouched.
+  private var dataSource: DashboardDataSource!
+  private var itemsByID = [String: any TableModelItem]()
+  private var hasLoadedOnce = false
 
   func setup(services: TKMServices, delegate: Delegate?) {
     self.services = services
@@ -63,6 +65,7 @@ class MainWaniKaniTabViewController: UITableViewController {
     }
     tableView.refreshControl = refreshControl
 
+    configureDataSource()
     recreateTableModel()
   }
 
@@ -70,26 +73,100 @@ class MainWaniKaniTabViewController: UITableViewController {
     recreateTableModel()
   }
 
-  // Forwarded from the TableModel (which owns the tableView delegate). Flush a reload that was
-  // deferred because it arrived mid-scroll.
-  override func scrollViewDidEndDragging(_: UIScrollView, willDecelerate decelerate: Bool) {
-    if !decelerate, pendingReload { recreateTableModel() }
+  // MARK: - Diffable data source
+
+  private func configureDataSource() {
+    dataSource = DashboardDataSource(tableView: tableView) { [weak self] _, _, itemID in
+      guard let self = self, let item = self.itemsByID[itemID] else { return UITableViewCell() }
+      return self.makeCell(for: item)
+    }
+    tableView.delegate = self
   }
 
-  override func scrollViewDidEndDecelerating(_: UIScrollView) {
-    if pendingReload { recreateTableModel() }
+  // Builds (or reuses) the cell for an item. Mirrors TableModel's cell construction so the existing
+  // item/cell classes work unchanged.
+  private func makeCell(for item: any TableModelItem) -> UITableViewCell {
+    let reuseId = item.cellReuseIdentifier
+    var cell = tableView.dequeueReusableCell(withIdentifier: reuseId) as? TableModelCell
+    if cell == nil {
+      switch item.cellFactory {
+      case let .fromInterfaceBuilder(nibName):
+        tableView.register(UINib(nibName: nibName, bundle: nil), forCellReuseIdentifier: reuseId)
+        cell = tableView.dequeueReusableCell(withIdentifier: reuseId) as? TableModelCell
+      case let .fromFunction(function):
+        cell = function()
+      case let .fromDefaultConstructor(cellClass):
+        cell = cellClass.init(style: .default, reuseIdentifier: reuseId) as? TableModelCell
+      }
+    }
+    guard let cell = cell else {
+      fatalError("Item class \(reuseId)'s cellFactory returned nil")
+    }
+    CATransaction.begin()
+    CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
+    cell.baseItem = item
+    cell.tableView = tableView
+    cell.update()
+    CATransaction.commit()
+    return cell
+  }
+
+  // Converts the built section/item structure into a diffable snapshot. Section and item ids are
+  // de-duplicated so identical-looking rows (e.g. two "Show all" rows) stay distinct.
+  private func applySnapshot(from model: TableModel) {
+    var snapshot = NSDiffableDataSourceSnapshot<String, String>()
+    var newItemsByID = [String: any TableModelItem]()
+    var sectionTitles = [String: String]()
+    var usedSectionIDs = Set<String>()
+    var usedItemIDs = Set<String>()
+
+    for (index, section) in model.sections.enumerated() where !section.hidden {
+      var sid = section.headerTitle ?? "section-\(index)"
+      while usedSectionIDs.contains(sid) { sid += "·" }
+      usedSectionIDs.insert(sid)
+      if let title = section.headerTitle { sectionTitles[sid] = title }
+      snapshot.appendSections([sid])
+
+      var itemIDs = [String]()
+      for item in section.items {
+        var iid = item.diffIdentifier
+        while usedItemIDs.contains(iid) { iid += "#" }
+        usedItemIDs.insert(iid)
+        newItemsByID[iid] = item
+        itemIDs.append(iid)
+      }
+      snapshot.appendItems(itemIDs, toSection: sid)
+    }
+
+    itemsByID = newItemsByID
+    dataSource.sectionTitles = sectionTitles
+    dataSource.apply(snapshot, animatingDifferences: hasLoadedOnce)
+    hasLoadedOnce = true
+  }
+
+  // MARK: - UITableViewDelegate
+
+  override func tableView(_ tableView: UITableView,
+                          heightForRowAt indexPath: IndexPath) -> CGFloat {
+    guard let id = dataSource.itemIdentifier(for: indexPath), let item = itemsByID[id] else {
+      return tableView.rowHeight
+    }
+    return item.rowHeight ?? tableView.rowHeight
+  }
+
+  override func tableView(_ tableView: UITableView,
+                          heightForHeaderInSection section: Int) -> CGFloat {
+    let title = dataSource.tableView(tableView, titleForHeaderInSection: section)
+    return (title ?? "").isEmpty ? 12 : UITableView.automaticDimension
+  }
+
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+    (tableView.cellForRow(at: indexPath) as? TableModelCell)?.didSelect()
   }
 
   private func recreateTableModel() {
     guard let user = services.localCachingClient.getUserInfo() else { return }
-
-    // Don't rebuild the table while the user is actively scrolling: swapping the data source and
-    // calling reloadData mid-scroll interrupts the gesture. Defer until scrolling stops.
-    if tableView.isDragging || tableView.isDecelerating {
-      pendingReload = true
-      return
-    }
-    pendingReload = false
 
     // make sure that the selected subject level is reset each time table is loaded in case things
     // change
@@ -104,7 +181,9 @@ class MainWaniKaniTabViewController: UITableViewController {
     let upcomingReviews = services.localCachingClient.upcomingReviews
     let currentLevelAssignments = services.localCachingClient.getAssignmentsAtUsersCurrentLevel()
 
-    let model = MutableTableModel(tableView: tableView, delegate: self)
+    // Build the structure detached (we apply it via the diffable data source, not as the table's
+    // own data source).
+    let model = MutableTableModel(tableView: tableView, delegate: nil, attachToTableView: false)
 
     if !user.hasVacationStartedAt {
       let apprenticeCount = services.localCachingClient.apprenticeCount
@@ -285,8 +364,7 @@ class MainWaniKaniTabViewController: UITableViewController {
       }
     }
 
-    self.model = model
-    tableView.reloadData()
+    applySnapshot(from: model)
   }
 
   private func addLevelProgress(to model: MutableTableModel, assignments: [TKMAssignment]) {
@@ -521,5 +599,17 @@ class MainWaniKaniTabViewController: UITableViewController {
 
   @objc func startBurnedItemReviews() {
     perform(segue: StoryboardSegue.Main.startBurnedItemReviews, sender: self)
+  }
+}
+
+/// Diffable data source that also supplies plain section header titles (which the base
+/// UITableViewDiffableDataSource doesn't do on its own).
+private class DashboardDataSource: UITableViewDiffableDataSource<String, String> {
+  var sectionTitles = [String: String]()
+
+  override func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {
+    let ids = snapshot().sectionIdentifiers
+    guard section < ids.count else { return nil }
+    return sectionTitles[ids[section]]
   }
 }

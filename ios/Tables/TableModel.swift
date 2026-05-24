@@ -28,6 +28,9 @@ class TableModel: NSObject, UITableViewDataSource, UITableViewDelegate {
 
   var sections = [Section]()
   private(set) var isInitialised = false
+  // False when this model is only used to build structure (not as the table's data source); in that
+  // mode it must never mutate the table view directly.
+  fileprivate let attachesToTableView: Bool
   private(set) unowned var tableView: UITableView
   private weak var delegate: UITableViewDelegate?
 
@@ -41,12 +44,20 @@ class TableModel: NSObject, UITableViewDataSource, UITableViewDelegate {
     }
   }
 
-  init(tableView: UITableView, delegate: UITableViewDelegate?) {
+  init(tableView: UITableView, delegate: UITableViewDelegate?, attachToTableView: Bool = true) {
     self.tableView = tableView
     self.delegate = delegate
+    attachesToTableView = attachToTableView
     super.init()
-    tableView.dataSource = self
-    tableView.delegate = self
+    if attachToTableView {
+      tableView.dataSource = self
+      tableView.delegate = self
+    } else {
+      // The caller is only using us to build the section/item structure (e.g. to feed a diffable
+      // data source), not as the table's data source. Mark as initialised so the mutation helpers
+      // below short-circuit and never touch the real table view.
+      isInitialised = true
+    }
   }
 
   convenience init(tableView: UITableView) {
@@ -144,7 +155,7 @@ class TableModel: NSObject, UITableViewDataSource, UITableViewDelegate {
     // Get the view index path again.
     let viewIndexPathAfter = modelIndexPathToViewIndexPath(index)
 
-    if !isInitialised {
+    if !isInitialised || !attachesToTableView {
       return
     }
 
@@ -289,7 +300,7 @@ class MutableTableModel: TableModel {
     let index = sections.count
     sections.append(s)
 
-    if isInitialised {
+    if isInitialised, attachesToTableView {
       tableView.insertSections([index], with: kHideShowAnimation)
     }
 
@@ -307,7 +318,7 @@ class MutableTableModel: TableModel {
     let path = IndexPath(row: sections[sectionIndex].items.count - 1, section: sectionIndex)
     if hidden {
       sections[sectionIndex].hiddenItems.add(path.row)
-    } else if isInitialised {
+    } else if isInitialised, attachesToTableView {
       tableView.insertRows(at: [modelIndexPathToViewIndexPath(path)], with: kHideShowAnimation)
     }
     return path
@@ -325,7 +336,7 @@ class MutableTableModel: TableModel {
     sections[section].items.insert(item, at: index)
     let path = IndexPath(row: index, section: section)
 
-    if isInitialised {
+    if isInitialised, attachesToTableView {
       tableView.insertRows(at: [modelIndexPathToViewIndexPath(path)], with: kHideShowAnimation)
     }
 
@@ -337,7 +348,7 @@ class MutableTableModel: TableModel {
       fn(a as! T, b as! T)
     })
 
-    if isInitialised {
+    if isInitialised, attachesToTableView {
       tableView.reloadSections([section], with: kHideShowAnimation)
     }
   }

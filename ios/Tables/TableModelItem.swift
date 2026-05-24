@@ -25,11 +25,18 @@ protocol TableModelItem: AnyObject {
 
   var cellReuseIdentifier: String { get }
   var rowHeight: CGFloat? { get }
+
+  // A string that identifies this row for diffable (in-place) table updates. It should encode both
+  // the row's identity AND its visible content, so that when the content changes the identifier
+  // changes and only that row is refreshed. The default is unique per instance (i.e. always treated
+  // as a new row), which is fine for tables that don't use the diffable path.
+  var diffIdentifier: String { get }
 }
 
 extension TableModelItem {
   var cellReuseIdentifier: String { String(describing: self.self) }
   var rowHeight: CGFloat? { nil }
+  var diffIdentifier: String { "\(type(of: self))-\(ObjectIdentifier(self).hashValue)" }
 }
 
 class TableModelCell: UITableViewCell {

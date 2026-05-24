@@ -59,6 +59,10 @@ class BasicModelItem: TableModelItem {
     ].joined(separator: "/")
   }
 
+  var diffIdentifier: String {
+    "\(type(of: self))|\(title ?? "")|\(subtitle ?? "")|\(accessoryType.rawValue)|\(isEnabled)"
+  }
+
   var cellFactory: TableModelCellFactory {
     .fromFunction {
       BasicModelCell(style: self.style, reuseIdentifier: self.cellReuseIdentifier)

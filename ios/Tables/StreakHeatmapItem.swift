@@ -33,6 +33,12 @@ class StreakHeatmapItem: TableModelItem {
   }
 
   var rowHeight: CGFloat? { 170 }
+
+  var diffIdentifier: String {
+    let digest = dailyCounts.sorted { $0.key < $1.key }
+      .map { "\($0.key):\($0.value)" }.joined(separator: ",").hashValue
+    return "streak|\(streak)|\(digest)"
+  }
 }
 
 @available(iOS 15.0, *)

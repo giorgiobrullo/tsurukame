@@ -46,6 +46,10 @@ class DashboardActionCardsItem: TableModelItem {
   }
 
   var rowHeight: CGFloat? { 132 }
+
+  var diffIdentifier: String {
+    "cards|\(lessonCount)|\(reviewCount)|\(lessonsEnabled)|\(reviewsEnabled)|\(lessonsSubtitle)|\(reviewsSubtitle)"
+  }
 }
 
 /// A single rounded gradient card with a title, a big count and a subtitle.

@@ -33,6 +33,10 @@ class SRSDistributionItem: TableModelItem {
   }
 
   var rowHeight: CGFloat? { 86 }
+
+  var diffIdentifier: String {
+    "srsdist|" + counts.map(String.init).joined(separator: ",")
+  }
 }
 
 @available(iOS 15.0, *)
