@@ -23,19 +23,23 @@ import WaniKaniAPI
 class SRSDistributionItem: TableModelItem {
   /// Counts indexed by `SRSStageCategory.rawValue` (apprentice...burned).
   let counts: [Int]
+  /// Lifetime review accuracy (0...100), or nil if unknown.
+  let accuracy: Double?
 
-  init(counts: [Int]) {
+  init(counts: [Int], accuracy: Double?) {
     self.counts = counts
+    self.accuracy = accuracy
   }
 
   var cellFactory: TableModelCellFactory {
     .fromDefaultConstructor(cellClass: SRSDistributionCell.self)
   }
 
-  var rowHeight: CGFloat? { 86 }
+  var rowHeight: CGFloat? { accuracy == nil ? 86 : 112 }
 
   var diffIdentifier: String {
     "srsdist|" + counts.map(String.init).joined(separator: ",")
+      + "|" + (accuracy.map { String(Int($0.rounded())) } ?? "-")
   }
 }
 
@@ -49,10 +53,23 @@ struct SRSDistributionView: View {
   }
 
   let stages: [Stage]
+  let accuracy: Double?
   private var total: Int { stages.reduce(0) { $0 + $1.count } }
 
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
+      if let accuracy = accuracy {
+        HStack(alignment: .firstTextBaseline) {
+          Text("Accuracy")
+            .font(.subheadline.weight(.semibold))
+          Spacer()
+          Text("\(Int(accuracy.rounded()))%")
+            .font(.subheadline.weight(.semibold))
+            .monospacedDigit()
+            .foregroundStyle(accuracy >= 90 ? .green : (accuracy >= 80 ? .primary : .orange))
+        }
+      }
+
       GeometryReader { geo in
         HStack(spacing: total > 0 ? 1 : 0) {
           ForEach(stages) { stage in
@@ -110,7 +127,7 @@ class SRSDistributionCell: TableModelCell {
                                               color: Color(uiColor: TKMStyle
                                                 .color(forSRSStageCategory: category))))
     }
-    let view = SRSDistributionView(stages: stages)
+    let view = SRSDistributionView(stages: stages, accuracy: item.accuracy)
     if let hostingController = hostingController {
       hostingController.rootView = view
     } else {

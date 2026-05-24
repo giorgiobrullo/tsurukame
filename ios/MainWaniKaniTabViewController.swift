@@ -321,7 +321,8 @@ class MainWaniKaniTabViewController: UITableViewController {
 
     model.add(section: "All levels")
     if #available(iOS 15.0, *) {
-      model.add(SRSDistributionItem(counts: services.localCachingClient.srsCategoryCounts))
+      model.add(SRSDistributionItem(counts: services.localCachingClient.srsCategoryCounts,
+                                    accuracy: services.localCachingClient.overallAccuracy))
     }
     for category in SRSStageCategory.apprentice ... SRSStageCategory.burned {
       let count = services.localCachingClient.srsCategoryCounts[category.rawValue]

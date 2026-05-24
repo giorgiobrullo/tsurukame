@@ -1469,6 +1469,23 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
     return streak
   }
 
+  /// Overall lifetime review accuracy (0...100) across meaning + reading answers, or nil if there
+  /// are no review statistics yet.
+  var overallAccuracy: Double? {
+    db.inDatabase { db in
+      var correct = 0
+      var total = 0
+      for cursor in db.query("SELECT pb FROM review_stats") {
+        guard let stat: TKMReviewStatistic = cursor.proto(forColumnIndex: 0) else { continue }
+        let right = Int(stat.meaningCorrect + stat.readingCorrect)
+        let wrong = Int(stat.meaningIncorrect + stat.readingIncorrect)
+        correct += right
+        total += right + wrong
+      }
+      return total > 0 ? Double(correct) / Double(total) * 100 : nil
+    }
+  }
+
   func updateRecentMistakesFromCloud(skipReuploadToCloud: Bool) {
     let mergedMistakes = RecentMistakeHandler.mergeMistakes(original: getRecentMistakeTimes(),
                                                             other: recentMistakeHandler
