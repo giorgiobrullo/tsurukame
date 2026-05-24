@@ -216,6 +216,7 @@
 		E881943B2A6BC0CF002C2E1C /* ArtworkModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881943A2A6BC0CF002C2E1C /* ArtworkModelItem.swift */; };
 		E881943F2A6BC38A002C2E1C /* ArtworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881943E2A6BC38A002C2E1C /* ArtworkManager.swift */; };
 		EC6A5487F6875EC64C63B6B2 /* Pods_FontScreenshotter_FontScreenshotterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404461BC39B4A19B128F9E69 /* Pods_FontScreenshotter_FontScreenshotterUITests.framework */; };
+		F5D365098AA2DFD8560F2405 /* SettingsSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF551BE56C28C5F75B375A /* SettingsSwiftUI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -297,6 +298,7 @@
 		489894D423670CB000A20AF8 /* Tsurukame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tsurukame.entitlements; sourceTree = "<group>"; };
 		48F4B1DB268CB9850033860E /* UpcomingReviewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpcomingReviewsViewController.swift; sourceTree = "<group>"; };
 		4B8236EC341CF1BA18D16857 /* Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; sourceTree = "<group>"; };
+		4CBF551BE56C28C5F75B375A /* SettingsSwiftUI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsSwiftUI.swift; sourceTree = "<group>"; };
 		52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListeningPracticeViewController.swift; sourceTree = "<group>"; };
 		567140C7E2E45E06417AC4EC /* WidgetSharedData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetSharedData.swift; sourceTree = "<group>"; };
 		630EB10925C561A900783E54 /* NSMutableAttributedString+Replacements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Replacements.swift"; sourceTree = "<group>"; };
@@ -732,6 +734,7 @@
 				C3DC07308404843022FAA86F /* DashboardScreen.swift */,
 				6FCA11FE235A9D94A9810A8C /* SwiftUIShared.swift */,
 				CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */,
+				4CBF551BE56C28C5F75B375A /* SettingsSwiftUI.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1591,6 +1594,7 @@
 				C0CE8B4A3DBE0D3E5A1838CF /* DashboardScreen.swift in Sources */,
 				98AAB5751B5F257ABB2868D5 /* SwiftUIShared.swift in Sources */,
 				498851B92054E89630420A58 /* LoginScreen.swift in Sources */,
+				F5D365098AA2DFD8560F2405 /* SettingsSwiftUI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

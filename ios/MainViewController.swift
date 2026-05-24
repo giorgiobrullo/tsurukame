@@ -218,7 +218,13 @@ class MainViewController: UIViewController, LoginViewControllerDelegate,
   }
 
   @IBAction func settingsButtonTapped() {
-    perform(segue: StoryboardSegue.Main.settings, sender: self)
+    if #available(iOS 15.0, *) {
+      // SwiftUI settings hub (the native rewrite). Storyboard hub remains the pre-15 fallback.
+      navigationController?.pushViewController(SettingsHostingController(services: services),
+                                               animated: true)
+    } else {
+      perform(segue: StoryboardSegue.Main.settings, sender: self)
+    }
   }
 
   // MARK: - Refresh on the hour in the foreground

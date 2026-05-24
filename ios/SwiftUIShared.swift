@@ -142,6 +142,27 @@ struct TKMNavRow: View {
   }
 }
 
+// MARK: - Settings binding
+
+/// Backs SwiftUI settings controls that read/write `Settings.*` (which is NSKeyedArchiver-backed,
+/// so
+/// `@AppStorage` can't bind to it directly). `bind` produces a two-way `Binding` and fires
+/// `objectWillChange` on write so dependent rows in the same screen refresh.
+@available(iOS 15.0, *)
+final class SettingsStore: ObservableObject {
+  func bind<Value>(_ get: @escaping @autoclosure () -> Value,
+                   _ set: @escaping (Value) -> Void) -> Binding<Value> {
+    Binding(get: get, set: { [weak self] newValue in
+      self?.objectWillChange.send()
+      set(newValue)
+    })
+  }
+
+  /// Force a re-render (e.g. in `onAppear`) so values changed on a pushed sub-screen show on
+  /// return.
+  func refresh() { objectWillChange.send() }
+}
+
 // MARK: - Hosting
 
 /// Generic bridge for pushing a SwiftUI screen onto the existing UIKit navigation stack. Conforms
