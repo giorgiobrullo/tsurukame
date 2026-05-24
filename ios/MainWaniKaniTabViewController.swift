@@ -243,6 +243,7 @@ class MainWaniKaniTabViewController: UITableViewController {
       // Self-study: practice this level's items any time, no SRS penalty.
       let selfStudyCount = currentLevelAssignments.filter { $0.isReviewStage }.count
       if selfStudyCount > 0 {
+        model.add(section: "Practice")
         let selfStudyItem = BasicModelItem(style: .value1, title: "Self-study current level",
                                            subtitle: "\(selfStudyCount)",
                                            accessoryType: .disclosureIndicator) { [unowned self] in
