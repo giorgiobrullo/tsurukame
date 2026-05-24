@@ -324,6 +324,13 @@ class MainWaniKaniTabViewController: UITableViewController {
       model.add(SRSDistributionItem(counts: services.localCachingClient.srsCategoryCounts,
                                     accuracy: services.localCachingClient.overallAccuracy))
     }
+    if let interval = services.localCachingClient.averageLevelUpInterval {
+      let days = interval / 86400
+      let subtitle = days >= 1 ? String(format: "%.1f days", days)
+        : String(format: "%.0f hours", interval / 3600)
+      model.add(BasicModelItem(style: .value1, title: "Average level-up time",
+                               subtitle: subtitle, accessoryType: .none))
+    }
     for category in SRSStageCategory.apprentice ... SRSStageCategory.burned {
       let count = services.localCachingClient.srsCategoryCounts[category.rawValue]
       let item = SRSStageCategoryItem(stageCategory: category, count: Int(count),

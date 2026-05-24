@@ -40,7 +40,10 @@ class SubjectCatalogueViewController: UIPageViewController, UIPageViewController
                        completion: nil)
     updateNavigationItem()
 
-    if #available(iOS 15.0, *) {
+    if #available(iOS 26.0, *) {
+      // On iOS 26 let the navigation bar keep its native Liquid Glass: content showing through the
+      // translucent bar is the intended effect, so the old opaque workaround isn't needed.
+    } else if #available(iOS 15.0, *) {
       // On iOS 15 the scrollEdgeAppearance is used when the view is scrolled all the way to the top
       // edge. Unfortunately here the scroll view is in the nested view controller, so the
       // navigation bar doesn't know when the user starts scrolling down.

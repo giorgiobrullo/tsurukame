@@ -1486,6 +1486,19 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
     }
   }
 
+  /// Average time taken to pass a level (start → passed), across all passed levels, or nil if none.
+  var averageLevelUpInterval: TimeInterval? {
+    var intervals = [TimeInterval]()
+    for level in getAllLevelProgressions() where level.hasPassedAt {
+      let start = level.startedAt != 0 ? level.startedAt : level.unlockedAt
+      if start != 0, level.passedAt > start {
+        intervals.append(TimeInterval(level.passedAt - start))
+      }
+    }
+    guard !intervals.isEmpty else { return nil }
+    return intervals.reduce(0, +) / Double(intervals.count)
+  }
+
   func updateRecentMistakesFromCloud(skipReuploadToCloud: Bool) {
     let mergedMistakes = RecentMistakeHandler.mergeMistakes(original: getRecentMistakeTimes(),
                                                             other: recentMistakeHandler
