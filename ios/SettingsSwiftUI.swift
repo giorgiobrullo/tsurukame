@@ -35,7 +35,7 @@ enum SettingsRoute: Hashable {
   case reviewItemsLimit, leechThreshold, reviewOrder, taskOrder, reviewBatchSize
 }
 
-enum SettingsAlert: Identifiable {
+enum SettingsAlert: Identifiable, Equatable {
   case logout, imageCacheCleared, noJapaneseKeyboard
   var id: Int { hashValue }
 }
@@ -50,31 +50,9 @@ final class SettingsNavigator: ObservableObject {
 
   init(services: TKMServices) { self.services = services }
 
-  private func push(_ route: SettingsRoute) { path.append(route) }
+  /// Rows push by appending a `SettingsRoute` to `path` via `NavigationLink(value:)`; this only
+  /// has to handle the programmatic pop after a choice-list selection.
   func pop() { if !path.isEmpty { path.removeLast() } }
-
-  func openAppearance() { push(.appearance) }
-  func openAudio() { push(.audio) }
-  func openAccount() { push(.account) }
-  func openDashboard() { push(.dashboard) }
-  func openAnki() { push(.anki) }
-  func openNotifications() { push(.notifications) }
-  func openAnkiTaskType() { push(.ankiTaskType) }
-  func openLessonSettings() { push(.lessonSettings) }
-  func openReviewSettings() { push(.reviewSettings) }
-  func openSubjectInfoSettings() { push(.subjectInfo) }
-  func openLessonOrder() { push(.lessonOrder) }
-  func openLessonBatchSize() { push(.lessonBatchSize) }
-  func openApprenticeLimit() { push(.apprenticeLimit) }
-  func openReviewItemsLimit() { push(.reviewItemsLimit) }
-  func openLeechThreshold() { push(.leechThreshold) }
-  func openReviewOrder() { push(.reviewOrder) }
-  func openTaskOrder() { push(.taskOrder) }
-  func openReviewBatchSize() { push(.reviewBatchSize) }
-  func openInterfaceStyle() { push(.interfaceStyle) }
-  func openFontSize() { push(.fontSize) }
-  func openFonts() { push(.fonts) }
-  func openOfflineAudio() { push(.offlineAudio) }
 
   func showNoJapaneseKeyboardAlert() { alert = .noJapaneseKeyboard }
   func exportDatabase() { shareDatabase = true }
@@ -109,23 +87,44 @@ struct SettingsView: View {
         }
         .navigationDestination(for: SettingsRoute.self) { destination($0) }
     }
-    .alert(item: $nav.alert) { which in alert(which) }
+    .tint(.tkmTint)
+    .alert("Are you sure?", isPresented: isAlert(.logout)) {
+      Button("Log out", role: .destructive) {
+        NotificationCenter.default.post(name: .logout, object: nil)
+      }
+      Button("Cancel", role: .cancel) {}
+    }
+    .alert("Image cache cleared", isPresented: isAlert(.imageCacheCleared)) {
+      Button("OK", role: .cancel) {}
+    }
+    .alert("No Japanese keyboard", isPresented: isAlert(.noJapaneseKeyboard)) {
+      Button("Close", role: .cancel) {}
+    } message: {
+      Text("You must add a Japanese keyboard to your device.\nOpen Settings then General ⮕ "
+        + "Keyboard ⮕ Keyboards ⮕ Add New Keyboard.")
+    }
     .sheet(isPresented: $nav.shareDatabase) {
       ActivityView(items: [LocalCachingClient.databaseUrl()])
     }
   }
 
+  /// One-shot `Bool` binding into the optional `SettingsAlert`, so each case drives its own modern
+  /// `.alert(_:isPresented:)`.
+  private func isAlert(_ value: SettingsAlert) -> Binding<Bool> {
+    Binding(get: { nav.alert == value }, set: { if !$0 { nav.alert = nil } })
+  }
+
   @ViewBuilder
   private func destination(_ route: SettingsRoute) -> some View {
     switch route {
-    case .appearance: AppearanceSettingsScreen(nav: nav).navigationTitle("Appearance")
-    case .audio: AudioSettingsScreen(nav: nav).navigationTitle("Audio")
+    case .appearance: AppearanceSettingsScreen().navigationTitle("Appearance")
+    case .audio: AudioSettingsScreen().navigationTitle("Audio")
     case .account: AccountSettingsScreen(nav: nav).navigationTitle("Account")
     case .dashboard: DashboardSettingsScreen().navigationTitle("Dashboard")
-    case .anki: AnkiSettingsScreen(nav: nav).navigationTitle("Anki mode")
+    case .anki: AnkiSettingsScreen().navigationTitle("Anki mode")
     case .notifications: NotificationsSettingsScreen().navigationTitle("Notifications")
     case .subjectInfo: SubjectDetailsSettingsScreen().navigationTitle("Subject info")
-    case .lessonSettings: LessonSettingsScreen(nav: nav).navigationTitle("Lessons")
+    case .lessonSettings: LessonSettingsScreen().navigationTitle("Lessons")
     case .reviewSettings: ReviewSettingsScreen(nav: nav).navigationTitle("Reviews")
     case .lessonOrder: LessonOrderScreen().navigationTitle("Lesson Order")
     case .fonts: FontsScreen(model: FontsModel(services: nav.services)).navigationTitle("Fonts")
@@ -146,24 +145,6 @@ struct SettingsView: View {
     case .leechThreshold: leechThresholdPicker
     case .taskOrder: taskOrderPicker
     case .reviewBatchSize: reviewBatchSizePicker
-    }
-  }
-
-  private func alert(_ which: SettingsAlert) -> Alert {
-    switch which {
-    case .logout:
-      return Alert(title: Text("Are you sure?"),
-                   primaryButton: .destructive(Text("Log out")) {
-                     NotificationCenter.default.post(name: .logout, object: nil)
-                   },
-                   secondaryButton: .cancel())
-    case .imageCacheCleared:
-      return Alert(title: Text("Image cache cleared"), dismissButton: .default(Text("OK")))
-    case .noJapaneseKeyboard:
-      return Alert(title: Text("No Japanese keyboard"),
-                   message: Text("You must add a Japanese keyboard to your device.\nOpen Settings "
-                     + "then General ⮕ Keyboard ⮕ Keyboards ⮕ Add New Keyboard."),
-                   dismissButton: .cancel(Text("Close")))
     }
   }
 
@@ -273,7 +254,7 @@ struct ActivityView: UIViewControllerRepresentable {
 
 // MARK: - Hub
 
-@available(iOS 15.0, *)
+@available(iOS 16.0, *)
 struct SettingsHubView: View {
   let nav: SettingsNavigator
 
@@ -287,22 +268,22 @@ struct SettingsHubView: View {
   var body: some View {
     List {
       Section("Display") {
-        iconRow("Appearance", "paintbrush.fill", .purple, action: nav.openAppearance)
-        iconRow("Dashboard", "square.grid.2x2.fill", .teal, action: nav.openDashboard)
+        iconRow("Appearance", "paintbrush.fill", .purple, route: .appearance)
+        iconRow("Dashboard", "square.grid.2x2.fill", .teal, route: .dashboard)
       }
       Section("Study") {
         iconRow("Lessons", "book.fill", Color(uiColor: TKMStyle.radicalColor1),
-                action: nav.openLessonSettings)
+                route: .lessonSettings)
         iconRow("Reviews", "rectangle.stack.fill", Color(uiColor: TKMStyle.kanjiColor1),
-                action: nav.openReviewSettings)
-        iconRow("Anki mode", "square.on.square", .indigo, action: nav.openAnki)
-        iconRow("Audio", "speaker.wave.2.fill", .orange, action: nav.openAudio)
+                route: .reviewSettings)
+        iconRow("Anki mode", "square.on.square", .indigo, route: .anki)
+        iconRow("Audio", "speaker.wave.2.fill", .orange, route: .audio)
         iconRow("Subject info", "character.book.closed.fill",
-                Color(uiColor: TKMStyle.vocabularyColor1), action: nav.openSubjectInfoSettings)
+                Color(uiColor: TKMStyle.vocabularyColor1), route: .subjectInfo)
       }
       Section("App") {
-        iconRow("Notifications", "bell.badge.fill", .red, action: nav.openNotifications)
-        iconRow("Account", "person.crop.circle.fill", .blue, action: nav.openAccount)
+        iconRow("Notifications", "bell.badge.fill", .red, route: .notifications)
+        iconRow("Account", "person.crop.circle.fill", .blue, route: .account)
       }
       Section("Diagnostics") {
         HStack {
@@ -317,8 +298,8 @@ struct SettingsHubView: View {
   }
 
   private func iconRow(_ title: String, _ symbol: String, _ tint: Color,
-                       action: @escaping () -> Void) -> some View {
-    Button(action: action) {
+                       route: SettingsRoute) -> some View {
+    NavigationLink(value: route) {
       HStack(spacing: 12) {
         Image(systemName: symbol)
           .font(.system(size: 14, weight: .semibold))
@@ -327,11 +308,6 @@ struct SettingsHubView: View {
           .background(tint)
           .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
         Text(title)
-          .foregroundStyle(.primary)
-        Spacer()
-        Image(systemName: "chevron.right")
-          .font(.caption.weight(.semibold))
-          .foregroundStyle(.tertiary)
       }
     }
   }
@@ -339,22 +315,21 @@ struct SettingsHubView: View {
 
 // MARK: - Appearance
 
-@available(iOS 15.0, *)
+@available(iOS 16.0, *)
 struct AppearanceSettingsScreen: View {
-  let nav: SettingsNavigator
   @StateObject private var store = SettingsStore()
 
   var body: some View {
     List {
-      Button { nav.openInterfaceStyle() } label: {
+      NavigationLink(value: SettingsRoute.interfaceStyle) {
         DetailDisclosureRow(title: "Interface style", value: Settings.interfaceStyle.description)
       }
-      Button { nav.openFonts() } label: {
+      NavigationLink(value: SettingsRoute.fonts) {
         DetailDisclosureRow(title: "Fonts")
       }
-      Button { nav.openFontSize() } label: {
+      NavigationLink(value: SettingsRoute.fontSize) {
         DetailDisclosureRow(title: "Font size",
-                            value: Settings.fontSize != 0 ? "\(Int(Settings.fontSize * 100))%" : "")
+                            value: "\(Int(Settings.fontSize * 100))%")
       }
       Toggle("Show SRS level indicator",
              isOn: store
@@ -366,9 +341,8 @@ struct AppearanceSettingsScreen: View {
 
 // MARK: - Audio
 
-@available(iOS 15.0, *)
+@available(iOS 16.0, *)
 struct AudioSettingsScreen: View {
-  let nav: SettingsNavigator
   @StateObject private var store = SettingsStore()
 
   var body: some View {
@@ -381,7 +355,7 @@ struct AudioSettingsScreen: View {
         .bind(Settings.interruptBackgroundAudio) { Settings.interruptBackgroundAudio = $0 }) {
           SubtitleLabel("Interrupt background audio", "When answer is played automatically")
         }
-      Button { nav.openOfflineAudio() } label: {
+      NavigationLink(value: SettingsRoute.offlineAudio) {
         DetailDisclosureRow(title: "Offline audio")
       }
     }
@@ -461,9 +435,8 @@ struct DashboardSettingsScreen: View {
 
 // MARK: - Anki mode
 
-@available(iOS 15.0, *)
+@available(iOS 16.0, *)
 struct AnkiSettingsScreen: View {
-  let nav: SettingsNavigator
   @StateObject private var store = SettingsStore()
 
   var body: some View {
@@ -481,7 +454,7 @@ struct AnkiSettingsScreen: View {
 
       if Settings.ankiMode {
         Section {
-          Button { nav.openAnkiTaskType() } label: {
+          NavigationLink(value: SettingsRoute.ankiTaskType) {
             DetailDisclosureRow(title: "Anki mode applies to",
                                 value: Settings.ankiModeTaskType.description)
           }
@@ -576,8 +549,8 @@ struct NotificationsSettingsScreen: View {
 
 // MARK: - Shared rows
 
-/// A title (and optional trailing value) with a disclosure chevron, for `Button`-based nav rows
-/// inside a `List`.
+/// A title with an optional trailing value, used as the label of a `NavigationLink` inside a
+/// `List` (the link supplies the disclosure chevron).
 @available(iOS 15.0, *)
 struct DetailDisclosureRow: View {
   let title: String
@@ -590,9 +563,6 @@ struct DetailDisclosureRow: View {
       if let value = value, !value.isEmpty {
         Text(value).foregroundStyle(.secondary)
       }
-      Image(systemName: "chevron.right")
-        .font(.caption.weight(.semibold))
-        .foregroundStyle(.tertiary)
     }
   }
 }

@@ -23,9 +23,8 @@ import WaniKaniAPI
 
 // MARK: - Lessons
 
-@available(iOS 15.0, *)
+@available(iOS 16.0, *)
 struct LessonSettingsScreen: View {
-  let nav: SettingsNavigator
   @StateObject private var store = SettingsStore()
 
   private var orderText: String {
@@ -38,10 +37,10 @@ struct LessonSettingsScreen: View {
 
   var body: some View {
     List {
-      Button { nav.openLessonOrder() } label: {
+      NavigationLink(value: SettingsRoute.lessonOrder) {
         DetailDisclosureRow(title: "Order", value: orderText)
       }
-      Button { nav.openLessonBatchSize() } label: {
+      NavigationLink(value: SettingsRoute.lessonBatchSize) {
         DetailDisclosureRow(title: "Batch size", value: "\(Settings.lessonBatchSize)")
       }
       Toggle(isOn: store
@@ -51,7 +50,7 @@ struct LessonSettingsScreen: View {
       Toggle(isOn: store.bind(Settings.randomLessonOrder) { Settings.randomLessonOrder = $0 }) {
         SubtitleLabel("Random order", "Shuffle lessons instead of ordering by type")
       }
-      Button { nav.openApprenticeLimit() } label: {
+      NavigationLink(value: SettingsRoute.apprenticeLimit) {
         DetailDisclosureRow(title: "Apprentice limit", value: apprenticeLimitText)
       }
       Toggle(isOn: store.bind(Settings.showKanaOnlyVocab) { Settings.showKanaOnlyVocab = $0 }) {
@@ -69,7 +68,7 @@ struct LessonSettingsScreen: View {
 
 // MARK: - Reviews
 
-@available(iOS 15.0, *)
+@available(iOS 16.0, *)
 struct ReviewSettingsScreen: View {
   let nav: SettingsNavigator
   @StateObject private var store = SettingsStore()
@@ -82,17 +81,17 @@ struct ReviewSettingsScreen: View {
             SubtitleLabel("Review items in batches", "Limit the number of items in review sessions")
           }
         if Settings.reviewItemsLimitEnabled {
-          Button { nav.openReviewItemsLimit() } label: {
+          NavigationLink(value: SettingsRoute.reviewItemsLimit) {
             DetailDisclosureRow(title: "Batch size", value: Settings.reviewItemsLimit.description)
           }
         }
-        Button { nav.openLeechThreshold() } label: {
+        NavigationLink(value: SettingsRoute.leechThreshold) {
           DetailDisclosureRow(title: "Leech threshold", value: Settings.leechThreshold.description)
         }
       }
 
       Section("Order") {
-        Button { nav.openReviewOrder() } label: {
+        NavigationLink(value: SettingsRoute.reviewOrder) {
           DetailDisclosureRow(title: "Order", value: Settings.reviewOrder.description)
         }
         Toggle(isOn: store
@@ -100,12 +99,12 @@ struct ReviewSettingsScreen: View {
             SubtitleLabel("Back-to-back", "Group meaning and reading together")
           }
         if Settings.groupMeaningReading {
-          Button { nav.openTaskOrder() } label: {
+          NavigationLink(value: SettingsRoute.taskOrder) {
             DetailDisclosureRow(title: "Back-to-back order",
                                 value: Settings.meaningFirst ? "Meaning first" : "Reading first")
           }
         } else {
-          Button { nav.openReviewBatchSize() } label: {
+          NavigationLink(value: SettingsRoute.reviewBatchSize) {
             DetailDisclosureRow(title: "Reviews between meaning & reading",
                                 value: Settings.reviewBatchSize.description)
           }
