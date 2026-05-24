@@ -460,8 +460,8 @@ final class SwiftUIReviewHostingController: UIHostingController<ReviewScreen>, T
       nav.popViewController(animated: true)
       return
     }
-    let summary = StoryboardScene.ReviewSummary.initialScene.instantiate()
-    summary.setup(services: services, items: model.session.completedReviews)
+    let summary = ReviewSummaryHostingController(services: services,
+                                                 items: model.session.completedReviews)
     // Replace the review screen with the summary so "back" doesn't return into the finished
     // session.
     var vcs = nav.viewControllers

@@ -193,6 +193,7 @@
 		9721708C2DBAF3A6001DFFED /* SubjectsExcluded.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9721708B2DBAF3A6001DFFED /* SubjectsExcluded.storyboard */; };
 		97A120DF2D9C467100D19CAE /* ReviewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A120DE2D9C467100D19CAE /* ReviewUtils.swift */; };
 		98AAB5751B5F257ABB2868D5 /* SwiftUIShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCA11FE235A9D94A9810A8C /* SwiftUIShared.swift */; };
+		99E57BF758A0680193BDAA08 /* ReviewSummaryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B081F6524EE2D60A1B4605 /* ReviewSummaryScreen.swift */; };
 		9AC49743E27B72F17DFFCFDC /* UpcomingReviewsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3E8F49AC9A9A1936D56B /* UpcomingReviewsScreen.swift */; };
 		9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */; };
 		A46A3E6C91EE60C1C3052FA7 /* DashboardActionCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED9656EF825F08588F17905 /* DashboardActionCardItem.swift */; };
@@ -482,6 +483,7 @@
 		9CFD97ACE7ABC2C904715D83 /* Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		A3EC114D4A65CB5055FE264B /* SubjectSearchSwiftUI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubjectSearchSwiftUI.swift; sourceTree = "<group>"; };
 		A453454F899E6016F1B7DD25 /* SettingsFormsSwiftUI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsFormsSwiftUI.swift; sourceTree = "<group>"; };
+		A5B081F6524EE2D60A1B4605 /* ReviewSummaryScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReviewSummaryScreen.swift; sourceTree = "<group>"; };
 		BB0F6B0B216698F800CB1306 /* TKMKanaInputTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKMKanaInputTest.m; sourceTree = "<group>"; };
 		BB0F6B10216B333700CB1306 /* TKMKanaInput+Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TKMKanaInput+Internals.h"; sourceTree = "<group>"; };
 		BB2909A5217FAF8B00B1816F /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
@@ -756,6 +758,7 @@
 				4A6545C730ACCB6BD99476C9 /* ReviewScreen.swift */,
 				487A9BD775597B87B1FEFE4D /* LessonsScreen.swift */,
 				D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */,
+				A5B081F6524EE2D60A1B4605 /* ReviewSummaryScreen.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1623,6 +1626,7 @@
 				8E7FF16575EEA160A41E6B73 /* ReviewScreen.swift in Sources */,
 				FE4B54D1B940F93D9D0433FD /* LessonsScreen.swift in Sources */,
 				DB029EEBDBA9D4CCD7C6B34E /* SubjectDetailScreen.swift in Sources */,
+				99E57BF758A0680193BDAA08 /* ReviewSummaryScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
