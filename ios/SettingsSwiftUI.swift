@@ -112,15 +112,11 @@ final class SettingsNavigator {
   func openFontSize() { push(makeFontSizeViewController()) }
 
   func openFonts() {
-    let vc = StoryboardScene.SelectFonts.initialScene.instantiate()
-    vc.setup(services: services)
-    push(vc)
+    push(FontsHostingController(services: services))
   }
 
   func openOfflineAudio() {
-    let vc = StoryboardScene.OfflineAudio.initialScene.instantiate()
-    vc.setup(services: services)
-    push(vc)
+    push(OfflineAudioHostingController(services: services))
   }
 
   // Diagnostics / account actions.
