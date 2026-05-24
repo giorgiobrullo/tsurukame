@@ -256,6 +256,13 @@ class MainWaniKaniTabViewController: UITableViewController {
         }
         listeningItem.image = UIImage(systemName: "headphones")
         model.add(listeningItem)
+
+        let reverseItem = BasicModelItem(style: .default, title: "Reverse practice",
+                                         accessoryType: .disclosureIndicator) { [unowned self] in
+          self.startReversePractice()
+        }
+        reverseItem.image = UIImage(systemName: "arrow.left.arrow.right")
+        model.add(reverseItem)
       }
 
       model.add(section: "Upcoming reviews")
@@ -674,6 +681,12 @@ class MainWaniKaniTabViewController: UITableViewController {
 
   @objc func startListeningPractice() {
     let vc = ListeningPracticeViewController()
+    vc.setup(services: services)
+    navigationController?.pushViewController(vc, animated: true)
+  }
+
+  @objc func startReversePractice() {
+    let vc = ReversePracticeViewController()
     vc.setup(services: services)
     navigationController?.pushViewController(vc, animated: true)
   }

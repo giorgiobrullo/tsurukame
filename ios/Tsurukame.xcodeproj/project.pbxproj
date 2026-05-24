@@ -169,6 +169,7 @@
 		63F7F52C23D43DF6006A31FB /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F7F52B23D43DF6006A31FB /* Services.swift */; };
 		63F7F52E23D4C2CA006A31FB /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F7F52D23D4C2CA006A31FB /* Audio.swift */; };
 		63FCAE78237F75CC00DB1418 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FCAE77237F75CC00DB1418 /* Style.swift */; };
+		6B8D5451D91FCC7E27FF1402 /* ReversePracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3883E995E322FAB70B794289 /* ReversePracticeViewController.swift */; };
 		6F5E95176B5DCA719A6EED55 /* Pods_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10E5709643045C62AD6AC427 /* Pods_Tests.framework */; };
 		791B8B5C2D657E2A000C8142 /* CommonErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791B8B5B2D657E2A000C8142 /* CommonErrors.swift */; };
 		791B8B5E2D6584C9000C8142 /* RecentMistakeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791B8B5D2D6584C9000C8142 /* RecentMistakeHandler.swift */; };
@@ -285,6 +286,7 @@
 		21894D9E0883B0107075DD6F /* Pods-Tsurukame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame.release.xcconfig"; path = "Target Support Files/Pods-Tsurukame/Pods-Tsurukame.release.xcconfig"; sourceTree = "<group>"; };
 		301BAAC2C21E4A99238D1E80 /* Pods-FontScreenshotter-FontScreenshotterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotter-FontScreenshotterUITests.release.xcconfig"; path = "Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests.release.xcconfig"; sourceTree = "<group>"; };
 		34E86AD95515CD815B3086D0 /* Pods-Tsurukame.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame.debug.xcconfig"; path = "Target Support Files/Pods-Tsurukame/Pods-Tsurukame.debug.xcconfig"; sourceTree = "<group>"; };
+		3883E995E322FAB70B794289 /* ReversePracticeViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReversePracticeViewController.swift; sourceTree = "<group>"; };
 		404461BC39B4A19B128F9E69 /* Pods_FontScreenshotter_FontScreenshotterUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FontScreenshotter_FontScreenshotterUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLevelReviewTimeItem.swift; sourceTree = "<group>"; };
 		4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontScreenshotterUITests.swift; sourceTree = "<group>"; };
@@ -720,6 +722,7 @@
 				567140C7E2E45E06417AC4EC /* WidgetSharedData.swift */,
 				C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */,
 				52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */,
+				3883E995E322FAB70B794289 /* ReversePracticeViewController.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1574,6 +1577,7 @@
 				BEAD8427C0788080A9079A3A /* WidgetSharedData.swift in Sources */,
 				9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */,
 				D28FEA675E5018672491666D /* ListeningPracticeViewController.swift in Sources */,
+				6B8D5451D91FCC7E27FF1402 /* ReversePracticeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
