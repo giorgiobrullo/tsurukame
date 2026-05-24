@@ -303,6 +303,15 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     answerField.delegate = kanaInput
     answerField.addAction(for: .editingChanged) { [weak self] in self?.answerFieldValueDidChange() }
 
+    // Liquid Glass submit button on iOS 26.
+    if #available(iOS 26.0, *) {
+      var config = UIButton.Configuration.prominentGlass()
+      config.image = forwardArrowImage
+      config.cornerStyle = .capsule
+      config.baseForegroundColor = .white
+      submitButton.configuration = config
+    }
+
     let showSuccessRate = delegate.showsSuccessRate()
     successRateIcon.isHidden = !showSuccessRate
     successRateLabel.isHidden = !showSuccessRate
@@ -339,6 +348,14 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
 
     resizeViewsForFontSize()
     viewDidLayoutSubviews()
+  }
+
+  private func setSubmitButtonImage(_ image: UIImage) {
+    if #available(iOS 26.0, *) {
+      submitButton.configuration?.image = image
+    } else {
+      submitButton.setImage(image, for: .normal)
+    }
   }
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -594,7 +611,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
       // Submit button.
       if Settings.allowSkippingReviews {
         // Change the skip button icon.
-        submitButton.setImage(skipImage, for: .normal)
+        setSubmitButtonImage(skipImage)
         submitButton.isEnabled = true
         submitButton.isHidden = false
       } else if isAnkiModeActiveForCurrentTask {
