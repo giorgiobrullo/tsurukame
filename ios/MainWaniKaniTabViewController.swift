@@ -117,10 +117,17 @@ class MainWaniKaniTabViewController: UITableViewController {
       }
 
       model.add(section: "Upcoming reviews")
-      model.add(UpcomingReviewsChartItem(upcomingReviews: upcomingReviews,
-                                         currentReviewCount: reviews,
-                                         date: Date()) { [unowned self] in self.showTableForecast()
-        })
+      if #available(iOS 15.0, *) {
+        model.add(ForecastChartItem(upcomingReviews: upcomingReviews,
+                                    currentReviewCount: reviews,
+                                    date: Date()) { [unowned self] in self.showTableForecast() })
+      } else {
+        model.add(UpcomingReviewsChartItem(upcomingReviews: upcomingReviews,
+                                           currentReviewCount: reviews,
+                                           date: Date()) { [unowned self] in self
+            .showTableForecast()
+          })
+      }
       model
         .add(createCurrentLevelReviewTimeItem(services: services,
                                               currentLevelAssignments: currentLevelAssignments))
