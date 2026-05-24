@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Combine
 import SwiftUI
 import UIKit
 import WaniKaniAPI
@@ -310,33 +311,87 @@ private struct LessonPickerRoute: View {
 
 // MARK: - Search
 
-/// A pushed search screen: a `.searchable` field over the subject results list.
+/// Loads all subjects in the background once, debounces the query, and filters off the main
+/// thread, so typing never blocks (the first keystroke used to load the whole subject set inline).
+@available(iOS 16.0, *)
+private final class SearchModel: ObservableObject {
+  @Published var query = ""
+  let results = SearchResultsModel()
+
+  private var allSubjects: [TKMSubject] = []
+  private var loaded = false
+  private let workQueue = DispatchQueue(label: "tsurukame.search", qos: .userInitiated)
+  private var bag = Set<AnyCancellable>()
+
+  init() {
+    $query
+      .debounce(for: .milliseconds(150), scheduler: DispatchQueue.main)
+      .removeDuplicates()
+      .sink { [weak self] query in self?.run(query) }
+      .store(in: &bag)
+  }
+
+  /// Preload the subject set off the main thread (call on appear, before the user types).
+  func load(services: TKMServices) {
+    guard !loaded else { return }
+    loaded = true
+    workQueue.async { [weak self] in
+      let all = services.localCachingClient?.getAllSubjects() ?? []
+      DispatchQueue.main.async {
+        self?.allSubjects = all
+        if let self = self, !self.query.isEmpty { self.run(self.query) }
+      }
+    }
+  }
+
+  private func run(_ query: String) {
+    let all = allSubjects
+    workQueue.async { [weak self] in
+      let results = searchSubjects(query: query, in: all)
+      DispatchQueue.main.async { self?.results.results = results }
+    }
+  }
+}
+
+/// A pushed search screen: a custom search field (auto-focused, so the keyboard opens immediately)
+/// over the subject results list.
 @available(iOS 16.0, *)
 private struct SubjectSearchView: View {
   let services: TKMServices
   let onTapSubject: (TKMSubject) -> Void
-  @StateObject private var searcher = Searcher()
-  @State private var query = ""
+  @StateObject private var model = SearchModel()
+  @FocusState private var focused: Bool
 
   var body: some View {
-    SubjectSearchScreen(model: searcher.results, onTap: onTapSubject)
-      .searchable(text: $query, prompt: "Search subjects")
-      .onChange(of: query) { searcher.update(query: $0, services: services) }
-      .textInputAutocapitalization(.never)
-      .autocorrectionDisabled()
-      .navigationTitle("Search")
-      .navigationBarTitleDisplayMode(.inline)
-  }
-}
+    VStack(spacing: 0) {
+      HStack(spacing: 8) {
+        Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
+        TextField("Search subjects", text: $model.query)
+          .focused($focused)
+          .textInputAutocapitalization(.never)
+          .autocorrectionDisabled()
+          .submitLabel(.search)
+        if !model.query.isEmpty {
+          Button { model.query = "" } label: {
+            Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary)
+          }
+          .buttonStyle(.plain)
+        }
+      }
+      .padding(10)
+      .background(Color(uiColor: .secondarySystemBackground))
+      .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+      .padding(.horizontal, 16)
+      .padding(.vertical, 8)
 
-@available(iOS 16.0, *)
-private final class Searcher: ObservableObject {
-  let results = SearchResultsModel()
-  private var allSubjects: [TKMSubject]?
-
-  func update(query: String, services: TKMServices) {
-    if allSubjects == nil { allSubjects = services.localCachingClient?.getAllSubjects() }
-    results.results = searchSubjects(query: query, in: allSubjects ?? [])
+      SubjectSearchScreen(model: model.results, onTap: onTapSubject)
+    }
+    .navigationTitle("Search")
+    .navigationBarTitleDisplayMode(.inline)
+    .onAppear {
+      model.load(services: services)
+      DispatchQueue.main.async { focused = true }
+    }
   }
 }
 
