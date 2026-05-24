@@ -28,14 +28,14 @@ struct SubjectDetailScreen: View {
   let delegate: SubjectDelegate
 
   var body: some View {
-    SubjectDetailsRepresentable(services: services,
-                                subject: subject,
-                                studyMaterials: services.localCachingClient
-                                  .getStudyMaterial(subjectId: subject.id),
-                                assignment: services.localCachingClient
-                                  .getAssignment(subjectId: subject.id),
-                                task: nil,
-                                delegate: delegate)
+    SubjectDetailContent(services: services,
+                         subject: subject,
+                         studyMaterials: services.localCachingClient
+                           .getStudyMaterial(subjectId: subject.id),
+                         assignment: services.localCachingClient
+                           .getAssignment(subjectId: subject.id),
+                         task: nil,
+                         delegate: delegate)
       .ignoresSafeArea(edges: .bottom)
   }
 }

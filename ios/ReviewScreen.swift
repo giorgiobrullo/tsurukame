@@ -288,29 +288,6 @@ struct AnswerFieldView: UIViewRepresentable {
   }
 }
 
-/// Wraps the existing SubjectDetailsView (a UITableView subclass) for the answer reveal.
-@available(iOS 15.0, *)
-struct SubjectDetailsRepresentable: UIViewRepresentable {
-  let services: TKMServices
-  let subject: TKMSubject
-  let studyMaterials: TKMStudyMaterials?
-  let assignment: TKMAssignment?
-  let task: ReviewItem?
-  let delegate: SubjectDelegate
-
-  func makeUIView(context _: Context) -> SubjectDetailsView {
-    let view = SubjectDetailsView(frame: .zero, style: .grouped)
-    view.backgroundColor = TKMStyle.Color.background
-    view.setup(services: services, delegate: delegate)
-    return view
-  }
-
-  func updateUIView(_ view: SubjectDetailsView, context _: Context) {
-    view.update(withSubject: subject, studyMaterials: studyMaterials, assignment: assignment,
-                task: task)
-  }
-}
-
 // MARK: - Screen
 
 @available(iOS 15.0, *)
@@ -407,12 +384,12 @@ struct ReviewScreen: View {
   }
 
   private var detail: some View {
-    SubjectDetailsRepresentable(services: model.services,
-                                subject: model.subject!,
-                                studyMaterials: model.session.activeStudyMaterials,
-                                assignment: model.session.activeAssignment,
-                                task: Settings.showFullAnswer ? nil : model.session.activeTask,
-                                delegate: subjectDelegate)
+    SubjectDetailContent(services: model.services,
+                         subject: model.subject!,
+                         studyMaterials: model.session.activeStudyMaterials,
+                         assignment: model.session.activeAssignment,
+                         task: Settings.showFullAnswer ? nil : model.session.activeTask,
+                         delegate: subjectDelegate)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
 

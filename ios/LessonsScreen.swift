@@ -36,12 +36,12 @@ struct LessonsScreen: View {
     VStack(spacing: 0) {
       TabView(selection: $page) {
         ForEach(subjects.indices, id: \.self) { index in
-          SubjectDetailsRepresentable(services: services,
-                                      subject: subjects[index],
-                                      studyMaterials: nil,
-                                      assignment: assignments[index],
-                                      task: nil,
-                                      delegate: delegate)
+          SubjectDetailContent(services: services,
+                               subject: subjects[index],
+                               studyMaterials: nil,
+                               assignment: assignments[index],
+                               task: nil,
+                               delegate: delegate)
             .tag(index)
         }
         quizStartPage
