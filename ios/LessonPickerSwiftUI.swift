@@ -135,39 +135,3 @@ struct LessonPickerScreen: View {
     .background(Color.tkmBackground.ignoresSafeArea())
   }
 }
-
-@available(iOS 15.0, *)
-final class LessonPickerHostingController: UIHostingController<LessonPickerScreen>,
-  TKMViewController {
-  private let services: TKMServices
-  private let model: LessonPickerModel
-
-  var canSwipeToGoBack: Bool { true }
-
-  init(services: TKMServices) {
-    self.services = services
-    let model = LessonPickerModel(services: services)
-    self.model = model
-    super.init(rootView: LessonPickerScreen(model: model, onBegin: {}))
-    title = "Lesson Picker"
-    rootView = LessonPickerScreen(model: model, onBegin: { [weak self] in self?.begin() })
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = false
-  }
-
-  private func begin() {
-    let items = model.selectedItems
-    guard !items.isEmpty else { return }
-    navigationController?.pushViewController(LessonsHostingController(services: services,
-                                                                      items: items),
-                                             animated: true)
-  }
-}

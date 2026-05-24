@@ -180,38 +180,3 @@ struct SubjectListScreen: View {
     .listStyle(.plain)
   }
 }
-
-/// Hosts a `SubjectListScreen` and pushes the existing UIKit subject-detail screen on tap.
-@available(iOS 15.0, *)
-final class SubjectListHostingController: UIHostingController<SubjectListScreen>,
-  TKMViewController {
-  private let services: TKMServices
-
-  var canSwipeToGoBack: Bool { true }
-
-  init(services: TKMServices, title: String, source: SubjectListSource) {
-    self.services = services
-    let sections = SubjectListBuilder.sections(services: services, source: source)
-    super.init(rootView: SubjectListScreen(sections: sections, onTap: { _ in }))
-    self.title = title
-    rootView = SubjectListScreen(sections: sections, onTap: { [weak self] subject in
-      self?.openDetails(subject)
-    })
-  }
-
-  @available(*, unavailable)
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = false
-  }
-
-  private func openDetails(_ subject: TKMSubject) {
-    navigationController?.pushViewController(SubjectDetailHostingController(services: services,
-                                                                            subject: subject),
-                                             animated: true)
-  }
-}
