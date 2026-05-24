@@ -116,12 +116,6 @@ class MainWaniKaniTabViewController: UITableViewController {
           })
       }
 
-      if #available(iOS 15.0, *) {
-        model.add(section: "Activity")
-        model.add(StreakHeatmapItem(streak: services.localCachingClient.reviewStreak,
-                                    dailyCounts: services.localCachingClient.reviewActivityByDay()))
-      }
-
       model.add(section: "Upcoming reviews")
       if #available(iOS 15.0, *) {
         model.add(ForecastChartItem(upcomingReviews: upcomingReviews,
@@ -192,6 +186,12 @@ class MainWaniKaniTabViewController: UITableViewController {
                                   count: leechCount)
         model.add(allLeechItem)
       }
+    }
+
+    if #available(iOS 15.0, *) {
+      model.add(section: "Activity")
+      model.add(StreakHeatmapItem(streak: services.localCachingClient.reviewStreak,
+                                  dailyCounts: services.localCachingClient.reviewActivityByDay()))
     }
 
     if Settings.showPreviousLevelGraph, user.currentLevel > 1,

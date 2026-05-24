@@ -269,14 +269,13 @@ class MainViewController: UIViewController, LoginViewControllerDelegate,
 
     setProgress(progress)
 
-    if quick {
-      scheduleTableModelUpdate()
-    } else {
-      if !progress.isFinished,
-         let overlay = FullRefreshOverlayView(window: view.window!) {
-        syncFuture.finally {
-          overlay.hide()
-        }
+    // Don't block interaction while syncing: show the thin progress bar (setProgress) and let the
+    // user keep scrolling. A full sync re-downloads everything, so refresh the table again when it
+    // finishes rather than covering the screen with a blocking overlay.
+    scheduleTableModelUpdate()
+    if !quick {
+      syncFuture.finally { [weak self] in
+        self?.scheduleTableModelUpdate()
       }
     }
   }
