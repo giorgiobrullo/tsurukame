@@ -19,13 +19,18 @@ import SwiftUI
 // navigation) that used to live in AppDelegate and the UINavigationController backbone.
 @main
 struct TsurukameApp: App {
+  @StateObject private var state = AppState()
+
   init() {
     Screenshotter.setUp()
   }
 
   var body: some Scene {
     WindowGroup {
-      RootView()
+      RootView(state: state)
+    }
+    .backgroundTask(.appRefresh(BackgroundSync.taskIdentifier)) {
+      await BackgroundSync.run(services: state.services)
     }
   }
 }

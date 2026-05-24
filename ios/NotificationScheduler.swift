@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import BackgroundTasks
 import Foundation
 import UIKit
 import UserNotifications
@@ -21,6 +22,34 @@ import WaniKaniAPI
 // UNUserNotificationCenter.setBadgeCount instead of the deprecated applicationIconBadgeNumber.
 
 private let kMaxLocalNotifications = 64
+
+// Periodic background sync via BGTaskScheduler (BGAppRefreshTask). Replaces the AppDelegate's
+// legacy performFetchWithCompletionHandler. The handler is registered by the SwiftUI
+// `.backgroundTask(.appRefresh:)` modifier; this just schedules requests and does the work.
+@available(iOS 16.0, *)
+enum BackgroundSync {
+  static let taskIdentifier = "com.giorgiobrullo.tsurukame.refresh"
+
+  /// Submit a request so the system schedules a future background refresh.
+  static func schedule() {
+    let request = BGAppRefreshTaskRequest(identifier: taskIdentifier)
+    request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
+    try? BGTaskScheduler.shared.submit(request)
+  }
+
+  /// Runs a quick sync + badge/notification update, then reschedules. Invoked from the SwiftUI
+  /// `.backgroundTask` handler.
+  static func run(services: TKMServices) async {
+    schedule()
+    guard let lcc = services.localCachingClient else { return }
+    await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+      lcc.sync(quick: true, progress: Progress(totalUnitCount: -1)).finally {
+        NotificationScheduler.update(services: services)
+        continuation.resume()
+      }
+    }
+  }
+}
 
 @available(iOS 16.0, *)
 enum NotificationScheduler {

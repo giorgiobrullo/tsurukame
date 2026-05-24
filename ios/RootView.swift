@@ -23,7 +23,7 @@ import WaniKaniAPI
 
 @available(iOS 16.0, *)
 struct RootView: View {
-  @StateObject private var state = AppState()
+  @ObservedObject var state: AppState
   @StateObject private var router = AppRouter()
   @Environment(\.scenePhase) private var scenePhase
 
@@ -42,7 +42,10 @@ struct RootView: View {
         state.services.reachability.startNotifier()
       case .background:
         state.services.reachability.stopNotifier()
-        if state.loggedIn { NotificationScheduler.update(services: state.services) }
+        if state.loggedIn {
+          NotificationScheduler.update(services: state.services)
+          BackgroundSync.schedule()
+        }
       default:
         break
       }
