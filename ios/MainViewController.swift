@@ -270,13 +270,12 @@ class MainViewController: UIViewController, LoginViewControllerDelegate,
     setProgress(progress)
 
     // Don't block interaction while syncing: show the thin progress bar (setProgress) and let the
-    // user keep scrolling. A full sync re-downloads everything, so refresh the table again when it
-    // finishes rather than covering the screen with a blocking overlay.
+    // user keep scrolling instead of covering the screen with a blocking overlay. Rebuild the table
+    // again once the sync finishes so data fetched late in the sync (e.g. the review-history that
+    // drives the streak/heatmap) shows up without needing a manual refresh.
     scheduleTableModelUpdate()
-    if !quick {
-      syncFuture.finally { [weak self] in
-        self?.scheduleTableModelUpdate()
-      }
+    syncFuture.finally { [weak self] in
+      self?.scheduleTableModelUpdate()
     }
   }
 
