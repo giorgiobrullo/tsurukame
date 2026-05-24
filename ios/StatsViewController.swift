@@ -26,6 +26,7 @@ struct StatsData {
   }
 
   let streak: Int
+  let longestStreak: Int
   let accuracy: Double?
   let meaningAccuracy: Double?
   let readingAccuracy: Double?
@@ -45,7 +46,9 @@ struct StatsView: View {
       VStack(alignment: .leading, spacing: 18) {
         // Top summary tiles.
         HStack(spacing: 12) {
-          summaryTile(value: "\(data.streak)", caption: "day streak",
+          summaryTile(value: "\(data.streak)",
+                      caption: data.longestStreak > 0 ? "day streak · best \(data.longestStreak)"
+                        : "day streak",
                       systemImage: "flame.fill", tint: Color(uiColor: TKMStyle.explosionColor2))
           summaryTile(value: data.accuracy.map { "\(Int($0.rounded()))%" } ?? "–",
                       caption: "accuracy", systemImage: "target", tint: .green)
@@ -179,7 +182,8 @@ class StatsViewController: UIViewController, TKMViewController {
     }
     let total = counts[1 ... 9].reduce(0, +)
     let byType = client.accuracyByType()
-    return StatsData(streak: client.reviewStreak, accuracy: client.overallAccuracy,
+    return StatsData(streak: client.reviewStreak, longestStreak: client.longestStreak,
+                     accuracy: client.overallAccuracy,
                      meaningAccuracy: byType.meaning, readingAccuracy: byType.reading,
                      avgLevelUpDays: client.averageLevelUpInterval.map { $0 / 86400 },
                      totalItems: total, stages: stages)

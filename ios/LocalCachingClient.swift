@@ -1502,6 +1502,29 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
     }
   }
 
+  /// Longest run of consecutive active days (reviews or lessons) in the recorded history.
+  var longestStreak: Int {
+    let counts = reviewActivityByDay()
+    let calendar = Calendar.current
+    let formatter = LocalCachingClient.reviewDayKeyFormatter
+    let activeDays = counts.filter { $0.value > 0 }.keys
+      .compactMap { formatter.date(from: $0) }.sorted()
+    var best = 0
+    var run = 0
+    var previous: Date?
+    for day in activeDays {
+      if let previous = previous,
+         calendar.dateComponents([.day], from: previous, to: day).day == 1 {
+        run += 1
+      } else {
+        run = 1
+      }
+      best = max(best, run)
+      previous = day
+    }
+    return best
+  }
+
   /// Counts per individual SRS stage, indexed by SRSStage.rawValue (1...9; index 0 unused).
   func srsStageCounts() -> [Int] {
     db.inDatabase { db in
