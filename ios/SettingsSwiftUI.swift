@@ -83,7 +83,10 @@ final class SettingsNavigator {
   }
 
   // Lesson-settings sub-pickers (still UIKit).
-  func openLessonOrder() { push(StoryboardScene.LessonOrder.initialScene.instantiate()) }
+  func openLessonOrder() {
+    push(TKMHostingController(title: "Lesson Order", rootView: LessonOrderScreen()))
+  }
+
   func openLessonBatchSize() { push(makeLessonBatchSizeViewController()) }
   func openApprenticeLimit() { push(makeApprenticeLessonLimitViewController()) }
 

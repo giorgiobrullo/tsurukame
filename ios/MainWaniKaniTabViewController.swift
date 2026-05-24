@@ -766,7 +766,8 @@ class MainWaniKaniTabViewController: UITableViewController {
   }
 
   @objc func showLessonPicker() {
-    perform(segue: StoryboardSegue.Main.showLessonPicker, sender: self)
+    let vc = LessonPickerHostingController(services: services)
+    navigationController?.pushViewController(vc, animated: true)
   }
 
   @objc func showTableForecast() {
