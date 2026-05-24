@@ -192,6 +192,7 @@
 		9721708C2DBAF3A6001DFFED /* SubjectsExcluded.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9721708B2DBAF3A6001DFFED /* SubjectsExcluded.storyboard */; };
 		97A120DF2D9C467100D19CAE /* ReviewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A120DE2D9C467100D19CAE /* ReviewUtils.swift */; };
 		98AAB5751B5F257ABB2868D5 /* SwiftUIShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCA11FE235A9D94A9810A8C /* SwiftUIShared.swift */; };
+		9AC49743E27B72F17DFFCFDC /* UpcomingReviewsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3E8F49AC9A9A1936D56B /* UpcomingReviewsScreen.swift */; };
 		9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */; };
 		A46A3E6C91EE60C1C3052FA7 /* DashboardActionCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED9656EF825F08588F17905 /* DashboardActionCardItem.swift */; };
 		A911927ACBB6FD4087DA08DF /* SRSDistributionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4FADC867BA88EE5ABC964 /* SRSDistributionItem.swift */; };
@@ -290,6 +291,7 @@
 		1BBBD142815F6A55FA9D2C21 /* libPods-Tsurukame Complication Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tsurukame Complication Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20A6D3E1C6F7A492EB9DDF0C /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		21894D9E0883B0107075DD6F /* Pods-Tsurukame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame.release.xcconfig"; path = "Target Support Files/Pods-Tsurukame/Pods-Tsurukame.release.xcconfig"; sourceTree = "<group>"; };
+		222F3E8F49AC9A9A1936D56B /* UpcomingReviewsScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UpcomingReviewsScreen.swift; sourceTree = "<group>"; };
 		301BAAC2C21E4A99238D1E80 /* Pods-FontScreenshotter-FontScreenshotterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotter-FontScreenshotterUITests.release.xcconfig"; path = "Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests.release.xcconfig"; sourceTree = "<group>"; };
 		34E86AD95515CD815B3086D0 /* Pods-Tsurukame.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame.debug.xcconfig"; path = "Target Support Files/Pods-Tsurukame/Pods-Tsurukame.debug.xcconfig"; sourceTree = "<group>"; };
 		3883E995E322FAB70B794289 /* ReversePracticeViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReversePracticeViewController.swift; sourceTree = "<group>"; };
@@ -741,6 +743,7 @@
 				4CBF551BE56C28C5F75B375A /* SettingsSwiftUI.swift */,
 				A453454F899E6016F1B7DD25 /* SettingsFormsSwiftUI.swift */,
 				53C309612037A930AB5AAA53 /* SubjectListSwiftUI.swift */,
+				222F3E8F49AC9A9A1936D56B /* UpcomingReviewsScreen.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1603,6 +1606,7 @@
 				F5D365098AA2DFD8560F2405 /* SettingsSwiftUI.swift in Sources */,
 				5A4B3B2F57BC19839BD23FBB /* SettingsFormsSwiftUI.swift in Sources */,
 				7975D2C779F7CB12097F2821 /* SubjectListSwiftUI.swift in Sources */,
+				9AC49743E27B72F17DFFCFDC /* UpcomingReviewsScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

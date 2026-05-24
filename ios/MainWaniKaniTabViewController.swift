@@ -141,7 +141,13 @@ class MainWaniKaniTabViewController: UITableViewController {
       guard let self = self else { return }
       self.navigationController?.pushViewController(makeReviewOrderViewController(), animated: true)
     }
-    a.openForecast = { [weak self] in self?.showTableForecast() }
+    a.openForecast = { [weak self] in
+      guard let self = self else { return }
+      let rows = UpcomingReviewsScreen.rows(services: self.services)
+      let vc = TKMHostingController(title: "Upcoming reviews",
+                                    rootView: UpcomingReviewsScreen(rows: rows))
+      self.navigationController?.pushViewController(vc, animated: true)
+    }
     a.selfStudy = { [weak self] in self?.startSelfStudyCurrentLevel() }
     a.listening = { [weak self] in self?.startListeningPractice() }
     a.reverse = { [weak self] in self?.startReversePractice() }
