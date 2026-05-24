@@ -2,29 +2,25 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - Haneke (1.0.2)
   - Hippolyte (1.3.0)
   - SwiftGen (6.6.3)
 
 DEPENDENCIES:
   - FMDB (~> 2.7.5)
-  - Haneke (~> 1.0.2)
   - Hippolyte (~> 1.3.0)
   - SwiftGen (~> 6.0)
 
 SPEC REPOS:
   trunk:
     - FMDB
-    - Haneke
     - Hippolyte
     - SwiftGen
 
 SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  Haneke: 01454a67322faa0dd9d81fc0f447885044e71521
   Hippolyte: 62bb4cc730776cebd58a1cb51f5546253597ffd7
   SwiftGen: 4993cbf71cbc4886f775e26f8d5c3a1188ec9f99
 
-PODFILE CHECKSUM: 548b6dfdee35d0d71baa60c6c92865e82b62a39e
+PODFILE CHECKSUM: 0731c847f69f1ace372725b3113efa36259d5469
 
 COCOAPODS: 1.16.2

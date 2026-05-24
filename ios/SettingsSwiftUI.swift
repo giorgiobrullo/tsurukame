@@ -126,7 +126,7 @@ final class SettingsNavigator {
   }
 
   func clearImageCache() {
-    HNKCache.shared().removeAllImages()
+    URLCache.shared.removeAllCachedResponses()
     let c = UIAlertController(title: "Image cache cleared", message: nil, preferredStyle: .alert)
     c.addAction(UIAlertAction(title: "OK", style: .default))
     present(c)
