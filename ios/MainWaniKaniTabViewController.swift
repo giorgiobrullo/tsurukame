@@ -42,6 +42,10 @@ class MainWaniKaniTabViewController: UITableViewController {
   var hasLessons = false
   var hasReviews = false
 
+  // When a sync-triggered rebuild arrives while the user is scrolling, we defer it until scrolling
+  // ends so the reload doesn't interrupt the scroll.
+  private var pendingReload = false
+
   func setup(services: TKMServices, delegate: Delegate?) {
     self.services = services
     self.delegate = delegate
@@ -66,8 +70,26 @@ class MainWaniKaniTabViewController: UITableViewController {
     recreateTableModel()
   }
 
+  // Forwarded from the TableModel (which owns the tableView delegate). Flush a reload that was
+  // deferred because it arrived mid-scroll.
+  override func scrollViewDidEndDragging(_: UIScrollView, willDecelerate decelerate: Bool) {
+    if !decelerate, pendingReload { recreateTableModel() }
+  }
+
+  override func scrollViewDidEndDecelerating(_: UIScrollView) {
+    if pendingReload { recreateTableModel() }
+  }
+
   private func recreateTableModel() {
     guard let user = services.localCachingClient.getUserInfo() else { return }
+
+    // Don't rebuild the table while the user is actively scrolling: swapping the data source and
+    // calling reloadData mid-scroll interrupts the gesture. Defer until scrolling stops.
+    if tableView.isDragging || tableView.isDecelerating {
+      pendingReload = true
+      return
+    }
+    pendingReload = false
 
     // make sure that the selected subject level is reset each time table is loaded in case things
     // change
@@ -82,7 +104,7 @@ class MainWaniKaniTabViewController: UITableViewController {
     let upcomingReviews = services.localCachingClient.upcomingReviews
     let currentLevelAssignments = services.localCachingClient.getAssignmentsAtUsersCurrentLevel()
 
-    let model = MutableTableModel(tableView: tableView)
+    let model = MutableTableModel(tableView: tableView, delegate: self)
 
     if !user.hasVacationStartedAt {
       let apprenticeCount = services.localCachingClient.apprenticeCount
