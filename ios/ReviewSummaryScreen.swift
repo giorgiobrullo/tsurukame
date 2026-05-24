@@ -72,6 +72,9 @@ final class ReviewSummaryHostingController: UIHostingController<ReviewSummaryScr
   private let services: TKMServices
   private let incorrectItems: [ReviewItem]
 
+  /// Set when inside a modal cover; dismisses the cover instead of popping to root.
+  var onClose: (() -> Void)?
+
   var canSwipeToGoBack: Bool { true }
 
   init(services: TKMServices, items: [ReviewItem]) {
@@ -129,7 +132,8 @@ final class ReviewSummaryHostingController: UIHostingController<ReviewSummaryScr
   }
 
   @objc private func done() {
-    navigationController?.popToRootViewController(animated: true)
+    if let onClose = onClose { onClose() }
+    else { navigationController?.popToRootViewController(animated: true) }
   }
 
   private func reReview() {
@@ -139,6 +143,7 @@ final class ReviewSummaryHostingController: UIHostingController<ReviewSummaryScr
     guard !freshItems.isEmpty else { return }
     let vc = SwiftUIReviewHostingController(services: services, items: freshItems.shuffled(),
                                             isPracticeSession: true)
+    vc.onClose = onClose
     navigationController?.pushViewController(vc, animated: true)
   }
 

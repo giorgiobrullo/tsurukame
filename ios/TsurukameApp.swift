@@ -13,37 +13,19 @@
 // limitations under the License.
 
 import SwiftUI
-import UIKit
 
-// The SwiftUI app entry point. Replaces the old main.swift / UIApplicationMain + Navigation
-// storyboard bootstrap. `AppDelegate` is kept (via UIApplicationDelegateAdaptor) for the app-level
-// callbacks (background fetch, notifications, applinks, badge). The root is still the existing
-// UIKit
-// navigation stack, wrapped in a representable, because the screens that haven't been migrated yet
-// navigate by pushing onto a UINavigationController. Once the whole app is SwiftUI this becomes a
-// SwiftUI NavigationStack.
+// The SwiftUI app entry point. A pure SwiftUI lifecycle: no UIApplicationMain, no AppDelegate, no
+// storyboard. `RootView` owns a SwiftUI NavigationStack and the app state (services, auth,
+// navigation) that used to live in AppDelegate and the UINavigationController backbone.
 @main
 struct TsurukameApp: App {
-  @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+  init() {
+    Screenshotter.setUp()
+  }
 
   var body: some Scene {
     WindowGroup {
-      RootNavigationView(appDelegate: appDelegate)
-        .ignoresSafeArea()
+      RootView()
     }
   }
-}
-
-/// Hosts the app's root `UINavigationController` and hands it to `AppDelegate` to bootstrap
-/// (decide login vs. main, apply the interface style).
-struct RootNavigationView: UIViewControllerRepresentable {
-  let appDelegate: AppDelegate
-
-  func makeUIViewController(context _: Context) -> UINavigationController {
-    let nav = StoryboardScene.Navigation.initialScene.instantiate()
-    appDelegate.bootstrap(navigationController: nav)
-    return nav
-  }
-
-  func updateUIViewController(_: UINavigationController, context _: Context) {}
 }

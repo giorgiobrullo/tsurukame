@@ -154,7 +154,7 @@ final class StatsViewController: UIHostingController<StatsView>, TKMViewControll
     navigationController?.isNavigationBarHidden = false
   }
 
-  private static func makeData(services: TKMServices) -> StatsData {
+  static func makeData(services: TKMServices) -> StatsData {
     let client = services.localCachingClient!
     let counts = client.srsStageCounts()
     let names = ["", "Apprentice 1", "Apprentice 2", "Apprentice 3", "Apprentice 4",

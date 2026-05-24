@@ -471,6 +471,10 @@ final class SwiftUIReviewHostingController: UIHostingController<ReviewScreen>, T
   private let model: ReviewViewModel
   private let isPracticeSession: Bool
 
+  /// Set when presented inside a modal NavigationStack cover; called instead of popping past the
+  /// root so the cover can be dismissed.
+  var onClose: (() -> Void)?
+
   var canSwipeToGoBack: Bool { false }
 
   init(services: TKMServices, items: [ReviewItem], isPracticeSession: Bool) {
@@ -497,13 +501,18 @@ final class SwiftUIReviewHostingController: UIHostingController<ReviewScreen>, T
 
   /// Real reviews end on the summary screen; practice sessions just pop back.
   private func finish() {
-    guard let nav = navigationController else { return }
     if isPracticeSession {
-      nav.popViewController(animated: true)
+      if let onClose = onClose { onClose() }
+      else { navigationController?.popViewController(animated: true) }
+      return
+    }
+    guard let nav = navigationController else {
+      onClose?()
       return
     }
     let summary = ReviewSummaryHostingController(services: services,
                                                  items: model.session.completedReviews)
+    summary.onClose = onClose
     // Replace the review screen with the summary so "back" doesn't return into the finished
     // session.
     var vcs = nav.viewControllers

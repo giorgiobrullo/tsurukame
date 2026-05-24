@@ -20,6 +20,13 @@ import UIKit
 // reuses these so the look and the UIKit-bridging stay consistent. iOS 15+ (matches the rest of the
 // SwiftUI surface).
 
+/// Marker protocol the (modally-presented) hosting controllers conform to. Previously the custom
+/// UINavigationController used `canSwipeToGoBack` to gate the interactive pop gesture; with the
+/// NavigationStack backbone it's vestigial, but kept so the conformances stay valid.
+protocol TKMViewController: AnyObject {
+  var canSwipeToGoBack: Bool { get }
+}
+
 // MARK: - Brand colours
 
 @available(iOS 15.0, *)

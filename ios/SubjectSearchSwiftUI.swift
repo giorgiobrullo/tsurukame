@@ -45,6 +45,29 @@ final class SearchResultsModel: ObservableObject {
   @Published var results: [TKMSubject] = []
 }
 
+/// Filters + ranks subjects for a query. Shared by the legacy UISearchController results controller
+/// and the SwiftUI `.searchable` dashboard search.
+@available(iOS 15.0, *)
+func searchSubjects(query rawQuery: String, in allSubjects: [TKMSubject]) -> [TKMSubject] {
+  let query = rawQuery.lowercased()
+  guard !query.isEmpty else { return [] }
+
+  var convertedAllCharacters = true
+  let kanaQuery = TKMConvertKanaText(query, &convertedAllCharacters)
+  let exactKanaQuery: String? = convertedAllCharacters ? kanaQuery : nil
+
+  var results = allSubjects.filter { subjectMatchesQuery($0, query: query, kanaQuery: kanaQuery) }
+  // Exact matches first, then by level, so exact hits survive the kMaxResults trim.
+  results.sort { a, b in
+    let aExact = subjectMatchesQueryExactly(a, query: query, kanaQuery: exactKanaQuery)
+    let bExact = subjectMatchesQueryExactly(b, query: query, kanaQuery: exactKanaQuery)
+    if aExact != bExact { return aExact }
+    return a.level < b.level
+  }
+  if results.count > kMaxResults { results.removeLast(results.count - kMaxResults) }
+  return results
+}
+
 @available(iOS 15.0, *)
 struct SubjectSearchScreen: View {
   @ObservedObject var model: SearchResultsModel

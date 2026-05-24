@@ -120,6 +120,10 @@ final class LessonsHostingController: UIHostingController<LessonsScreen>, TKMVie
   private let services: TKMServices
   private let items: [ReviewItem]
 
+  /// Set when inside a modal cover; dismisses the cover (the lessons flow is presented, not
+  /// pushed).
+  var onClose: (() -> Void)?
+
   var canSwipeToGoBack: Bool { false }
 
   init(services: TKMServices, items: [ReviewItem]) {
@@ -151,6 +155,16 @@ final class LessonsHostingController: UIHostingController<LessonsScreen>, TKMVie
     fatalError("init(coder:) has not been implemented")
   }
 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    if onClose != nil {
+      navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self,
+                                                         action: #selector(closeTapped))
+    }
+  }
+
+  @objc private func closeTapped() { onClose?() }
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.isNavigationBarHidden = false
@@ -159,6 +173,7 @@ final class LessonsHostingController: UIHostingController<LessonsScreen>, TKMVie
   private func startQuiz() {
     let vc = SwiftUIReviewHostingController(services: services, items: items,
                                             isPracticeSession: false)
+    vc.onClose = onClose
     navigationController?.pushViewController(vc, animated: true)
   }
 

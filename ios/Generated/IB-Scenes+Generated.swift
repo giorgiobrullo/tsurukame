@@ -17,11 +17,6 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<UIKit.UIViewController>(storyboard: Self.self)
   }
-  internal enum Navigation: StoryboardType {
-    internal static let storyboardName = "Navigation"
-
-    internal static let initialScene = InitialSceneType<Tsurukame.NavigationController>(storyboard: Self.self)
-  }
 }
 // swiftlint:enable explicit_type_interface identifier_name line_length type_body_length type_name
 
