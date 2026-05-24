@@ -126,7 +126,6 @@
 		63F7F52E23D4C2CA006A31FB /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F7F52D23D4C2CA006A31FB /* Audio.swift */; };
 		63FCAE78237F75CC00DB1418 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FCAE77237F75CC00DB1418 /* Style.swift */; };
 		64F54E146916585487C62F61 /* OfflineAudioScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265F759457BA3AF64194999 /* OfflineAudioScreen.swift */; };
-		6B8D5451D91FCC7E27FF1402 /* ReversePracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3883E995E322FAB70B794289 /* ReversePracticeViewController.swift */; };
 		6F5E95176B5DCA719A6EED55 /* Pods_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10E5709643045C62AD6AC427 /* Pods_Tests.framework */; };
 		791B8B5C2D657E2A000C8142 /* CommonErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791B8B5B2D657E2A000C8142 /* CommonErrors.swift */; };
 		791B8B5E2D6584C9000C8142 /* RecentMistakeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791B8B5D2D6584C9000C8142 /* RecentMistakeHandler.swift */; };
@@ -144,6 +143,7 @@
 		99E57BF758A0680193BDAA08 /* ReviewSummaryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B081F6524EE2D60A1B4605 /* ReviewSummaryScreen.swift */; };
 		9AC49743E27B72F17DFFCFDC /* UpcomingReviewsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3E8F49AC9A9A1936D56B /* UpcomingReviewsScreen.swift */; };
 		9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */; };
+		A3E56CC7FBE9617EF0CDA843 /* PracticeScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DC07004753E2A4C64CA590 /* PracticeScreens.swift */; };
 		A46A3E6C91EE60C1C3052FA7 /* DashboardActionCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED9656EF825F08588F17905 /* DashboardActionCardItem.swift */; };
 		A75D1BE70DD1B297F3CF4EE9 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68F8852A5EE8CAA57DADC52 /* MainScreen.swift */; };
 		A911927ACBB6FD4087DA08DF /* SRSDistributionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4FADC867BA88EE5ABC964 /* SRSDistributionItem.swift */; };
@@ -166,7 +166,6 @@
 		C92AB972237F2E8200F79904 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92AB971237F2E8200F79904 /* DataManager.swift */; };
 		C943D5B02380D59B004A7969 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C943D5AF2380D59A004A7969 /* SettingsController.swift */; };
 		C970BC0323D262CE001F3735 /* SiriShortcutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */; };
-		D28FEA675E5018672491666D /* ListeningPracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */; };
 		D6EC58909D84938EF126D38B /* ChoiceListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077CB5969812B99064F6116B /* ChoiceListScreen.swift */; };
 		DB029EEBDBA9D4CCD7C6B34E /* SubjectDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */; };
 		E881943B2A6BC0CF002C2E1C /* ArtworkModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881943A2A6BC0CF002C2E1C /* ArtworkModelItem.swift */; };
@@ -244,13 +243,13 @@
 		077CB5969812B99064F6116B /* ChoiceListScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ChoiceListScreen.swift; sourceTree = "<group>"; };
 		10E5709643045C62AD6AC427 /* Pods_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		116070EC9485A78089387729 /* Pods-FontScreenshotterUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotterUITests.debug.xcconfig"; path = "Target Support Files/Pods-FontScreenshotterUITests/Pods-FontScreenshotterUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		14DC07004753E2A4C64CA590 /* PracticeScreens.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PracticeScreens.swift; sourceTree = "<group>"; };
 		1BBBD142815F6A55FA9D2C21 /* libPods-Tsurukame Complication Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tsurukame Complication Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20A6D3E1C6F7A492EB9DDF0C /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		21894D9E0883B0107075DD6F /* Pods-Tsurukame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame.release.xcconfig"; path = "Target Support Files/Pods-Tsurukame/Pods-Tsurukame.release.xcconfig"; sourceTree = "<group>"; };
 		222F3E8F49AC9A9A1936D56B /* UpcomingReviewsScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UpcomingReviewsScreen.swift; sourceTree = "<group>"; };
 		301BAAC2C21E4A99238D1E80 /* Pods-FontScreenshotter-FontScreenshotterUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotter-FontScreenshotterUITests.release.xcconfig"; path = "Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests.release.xcconfig"; sourceTree = "<group>"; };
 		34E86AD95515CD815B3086D0 /* Pods-Tsurukame.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame.debug.xcconfig"; path = "Target Support Files/Pods-Tsurukame/Pods-Tsurukame.debug.xcconfig"; sourceTree = "<group>"; };
-		3883E995E322FAB70B794289 /* ReversePracticeViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReversePracticeViewController.swift; sourceTree = "<group>"; };
 		404461BC39B4A19B128F9E69 /* Pods_FontScreenshotter_FontScreenshotterUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FontScreenshotter_FontScreenshotterUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		481B2FEC23C55AAF0041EF1F /* CurrentLevelReviewTimeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLevelReviewTimeItem.swift; sourceTree = "<group>"; };
 		4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontScreenshotterUITests.swift; sourceTree = "<group>"; };
@@ -261,7 +260,6 @@
 		4B8236EC341CF1BA18D16857 /* Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.release.xcconfig"; sourceTree = "<group>"; };
 		4CBF551BE56C28C5F75B375A /* SettingsSwiftUI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsSwiftUI.swift; sourceTree = "<group>"; };
 		4D84B3516DD7DB536A88D91C /* TsurukameApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TsurukameApp.swift; sourceTree = "<group>"; };
-		52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListeningPracticeViewController.swift; sourceTree = "<group>"; };
 		53C309612037A930AB5AAA53 /* SubjectListSwiftUI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubjectListSwiftUI.swift; sourceTree = "<group>"; };
 		567140C7E2E45E06417AC4EC /* WidgetSharedData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetSharedData.swift; sourceTree = "<group>"; };
 		630EB10925C561A900783E54 /* NSMutableAttributedString+Replacements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Replacements.swift"; sourceTree = "<group>"; };
@@ -597,8 +595,6 @@
 				C92AB96E237F280300F79904 /* WatchHelper.swift */,
 				567140C7E2E45E06417AC4EC /* WidgetSharedData.swift */,
 				C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */,
-				52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */,
-				3883E995E322FAB70B794289 /* ReversePracticeViewController.swift */,
 				C3DC07308404843022FAA86F /* DashboardScreen.swift */,
 				6FCA11FE235A9D94A9810A8C /* SwiftUIShared.swift */,
 				CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */,
@@ -618,6 +614,7 @@
 				BA30736CAB5795DD378F8CE7 /* FontsScreen.swift */,
 				E68F8852A5EE8CAA57DADC52 /* MainScreen.swift */,
 				CA41C6C5B9D7A4768FF67B7B /* ListSeparatorItem.swift */,
+				14DC07004753E2A4C64CA590 /* PracticeScreens.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1409,8 +1406,6 @@
 				BABB2F910CFA9E91A98AF4B6 /* StreakHeatmapItem.swift in Sources */,
 				BEAD8427C0788080A9079A3A /* WidgetSharedData.swift in Sources */,
 				9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */,
-				D28FEA675E5018672491666D /* ListeningPracticeViewController.swift in Sources */,
-				6B8D5451D91FCC7E27FF1402 /* ReversePracticeViewController.swift in Sources */,
 				C0CE8B4A3DBE0D3E5A1838CF /* DashboardScreen.swift in Sources */,
 				98AAB5751B5F257ABB2868D5 /* SwiftUIShared.swift in Sources */,
 				498851B92054E89630420A58 /* LoginScreen.swift in Sources */,
@@ -1430,6 +1425,7 @@
 				4C2F1B19821592C7C0A3DBB7 /* FontsScreen.swift in Sources */,
 				A75D1BE70DD1B297F3CF4EE9 /* MainScreen.swift in Sources */,
 				4E5A7AE15C65A2F2F6C8BF76 /* ListSeparatorItem.swift in Sources */,
+				A3E56CC7FBE9617EF0CDA843 /* PracticeScreens.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

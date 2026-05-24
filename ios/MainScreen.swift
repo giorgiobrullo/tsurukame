@@ -249,8 +249,18 @@ final class MainHostingController: UIHostingController<MainScreen>, TKMViewContr
     }
     a.openForecast = { [weak self] in self?.showForecast() }
     a.selfStudy = { [weak self] in self?.startSelfStudyCurrentLevel() }
-    a.listening = { [weak self] in self?.pushPractice(ListeningPracticeViewController()) }
-    a.reverse = { [weak self] in self?.pushPractice(ReversePracticeViewController()) }
+    a.listening = { [weak self] in
+      guard let self = self else { return }
+      self.navigationController?
+        .pushViewController(ListeningPracticeHostingController(services: self.services),
+                            animated: true)
+    }
+    a.reverse = { [weak self] in
+      guard let self = self else { return }
+      self.navigationController?
+        .pushViewController(ReversePracticeHostingController(services: self.services),
+                            animated: true)
+    }
     a.recentLessons = { [weak self] in self?.startRecentLessonReviews() }
     a.recentMistakes = { [weak self] in self?.startRecentMistakeReviews() }
     a.apprenticeLeeches = { [weak self] in self?.startAlreadyPassedApprenticeReviews() }
@@ -280,16 +290,6 @@ final class MainHostingController: UIHostingController<MainScreen>, TKMViewContr
                                                                             items: items,
                                                                             isPracticeSession: isPracticeSession),
                                              animated: true)
-  }
-
-  private func pushPractice(_ vc: ListeningPracticeViewController) {
-    vc.setup(services: services)
-    navigationController?.pushViewController(vc, animated: true)
-  }
-
-  private func pushPractice(_ vc: ReversePracticeViewController) {
-    vc.setup(services: services)
-    navigationController?.pushViewController(vc, animated: true)
   }
 
   func startReviews() {
