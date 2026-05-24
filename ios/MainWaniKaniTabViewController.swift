@@ -116,6 +116,12 @@ class MainWaniKaniTabViewController: UITableViewController {
           })
       }
 
+      if #available(iOS 15.0, *) {
+        model.add(section: "Activity")
+        model.add(StreakHeatmapItem(streak: services.localCachingClient.reviewStreak,
+                                    dailyCounts: services.localCachingClient.reviewActivityByDay()))
+      }
+
       model.add(section: "Upcoming reviews")
       if #available(iOS 15.0, *) {
         model.add(ForecastChartItem(upcomingReviews: upcomingReviews,

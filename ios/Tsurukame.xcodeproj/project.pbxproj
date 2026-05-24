@@ -187,6 +187,7 @@
 		97A120DF2D9C467100D19CAE /* ReviewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A120DE2D9C467100D19CAE /* ReviewUtils.swift */; };
 		A46A3E6C91EE60C1C3052FA7 /* DashboardActionCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED9656EF825F08588F17905 /* DashboardActionCardItem.swift */; };
 		A911927ACBB6FD4087DA08DF /* SRSDistributionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4FADC867BA88EE5ABC964 /* SRSDistributionItem.swift */; };
+		BABB2F910CFA9E91A98AF4B6 /* StreakHeatmapItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C937AD9C0B6866E7A0D8FC5 /* StreakHeatmapItem.swift */; };
 		BB0F6B0C216698F800CB1306 /* TKMKanaInputTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0F6B0B216698F800CB1306 /* TKMKanaInputTest.m */; };
 		BBE4E32E2172576B003A200E /* FontLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4E32D2172576B003A200E /* FontLoader.swift */; };
 		C904455D2395DBAE001BC48B /* AnswerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C904455C2395DBAE001BC48B /* AnswerTextField.swift */; };
@@ -433,6 +434,7 @@
 		63FCAE77237F75CC00DB1418 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		68B19C946E2F2284DA18EC3F /* Pods_Tsurukame__App_Store_screenshots_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tsurukame__App_Store_screenshots_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6978F17AB58C6447CED81564 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		6C937AD9C0B6866E7A0D8FC5 /* StreakHeatmapItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StreakHeatmapItem.swift; sourceTree = "<group>"; };
 		6ED9656EF825F08588F17905 /* DashboardActionCardItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DashboardActionCardItem.swift; sourceTree = "<group>"; };
 		791B8B5B2D657E2A000C8142 /* CommonErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonErrors.swift; sourceTree = "<group>"; };
 		791B8B5D2D6584C9000C8142 /* RecentMistakeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMistakeHandler.swift; sourceTree = "<group>"; };
@@ -778,6 +780,7 @@
 				7CA8AA5A9B922F77E82A0774 /* ForecastChartItem.swift */,
 				DBD3D849CDB443FDA6A69FF4 /* LevelProgressItem.swift */,
 				DAA4FADC867BA88EE5ABC964 /* SRSDistributionItem.swift */,
+				6C937AD9C0B6866E7A0D8FC5 /* StreakHeatmapItem.swift */,
 			);
 			path = Tables;
 			sourceTree = "<group>";
@@ -1550,6 +1553,7 @@
 				1BE3D02A850A8976E5B478BC /* ForecastChartItem.swift in Sources */,
 				8F73DA6B4E6C360412C51110 /* LevelProgressItem.swift in Sources */,
 				A911927ACBB6FD4087DA08DF /* SRSDistributionItem.swift in Sources */,
+				BABB2F910CFA9E91A98AF4B6 /* StreakHeatmapItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

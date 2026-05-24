@@ -351,6 +351,26 @@ public class WaniKaniAPIClient: NSObject {
     }
   }
 
+  public typealias ReviewHistory = (reviewDates: [Date], updatedAt: String)
+  /**
+   * Fetches review records for the activity heatmap / streak, returning just their creation dates.
+   * If updatedAfter is set, returns only reviews created after that time.
+   */
+  public func reviews(progress: Progress,
+                      updatedAfter: String = "") -> Promise<ReviewHistory> {
+    var url = URLComponents(string: "\(kBaseUrl)/reviews")!
+    if !updatedAfter.isEmpty {
+      url.queryItems = [URLQueryItem(name: "updated_after", value: updatedAfter)]
+    }
+
+    return firstly {
+      pagedQuery(url: url.url!, progress: progress)
+    }.map { (allData: Response<[Response<ReviewData>]>) -> ReviewHistory in
+      let dates = allData.data.map { $0.data.created_at.date }
+      return (reviewDates: dates, updatedAt: allData.data_updated_at ?? updatedAfter)
+    }
+  }
+
   // MARK: - Sending lesson/review progress
 
   public func sendProgress(_ progress: TKMProgress) -> Promise<Void> {

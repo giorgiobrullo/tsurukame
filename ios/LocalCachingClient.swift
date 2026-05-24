@@ -326,10 +326,19 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
     );
     CREATE INDEX idx_stat_subject_id ON review_stats (subject_id);
     """,
+    // Version 13. Daily review history for the activity heatmap and streak.
+    """
+    ALTER TABLE sync ADD COLUMN reviews_updated_after TEXT DEFAULT \"\";
+
+    CREATE TABLE review_history (
+        day TEXT PRIMARY KEY,
+        review_count INTEGER
+    );
+    """,
   ]
 
   private let kInitialSchemaVersion = 8
-  private let kSchemaVersion = 12
+  private let kSchemaVersion = 13
 
   // Run when the user logs out. Clears everything in the database.
   private let kClearAllData = """
@@ -351,6 +360,8 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
   DELETE FROM voice_actors;
   DELETE FROM audio_urls;
   DELETE FROM review_stats;
+  DELETE FROM review_history;
+  UPDATE sync SET reviews_updated_after = "";
   """
 
   // Run when the user pulls down on the main screen. Clears all locally cached data so it can be
@@ -1364,6 +1375,84 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
     }
   }
 
+  private static let reviewDayKeyFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "en_US_POSIX")
+    formatter.timeZone = TimeZone.current
+    formatter.dateFormat = "yyyy-MM-dd"
+    return formatter
+  }()
+
+  private func fetchReviewHistory(progress: Progress) -> Promise<Void> {
+    var updatedAfter: String = db.inDatabase { db in
+      let cursor = db.query("SELECT reviews_updated_after FROM sync")
+      if cursor.next() {
+        return cursor.string(forColumnIndex: 0) ?? ""
+      }
+      return ""
+    }
+    // On the first sync, bound the backlog to roughly the last year so we don't fetch a user's
+    // entire review history (which can be tens of thousands of records).
+    if updatedAfter.isEmpty {
+      let oneYearAgo = Calendar.current.date(byAdding: .day, value: -365, to: Date()) ?? Date()
+      updatedAfter = ISO8601DateFormatter().string(from: oneYearAgo)
+    }
+
+    return firstly { () -> Promise<WaniKaniAPIClient.ReviewHistory> in
+      client.reviews(progress: progress, updatedAfter: updatedAfter)
+    }.done { reviewDates, updatedAt in
+      NSLog("Updated %d reviews at %@", reviewDates.count, updatedAt)
+      var dailyCounts = [String: Int]()
+      for date in reviewDates {
+        dailyCounts[LocalCachingClient.reviewDayKeyFormatter.string(from: date), default: 0] += 1
+      }
+      self.db.inTransaction { db in
+        for (day, count) in dailyCounts {
+          db.mustExecuteUpdate("INSERT INTO review_history (day, review_count) VALUES (?, ?) " +
+            "ON CONFLICT(day) DO UPDATE SET review_count = review_count + ?",
+            args: [day, count, count])
+        }
+        if !updatedAt.isEmpty {
+          db.mustExecuteUpdate("UPDATE sync SET reviews_updated_after = ?", args: [updatedAt])
+        }
+      }
+    }
+  }
+
+  /// Daily review counts keyed by local-day string ("yyyy-MM-dd").
+  func reviewActivityByDay() -> [String: Int] {
+    db.inDatabase { db in
+      var ret = [String: Int]()
+      for cursor in db.query("SELECT day, review_count FROM review_history") {
+        if let day = cursor.string(forColumnIndex: 0) {
+          ret[day] = Int(cursor.int(forColumnIndex: 1))
+        }
+      }
+      return ret
+    }
+  }
+
+  /// Current consecutive-day review streak, ending today (or yesterday if today has no reviews
+  /// yet).
+  var reviewStreak: Int {
+    let counts = reviewActivityByDay()
+    let calendar = Calendar.current
+    let formatter = LocalCachingClient.reviewDayKeyFormatter
+    var day = calendar.startOfDay(for: Date())
+    // Today not yet being done shouldn't break a streak built up to yesterday.
+    if (counts[formatter.string(from: day)] ?? 0) == 0 {
+      guard let yesterday = calendar.date(byAdding: .day, value: -1, to: day) else { return 0 }
+      day = yesterday
+    }
+    var streak = 0
+    while (counts[formatter.string(from: day)] ?? 0) > 0 {
+      streak += 1
+      guard let prev = calendar.date(byAdding: .day, value: -1, to: day) else { break }
+      day = prev
+    }
+    return streak
+  }
+
   func updateRecentMistakesFromCloud(skipReuploadToCloud: Bool) {
     let mergedMistakes = RecentMistakeHandler.mergeMistakes(original: getRecentMistakeTimes(),
                                                             other: recentMistakeHandler
@@ -1430,7 +1519,7 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
       Int64(pendingStudyMaterials.count) +
       subjectProgressUnits +
       assignmentProgressUnits +
-      5
+      6
 
     let childProgress = { (units: Int64) in
       Progress(totalUnitCount: -1, parent: progress, pendingUnitCount: units)
@@ -1467,6 +1556,7 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
         self.fetchLevelProgression(progress: childProgress(1)),
         self.fetchVoiceActors(progress: childProgress(1)),
         self.fetchReviewStatistics(progress: childProgress(1)),
+        self.fetchReviewHistory(progress: childProgress(1)),
       ])
     }.ensure {
       // we need to make sure that our current, local batch of recent mistakes go up to the cloud
