@@ -217,6 +217,7 @@
 		C943D5B02380D59B004A7969 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C943D5AF2380D59A004A7969 /* SettingsController.swift */; };
 		C970BC0323D262CE001F3735 /* SiriShortcutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */; };
 		D28FEA675E5018672491666D /* ListeningPracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A69DC2F604F57D75AAE3C3 /* ListeningPracticeViewController.swift */; };
+		DB029EEBDBA9D4CCD7C6B34E /* SubjectDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */; };
 		E881943B2A6BC0CF002C2E1C /* ArtworkModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881943A2A6BC0CF002C2E1C /* ArtworkModelItem.swift */; };
 		E881943F2A6BC38A002C2E1C /* ArtworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881943E2A6BC38A002C2E1C /* ArtworkManager.swift */; };
 		EC6A5487F6875EC64C63B6B2 /* Pods_FontScreenshotter_FontScreenshotterUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404461BC39B4A19B128F9E69 /* Pods_FontScreenshotter_FontScreenshotterUITests.framework */; };
@@ -503,6 +504,7 @@
 		C943D5AF2380D59A004A7969 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		C970BC0223D262CE001F3735 /* SiriShortcutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiriShortcutHelper.swift; sourceTree = "<group>"; };
 		CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubjectDetailScreen.swift; sourceTree = "<group>"; };
 		D9929E537851D24D07F47938 /* Pods-Tsurukame (App Store screenshots).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame (App Store screenshots).release.xcconfig"; path = "Target Support Files/Pods-Tsurukame (App Store screenshots)/Pods-Tsurukame (App Store screenshots).release.xcconfig"; sourceTree = "<group>"; };
 		DAA4FADC867BA88EE5ABC964 /* SRSDistributionItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SRSDistributionItem.swift; sourceTree = "<group>"; };
 		DBD3D849CDB443FDA6A69FF4 /* LevelProgressItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LevelProgressItem.swift; sourceTree = "<group>"; };
@@ -753,6 +755,7 @@
 				A3EC114D4A65CB5055FE264B /* SubjectSearchSwiftUI.swift */,
 				4A6545C730ACCB6BD99476C9 /* ReviewScreen.swift */,
 				487A9BD775597B87B1FEFE4D /* LessonsScreen.swift */,
+				D3E53799D1EB91C2AF139223 /* SubjectDetailScreen.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1619,6 +1622,7 @@
 				157A0EB88FBC954C6CE8DD0E /* SubjectSearchSwiftUI.swift in Sources */,
 				8E7FF16575EEA160A41E6B73 /* ReviewScreen.swift in Sources */,
 				FE4B54D1B940F93D9D0433FD /* LessonsScreen.swift in Sources */,
+				DB029EEBDBA9D4CCD7C6B34E /* SubjectDetailScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
