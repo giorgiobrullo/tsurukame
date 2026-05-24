@@ -63,25 +63,10 @@ class MainWaniKaniTabViewController: UITableViewController {
   }
 
   override func viewDidLoad() {
-    if Settings.useSwiftUIDashboard, #available(iOS 15.0, *) {
-      usingSwiftUIDashboard = true
-      installSwiftUIDashboard()
-      return
-    }
-
-    // Add a refresh control for when the user pulls down.
-    let refreshControl = UIRefreshControl()
-    refreshControl.tintColor = TKMStyle.Color.label
-    refreshControl.backgroundColor = nil
-    refreshControl.attributedTitle = NSMutableAttributedString(string: "Pull to refresh...")
-    refreshControl.addAction(for: .valueChanged) { [unowned self, unowned refreshControl] in
-      refreshControl.endRefreshing()
-      self.delegate?.didPullToRefresh()
-    }
-    tableView.refreshControl = refreshControl
-
-    configureDataSource()
-    recreateTableModel()
+    // The home screen is the SwiftUI dashboard. (The classic TableModel dashboard below is retained
+    // for now but no longer installed; it'll be removed once the SwiftUI dashboard fully settles.)
+    usingSwiftUIDashboard = true
+    installSwiftUIDashboard()
   }
 
   func update() {
@@ -743,8 +728,25 @@ class MainWaniKaniTabViewController: UITableViewController {
     return ret
   }
 
+  /// Pushes the SwiftUI review engine with the given items.
+  private func pushReview(items: [ReviewItem], isPracticeSession: Bool) {
+    guard !items.isEmpty else { return }
+    let vc = SwiftUIReviewHostingController(services: services, items: items,
+                                            isPracticeSession: isPracticeSession)
+    navigationController?.pushViewController(vc, animated: true)
+  }
+
   @objc func startReviews() {
-    perform(segue: StoryboardSegue.Main.startReviews, sender: self)
+    let assignments = services.localCachingClient.getNonExcludedAssignments()
+    var items = ReviewItem.readyForReview(assignments: assignments,
+                                          localCachingClient: services.localCachingClient)
+    guard !items.isEmpty else { return }
+    items = sortReviewItems(items: items, services: services)
+    if Settings.reviewItemsLimitEnabled || Settings.catchUpMode,
+       items.count > Settings.reviewItemsLimit {
+      items = Array(items[0 ..< Int(Settings.reviewItemsLimit)])
+    }
+    pushReview(items: items, isPracticeSession: false)
   }
 
   @objc func startLessons() {
@@ -760,23 +762,44 @@ class MainWaniKaniTabViewController: UITableViewController {
   }
 
   @objc func startRecentMistakeReviews() {
-    perform(segue: StoryboardSegue.Main.startRecentMistakeReviews, sender: self)
+    let assignments = services.localCachingClient.getAllRecentMistakeAssignments()
+    let items = ReviewItem.readyForRecentMistakesReview(assignments: assignments,
+                                                        localCachingClient: services
+                                                          .localCachingClient).shuffled()
+    pushReview(items: items, isPracticeSession: true)
   }
 
   @objc func startRecentLessonReviews() {
-    perform(segue: StoryboardSegue.Main.startRecentLessonReviews, sender: self)
+    let assignments = services.localCachingClient.getAllRecentLessonAssignments()
+    let items = ReviewItem.readyForRecentLessonReview(assignments: assignments,
+                                                      localCachingClient: services
+                                                        .localCachingClient).shuffled()
+    pushReview(items: items, isPracticeSession: true)
   }
 
   @objc func startAlreadyPassedApprenticeReviews() {
-    perform(segue: StoryboardSegue.Main.startAlreadyPassedApprenticeReviews, sender: self)
+    let apprenticeItems = services.localCachingClient
+      .getAssignmentsInCategory(category: SRSStageCategory.apprentice)
+    let items = ReviewItem.readyForAlreadyPassedApprenticeReview(assignments: apprenticeItems,
+                                                                 localCachingClient: services
+                                                                   .localCachingClient).shuffled()
+    pushReview(items: items, isPracticeSession: true)
   }
 
   @objc func startAllLeechReviews() {
-    perform(segue: StoryboardSegue.Main.startAllLeechReviews, sender: self)
+    let leechItems = services.localCachingClient.getAllLeeches()
+    let items = ReviewItem.readyForLeechReview(assignments: leechItems,
+                                               localCachingClient: services
+                                                 .localCachingClient).shuffled()
+    pushReview(items: items, isPracticeSession: true)
   }
 
   @objc func startBurnedItemReviews() {
-    perform(segue: StoryboardSegue.Main.startBurnedItemReviews, sender: self)
+    let assignments = services.localCachingClient.getAllBurnedAssignments()
+    let items = ReviewItem.readyForBurnedReview(assignments: assignments,
+                                                localCachingClient: services
+                                                  .localCachingClient).shuffled()
+    pushReview(items: items, isPracticeSession: true)
   }
 
   @objc func startListeningPractice() {
@@ -796,18 +819,8 @@ class MainWaniKaniTabViewController: UITableViewController {
     let items = ReviewItem.readyForSelfStudy(assignments: assignments,
                                              localCachingClient: services.localCachingClient)
       .shuffled()
-    guard !items.isEmpty else { return }
     // Practice session: no SRS impact, and works regardless of whether items are currently due.
-    // Safe place to exercise the SwiftUI review engine (no SRS consequences) while it's in beta.
-    if Settings.useSwiftUIReviews, #available(iOS 15.0, *) {
-      let vc = SwiftUIReviewHostingController(services: services, items: items,
-                                              isPracticeSession: true)
-      navigationController?.pushViewController(vc, animated: true)
-      return
-    }
-    let vc = StoryboardScene.ReviewContainer.initialScene.instantiate()
-    vc.setup(services: services, items: items, isPracticeSession: true)
-    navigationController?.pushViewController(vc, animated: true)
+    pushReview(items: items, isPracticeSession: true)
   }
 }
 

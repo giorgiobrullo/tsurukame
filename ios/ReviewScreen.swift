@@ -115,6 +115,32 @@ final class ReviewViewModel: ObservableObject {
     advanceToNext()
   }
 
+  /// Put the current task back in the queue to ask again later.
+  func askAgain() {
+    session.moveActiveTaskToEnd()
+    advanceToNext()
+  }
+
+  /// Exclude the current (vocabulary) item from future reviews and drop it from this session.
+  func excludeItem() {
+    session.setExclude(true)
+    session.excludeTask()
+    advanceToNext()
+  }
+
+  /// Add a meaning synonym, then accept the answer as correct.
+  func addSynonym(_ text: String) {
+    let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+    if !trimmed.isEmpty { session.addSynonym(trimmed) }
+    _ = session.markAnswer(.OverrideAnswerCorrect, isPracticeSession: isPracticeSession)
+    playAudioIfNeeded()
+    advanceToNext()
+  }
+
+  var canExclude: Bool {
+    session.activeSubject?.subjectType == .vocabulary && Settings.allowExcludeItems
+  }
+
   func playCurrentAudio() {
     guard let subject = session.activeSubject else { return }
     services.audio.play(subjectID: subject.id, delegate: nil)
@@ -249,6 +275,10 @@ struct ReviewScreen: View {
   @ObservedObject var model: ReviewViewModel
   let subjectDelegate: SubjectDelegate
 
+  @State private var showMenu = false
+  @State private var showSynonymAlert = false
+  @State private var synonymText = ""
+
   var body: some View {
     VStack(spacing: 0) {
       statusBar
@@ -260,18 +290,42 @@ struct ReviewScreen: View {
       controls
     }
     .background(Color.tkmBackground.ignoresSafeArea())
+    .confirmationDialog("Options", isPresented: $showMenu, titleVisibility: .hidden) {
+      if model.phase == .markedWrong || model.phase == .revealed {
+        Button("My answer was correct") { model.overrideCorrect() }
+      }
+      Button("Ask again later") { model.askAgain() }
+      if model.taskType == .meaning {
+        Button("Add synonym") { synonymText = ""
+          showSynonymAlert = true
+        }
+      }
+      if model.canExclude {
+        Button("Exclude this item", role: .destructive) { model.excludeItem() }
+      }
+      Button("Cancel", role: .cancel) {}
+    }
+    .alert("Add synonym", isPresented: $showSynonymAlert) {
+      TextField("Synonym", text: $synonymText)
+      Button("Add") { model.addSynonym(synonymText) }
+      Button("Cancel", role: .cancel) {}
+    } message: {
+      Text("Accept this meaning as correct from now on.")
+    }
   }
 
   private var statusBar: some View {
     VStack(spacing: 4) {
       ProgressView(value: model.progress)
         .tint(Color(uiColor: TKMStyle.radicalColor2))
-      HStack {
+      HStack(spacing: 14) {
         Label("\(model.doneCount)", systemImage: "checkmark.circle.fill")
-        Spacer()
         Label("\(model.queueCount)", systemImage: "tray.full.fill")
-        Spacer()
         Text(model.successRateText)
+        Spacer()
+        Button { showMenu = true } label: {
+          Image(systemName: "ellipsis.circle")
+        }
       }
       .font(.caption.weight(.semibold))
       .foregroundStyle(.secondary)
@@ -376,11 +430,13 @@ final class SwiftUIReviewHostingController: UIHostingController<ReviewScreen>, T
   SubjectDelegate {
   private let services: TKMServices
   private let model: ReviewViewModel
+  private let isPracticeSession: Bool
 
   var canSwipeToGoBack: Bool { false }
 
   init(services: TKMServices, items: [ReviewItem], isPracticeSession: Bool) {
     self.services = services
+    self.isPracticeSession = isPracticeSession
     let model = ReviewViewModel(services: services, items: items,
                                 isPracticeSession: isPracticeSession)
     self.model = model
@@ -388,15 +444,33 @@ final class SwiftUIReviewHostingController: UIHostingController<ReviewScreen>, T
     // swap the rootView in immediately after.
     super.init(rootView: ReviewScreen(model: model, subjectDelegate: PlaceholderSubjectDelegate()))
     title = isPracticeSession ? "Self-study" : "Reviews"
-    model
-      .onFinished = { [weak self] in self?.navigationController?.popViewController(animated: true)
-      }
+    model.onFinished = { [weak self] in self?.finish() }
     rootView = ReviewScreen(model: model, subjectDelegate: self)
   }
 
   @available(*, unavailable)
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  /// Real reviews end on the summary screen; practice sessions just pop back.
+  private func finish() {
+    guard let nav = navigationController else { return }
+    if isPracticeSession {
+      nav.popViewController(animated: true)
+      return
+    }
+    let summary = StoryboardScene.ReviewSummary.initialScene.instantiate()
+    summary.setup(services: services, items: model.session.completedReviews)
+    // Replace the review screen with the summary so "back" doesn't return into the finished
+    // session.
+    var vcs = nav.viewControllers
+    if let index = vcs.firstIndex(of: self) {
+      vcs[index] = summary
+    } else {
+      vcs.append(summary)
+    }
+    nav.setViewControllers(vcs, animated: true)
   }
 
   override func viewWillAppear(_ animated: Bool) {

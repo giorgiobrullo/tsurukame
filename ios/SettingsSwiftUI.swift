@@ -324,15 +324,6 @@ struct DashboardSettingsScreen: View {
   var body: some View {
     List {
       Section {
-        Toggle(isOn: store
-          .bind(Settings.useSwiftUIDashboard) { Settings.useSwiftUIDashboard = $0 }) {
-            SubtitleLabel("New SwiftUI dashboard (beta)", "Native redesign of the home screen")
-          }
-      } footer: {
-        Text("The new SwiftUI dashboard is the in-progress native redesign. Turn it off to use the classic dashboard.")
-      }
-
-      Section {
         Toggle(isOn: store.bind(Settings.showActivityWidget) { Settings.showActivityWidget = $0 }) {
           SubtitleLabel("Activity & streak", "Daily streak and a heatmap of reviews and lessons")
         }

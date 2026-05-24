@@ -59,13 +59,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
       if services.localCachingClient.availableReviewCount > 0 {
         // If the user has 0 reviews proceed to the main view controller. If they have
         // 1+ reviews then launch directly into reviews.
-        mainVC.perform(segue: StoryboardSegue.Main.startReviews)
+        mainVC.startReviews()
       }
     } else if userActivityType == SiriShortcutHelper.ShortcutType.lessons.rawValue {
       if services.localCachingClient.availableLessonCount > 0 {
         // If the user has 0 lessons proceed to the main view controller. If they have
         // 1+ lessons pending then launch directly into lessons.
-        mainVC.perform(segue: StoryboardSegue.Main.startLessons)
+        mainVC.startLessons()
       }
     }
     return true
@@ -295,9 +295,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
 
     switch components[0] {
     case "reviews":
-      mainVC.perform(segue: StoryboardSegue.Main.startReviews)
+      mainVC.startReviews()
     case "lessons":
-      mainVC.perform(segue: StoryboardSegue.Main.startLessons)
+      mainVC.startLessons()
     case "subject":
       if components.count > 1,
          let subjectID = Int64(components[1]),

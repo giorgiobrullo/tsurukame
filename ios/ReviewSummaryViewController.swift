@@ -104,8 +104,8 @@ class ReviewSummaryViewController: UITableViewController, SubjectDelegate {
     let freshItems = incorrectItems.map { ReviewItem(assignment: $0.assignment, subject: $0.subject)
     }
     guard !freshItems.isEmpty else { return }
-    let vc = StoryboardScene.ReviewContainer.initialScene.instantiate()
-    vc.setup(services: services, items: freshItems.shuffled(), isPracticeSession: true)
+    let vc = SwiftUIReviewHostingController(services: services, items: freshItems.shuffled(),
+                                            isPracticeSession: true)
     navigationController?.pushViewController(vc, animated: true)
   }
 
