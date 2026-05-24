@@ -14,7 +14,6 @@
 
 import Foundation
 import PromiseKit
-import Reachability
 import WaniKaniAPI
 
 #if !DEBUG
@@ -26,7 +25,7 @@ import WaniKaniAPI
     static let isActive = false
     class func setUp() {}
     static func createLocalCachingClient(client: WaniKaniAPIClient,
-                                         reachability: Reachability) -> LocalCachingClient {
+                                         reachability: NetworkMonitor) -> LocalCachingClient {
       LocalCachingClient(client: client, reachability: reachability)
     }
   }
@@ -57,7 +56,7 @@ import WaniKaniAPI
     }
 
     static func createLocalCachingClient(client: WaniKaniAPIClient,
-                                         reachability: Reachability) -> LocalCachingClient {
+                                         reachability: NetworkMonitor) -> LocalCachingClient {
       isActive ? FakeLocalCachingClient(client: client, reachability: reachability)
         : LocalCachingClient(client: client, reachability: reachability)
     }

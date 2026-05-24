@@ -15,7 +15,6 @@
 import FMDB
 import Foundation
 import PromiseKit
-import Reachability
 import WaniKaniAPI
 
 extension Notification.Name {
@@ -52,7 +51,7 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
   let excludedText = "#tsurukameExclude"
 
   let client: WaniKaniAPIClient
-  let reachability: Reachability
+  let reachability: NetworkMonitor
 
   private var db: FMDatabaseQueue!
   private var dateFormatter: DateFormatter
@@ -75,7 +74,7 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
   @Cached var maxLevelGrantedBySubscription: Int
   @Cached var leechCount: Int
 
-  init(client: WaniKaniAPIClient, reachability: Reachability) {
+  init(client: WaniKaniAPIClient, reachability: NetworkMonitor) {
     self.client = client
     self.reachability = reachability
 
