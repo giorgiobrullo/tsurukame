@@ -189,8 +189,7 @@ struct SettingsView: View {
     choice(Array(InterfaceStyle.allCases).map { .init(label: $0.description, value: $0) },
            Settings.interfaceStyle, Settings.$interfaceStyle.defaultValue, nil) { style in
       Settings.interfaceStyle = style
-      UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
-        .flatMap(\.windows).forEach { $0.setInterfaceStyle(style) }
+      NotificationCenter.default.post(name: .interfaceStyleChanged, object: nil)
     }.navigationTitle("Interface Style")
   }
 

@@ -37,12 +37,11 @@ struct RootView: View {
           .ignoresSafeArea()
       }
     }
-    .onAppear { DispatchQueue.main.async { UIWindow.applySavedInterfaceStyle() } }
+    .preferredColorScheme(state.colorScheme)
     .onChange(of: scenePhase) { phase in
       switch phase {
       case .active:
         state.services.reachability.startNotifier()
-        UIWindow.applySavedInterfaceStyle()
       case .background:
         state.services.reachability.stopNotifier()
         if state.loggedIn {
@@ -56,6 +55,9 @@ struct RootView: View {
     .onReceive(NotificationCenter.default.publisher(for: .logout)) { _ in
       router.settingsPresented = false
       state.logOut()
+    }
+    .onReceive(NotificationCenter.default.publisher(for: .interfaceStyleChanged)) { _ in
+      state.interfaceStyle = Settings.interfaceStyle
     }
     .onOpenURL { _ = handleApplink($0) }
     .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
@@ -353,44 +355,33 @@ private final class SearchModel: ObservableObject {
   }
 }
 
-/// A pushed search screen: a custom search field (auto-focused, so the keyboard opens immediately)
-/// over the subject results list.
+/// A pushed search screen using the native search bar. On iOS 17+ it activates the search field
+/// programmatically (`isPresented`) so the bar + keyboard come up cleanly on open — the canonical
+/// "managing search interface activation" pattern.
 @available(iOS 16.0, *)
 private struct SubjectSearchView: View {
   let services: TKMServices
   let onTapSubject: (TKMSubject) -> Void
   @StateObject private var model = SearchModel()
-  @FocusState private var focused: Bool
+  @State private var presented = false
 
   var body: some View {
-    VStack(spacing: 0) {
-      HStack(spacing: 8) {
-        Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
-        TextField("Search subjects", text: $model.query)
-          .focused($focused)
-          .textInputAutocapitalization(.never)
-          .autocorrectionDisabled()
-          .submitLabel(.search)
-        if !model.query.isEmpty {
-          Button { model.query = "" } label: {
-            Image(systemName: "xmark.circle.fill").foregroundStyle(.secondary)
-          }
-          .buttonStyle(.plain)
-        }
+    Group {
+      if #available(iOS 17.0, *) {
+        SubjectSearchScreen(model: model.results, onTap: onTapSubject)
+          .searchable(text: $model.query, isPresented: $presented, prompt: "Search subjects")
+      } else {
+        SubjectSearchScreen(model: model.results, onTap: onTapSubject)
+          .searchable(text: $model.query, prompt: "Search subjects")
       }
-      .padding(10)
-      .background(Color(uiColor: .secondarySystemBackground))
-      .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-      .padding(.horizontal, 16)
-      .padding(.vertical, 8)
-
-      SubjectSearchScreen(model: model.results, onTap: onTapSubject)
     }
+    .textInputAutocapitalization(.never)
+    .autocorrectionDisabled()
     .navigationTitle("Search")
     .navigationBarTitleDisplayMode(.inline)
     .onAppear {
       model.load(services: services)
-      DispatchQueue.main.async { focused = true }
+      if #available(iOS 17.0, *) { DispatchQueue.main.async { presented = true } }
     }
   }
 }

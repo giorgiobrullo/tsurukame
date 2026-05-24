@@ -110,6 +110,10 @@ func japaneseText(_ subject: TKMSubject, imageSize: CGFloat = 0.0) -> NSAttribut
   if size == 0 {
     size = imageAttachment.image?.size.width ?? 0
   }
-  imageAttachment.bounds = CGRect(x: 0, y: 0, width: size, height: size)
+  // Preserve the glyph's aspect ratio. Forcing a square box left tall/narrow radical glyphs
+  // centered with empty horizontal padding ("extra space before and after").
+  let glyphSize = imageAttachment.image?.size ?? CGSize(width: size, height: size)
+  let aspect = glyphSize.height > 0 ? glyphSize.width / glyphSize.height : 1
+  imageAttachment.bounds = CGRect(x: 0, y: 0, width: size * aspect, height: size)
   return NSAttributedString(attachment: imageAttachment)
 }

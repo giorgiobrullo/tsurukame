@@ -63,6 +63,11 @@ final class AppRouter: ObservableObject {
   func popToRoot() { path = NavigationPath() }
 }
 
+extension Notification.Name {
+  /// Posted by the appearance picker when `Settings.interfaceStyle` changes.
+  static let interfaceStyleChanged = Notification.Name("interfaceStyleChanged")
+}
+
 // MARK: - App state
 
 /// Owns the shared `TKMServices`, tracks auth, and performs the login/logout/setup that used to
@@ -72,6 +77,18 @@ final class AppRouter: ObservableObject {
 final class AppState: ObservableObject {
   let services = TKMServices()
   @Published var loggedIn: Bool
+  /// Drives `.preferredColorScheme` on the root, so the saved appearance applies at launch and
+  /// stays in sync with SwiftUI's environment (an imperative window override desynced from
+  /// SwiftUI's colorScheme, leaving `Color(uiColor:)` backgrounds stuck dark).
+  @Published var interfaceStyle = Settings.interfaceStyle
+
+  var colorScheme: ColorScheme? {
+    switch interfaceStyle {
+    case .light: return .light
+    case .dark: return .dark
+    default: return nil // .system -> follow the device
+    }
+  }
 
   init() {
     loggedIn = !Settings.userApiToken.isEmpty
