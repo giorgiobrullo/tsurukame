@@ -15,6 +15,7 @@
 		483EBFDC261DD7190043C804 /* FontScreenshotterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874562D261DD28E00F33AA3 /* FontScreenshotterUITests.swift */; };
 		48F4B1DC268CB9850033860E /* UpcomingReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4B1DB268CB9850033860E /* UpcomingReviewsViewController.swift */; };
 		498851B92054E89630420A58 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */; };
+		5A4B3B2F57BC19839BD23FBB /* SettingsFormsSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A453454F899E6016F1B7DD25 /* SettingsFormsSwiftUI.swift */; };
 		5C82B2908507339A293B0E59 /* Pods_FontScreenshotter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F33812F134DC80E5D981C40E /* Pods_FontScreenshotter.framework */; };
 		630EB10A25C561A900783E54 /* NSMutableAttributedString+Replacements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630EB10925C561A900783E54 /* NSMutableAttributedString+Replacements.swift */; };
 		630EB12125C5652400783E54 /* LessonsPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630EB12025C5652400783E54 /* LessonsPageControl.swift */; };
@@ -469,6 +470,7 @@
 		9721708B2DBAF3A6001DFFED /* SubjectsExcluded.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SubjectsExcluded.storyboard; sourceTree = "<group>"; };
 		97A120DE2D9C467100D19CAE /* ReviewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewUtils.swift; sourceTree = "<group>"; };
 		9CFD97ACE7ABC2C904715D83 /* Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig"; path = "Target Support Files/Pods-Tsurukame-Tsurukame Complication Extension/Pods-Tsurukame-Tsurukame Complication Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		A453454F899E6016F1B7DD25 /* SettingsFormsSwiftUI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsFormsSwiftUI.swift; sourceTree = "<group>"; };
 		BB0F6B0B216698F800CB1306 /* TKMKanaInputTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKMKanaInputTest.m; sourceTree = "<group>"; };
 		BB0F6B10216B333700CB1306 /* TKMKanaInput+Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TKMKanaInput+Internals.h"; sourceTree = "<group>"; };
 		BB2909A5217FAF8B00B1816F /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
@@ -735,6 +737,7 @@
 				6FCA11FE235A9D94A9810A8C /* SwiftUIShared.swift */,
 				CE1CC4113C7976DE45D7F94A /* LoginScreen.swift */,
 				4CBF551BE56C28C5F75B375A /* SettingsSwiftUI.swift */,
+				A453454F899E6016F1B7DD25 /* SettingsFormsSwiftUI.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1595,6 +1598,7 @@
 				98AAB5751B5F257ABB2868D5 /* SwiftUIShared.swift in Sources */,
 				498851B92054E89630420A58 /* LoginScreen.swift in Sources */,
 				F5D365098AA2DFD8560F2405 /* SettingsSwiftUI.swift in Sources */,
+				5A4B3B2F57BC19839BD23FBB /* SettingsFormsSwiftUI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

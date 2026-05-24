@@ -70,17 +70,38 @@ final class SettingsNavigator {
 
   func openAnkiTaskType() { push(makeAnkiModeTaskTypeViewController()) }
 
-  // Hub destinations (still UIKit — migrated later).
-  func openLessonSettings() { push(StoryboardScene.LessonSettings.initialScene.instantiate()) }
+  func openLessonSettings() {
+    push(TKMHostingController(title: "Lessons", rootView: LessonSettingsScreen(nav: self)))
+  }
 
   func openReviewSettings() {
-    let vc = StoryboardScene.ReviewSettings.initialScene.instantiate()
-    vc.setup(services: services)
-    push(vc)
+    push(TKMHostingController(title: "Reviews", rootView: ReviewSettingsScreen(nav: self)))
   }
 
   func openSubjectInfoSettings() {
-    push(StoryboardScene.SubjectDetailsSettings.initialScene.instantiate())
+    push(TKMHostingController(title: "Subject info", rootView: SubjectDetailsSettingsScreen()))
+  }
+
+  // Lesson-settings sub-pickers (still UIKit).
+  func openLessonOrder() { push(StoryboardScene.LessonOrder.initialScene.instantiate()) }
+  func openLessonBatchSize() { push(makeLessonBatchSizeViewController()) }
+  func openApprenticeLimit() { push(makeApprenticeLessonLimitViewController()) }
+
+  // Review-settings sub-pickers (still UIKit).
+  func openReviewItemsLimit() { push(makeReviewItemsLimitViewController()) }
+  func openLeechThreshold() { push(makeLeechThresholdViewController()) }
+  func openReviewOrder() { push(makeReviewOrderViewController()) }
+  func openTaskOrder() { push(makeTaskOrderViewController()) }
+  func openReviewBatchSize() { push(makeReviewBatchSizeViewController()) }
+
+  func showNoJapaneseKeyboardAlert() {
+    let device = UIDevice.current.model
+    let message = "You must add a Japanese keyboard to your \(device).\nOpen Settings then " +
+      "General ⮕ Keyboard ⮕ Keyboards ⮕ Add New Keyboard."
+    let ac = UIAlertController(title: "No Japanese keyboard", message: message,
+                               preferredStyle: .alert)
+    ac.addAction(UIAlertAction(title: "Close", style: .cancel))
+    present(ac)
   }
 
   // Sub-pickers / sub-screens reached from the leaves (still UIKit).
