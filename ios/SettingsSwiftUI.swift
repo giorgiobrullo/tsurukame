@@ -15,6 +15,7 @@
 import Foundation
 import SwiftUI
 import UIKit
+import UserNotifications
 import WaniKaniAPI
 
 // SwiftUI rewrite of the Settings hub and its first leaves (Appearance, Audio, Account). The hub
@@ -54,10 +55,22 @@ final class SettingsNavigator {
     push(TKMHostingController(title: "Account", rootView: AccountSettingsScreen(nav: self)))
   }
 
+  // Hub destinations (migrated SwiftUI screens).
+  func openDashboard() {
+    push(TKMHostingController(title: "Dashboard", rootView: DashboardSettingsScreen()))
+  }
+
+  func openAnki() {
+    push(TKMHostingController(title: "Anki mode", rootView: AnkiSettingsScreen(nav: self)))
+  }
+
+  func openNotifications() {
+    push(TKMHostingController(title: "Notifications", rootView: NotificationsSettingsScreen()))
+  }
+
+  func openAnkiTaskType() { push(makeAnkiModeTaskTypeViewController()) }
+
   // Hub destinations (still UIKit — migrated later).
-  func openDashboard() { push(DashboardSettingsViewController(style: .grouped)) }
-  func openAnki() { push(AnkiSettingsViewController(style: .grouped)) }
-  func openNotifications() { push(NotificationsSettingsViewController(style: .grouped)) }
   func openLessonSettings() { push(StoryboardScene.LessonSettings.initialScene.instantiate()) }
 
   func openReviewSettings() {
@@ -277,6 +290,172 @@ struct AccountSettingsScreen: View {
       Section {
         Button("Log out", role: .destructive) { nav.logOut() }
       }
+    }
+  }
+}
+
+// MARK: - Dashboard
+
+@available(iOS 15.0, *)
+struct DashboardSettingsScreen: View {
+  @StateObject private var store = SettingsStore()
+
+  var body: some View {
+    List {
+      Section {
+        Toggle(isOn: store
+          .bind(Settings.useSwiftUIDashboard) { Settings.useSwiftUIDashboard = $0 }) {
+            SubtitleLabel("New SwiftUI dashboard (beta)", "Native redesign of the home screen")
+          }
+      } footer: {
+        Text("The new SwiftUI dashboard is the in-progress native redesign. Turn it off to use the classic dashboard.")
+      }
+
+      Section {
+        Toggle(isOn: store.bind(Settings.showActivityWidget) { Settings.showActivityWidget = $0 }) {
+          SubtitleLabel("Activity & streak", "Daily streak and a heatmap of reviews and lessons")
+        }
+        Toggle(isOn: store.bind(Settings.showAccuracyStat) { Settings.showAccuracyStat = $0 }) {
+          SubtitleLabel("Accuracy", "Lifetime review accuracy in the \"All levels\" section")
+        }
+        Toggle(isOn: store.bind(Settings.showForecastChart) { Settings.showForecastChart = $0 }) {
+          SubtitleLabel("Review forecast", "Chart of upcoming reviews over the next 24 hours")
+        }
+        Toggle(isOn: store
+          .bind(Settings.showPreviousLevelGraph) { Settings.showPreviousLevelGraph = $0 }) {
+            SubtitleLabel("Previous level graph",
+                          "Keep showing the previous level until it's completed")
+          }
+      } header: {
+        Text("Widgets")
+      } footer: {
+        Text("Choose which widgets appear on the main dashboard.")
+      }
+
+      Section {
+        Toggle(isOn: store.bind(Settings.catchUpMode) { Settings.catchUpMode = $0 }) {
+          SubtitleLabel("Catch-up mode", "Tackle a big backlog one batch at a time")
+        }
+      } header: {
+        Text("Catch-up")
+      } footer: {
+        Text("When you're behind, show reviews as a manageable batch (your review batch size) instead of the full backlog, and cap each session to that batch.")
+      }
+    }
+  }
+}
+
+// MARK: - Anki mode
+
+@available(iOS 15.0, *)
+struct AnkiSettingsScreen: View {
+  let nav: SettingsNavigator
+  @StateObject private var store = SettingsStore()
+
+  var body: some View {
+    List {
+      Section {
+        Toggle(isOn: store.bind(Settings.ankiMode) { on in
+          Settings.ankiMode = on
+          Settings.ankiModeCombineReadingMeaning = false
+        }) {
+          SubtitleLabel("Anki mode", "Do reviews without typing answers")
+        }
+      } footer: {
+        Text("Anki mode lets you do reviews without typing answers — reveal the answer and mark yourself right or wrong.")
+      }
+
+      if Settings.ankiMode {
+        Section {
+          Button { nav.openAnkiTaskType() } label: {
+            DetailDisclosureRow(title: "Anki mode applies to",
+                                value: Settings.ankiModeTaskType.description)
+          }
+          if Settings.ankiModeTaskType == .both {
+            Toggle(isOn: store
+              .bind(Settings.ankiModeCombineReadingMeaning) {
+                Settings.ankiModeCombineReadingMeaning = $0
+              }) {
+                SubtitleLabel("Combine Reading + Meaning",
+                              "Only one review for reading and meaning with Anki mode enabled")
+              }
+          }
+        }
+      }
+    }
+    .onAppear { store.refresh() }
+  }
+}
+
+// MARK: - Notifications
+
+/// Wraps the notification toggles plus the authorization flow: turning a toggle on requests
+/// permission (or bounces to system Settings if denied) and only then enables the setting.
+@available(iOS 15.0, *)
+final class NotificationsModel: ObservableObject {
+  @Published var allReviews = Settings.notificationsAllReviews
+  @Published var badging = Settings.notificationsBadging
+  @Published var sounds = Settings.notificationSounds
+
+  func setAllReviews(_ on: Bool) {
+    prompt(on) { Settings.notificationsAllReviews = $0
+      self.allReviews = $0
+    }
+  }
+
+  func setBadging(_ on: Bool) {
+    prompt(on) { Settings.notificationsBadging = $0
+      self.badging = $0
+    }
+  }
+
+  func setSounds(_ on: Bool) {
+    prompt(on) { Settings.notificationSounds = $0
+      self.sounds = $0
+    }
+  }
+
+  private func prompt(_ on: Bool, _ apply: @escaping (Bool) -> Void) {
+    if !on {
+      apply(false)
+      UIApplication.shared.applicationIconBadgeNumber = 0
+      return
+    }
+    let center = UNUserNotificationCenter.current()
+    center.getNotificationSettings { settings in
+      switch settings.authorizationStatus {
+      case .authorized, .provisional, .ephemeral:
+        DispatchQueue.main.async { apply(true) }
+      case .notDetermined:
+        center.requestAuthorization(options: [.badge, .alert, .sound]) { granted, _ in
+          DispatchQueue.main.async { apply(granted) }
+        }
+      case .denied:
+        DispatchQueue.main.async {
+          if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+          }
+          apply(false)
+        }
+      @unknown default:
+        DispatchQueue.main.async { apply(false) }
+      }
+    }
+  }
+}
+
+@available(iOS 15.0, *)
+struct NotificationsSettingsScreen: View {
+  @StateObject private var model = NotificationsModel()
+
+  var body: some View {
+    List {
+      Toggle("Notify for all available reviews",
+             isOn: Binding(get: { model.allReviews }, set: { model.setAllReviews($0) }))
+      Toggle("Badge the app icon",
+             isOn: Binding(get: { model.badging }, set: { model.setBadging($0) }))
+      Toggle("Play sound with notifications",
+             isOn: Binding(get: { model.sounds }, set: { model.setSounds($0) }))
     }
   }
 }
