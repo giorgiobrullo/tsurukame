@@ -201,8 +201,15 @@ class MainWaniKaniTabViewController: UITableViewController {
       model.add(section: nil)
       let lessonsSubtitle = lessonsAtLimit ? "Apprentice limit reached"
         : (lessons == 1 ? "lesson to learn" : "lessons to learn")
-      let reviewsSubtitle = reviews == 1 ? "review to do" : "reviews to do"
-      model.add(DashboardActionCardsItem(lessonCount: lessons, reviewCount: reviews,
+
+      // Catch-up mode: when behind, show a manageable batch ("Do N · of T waiting") instead of the
+      // discouraging full total.
+      let catchUpBatch = Int(Settings.reviewItemsLimit)
+      let catchingUp = Settings.catchUpMode && reviews > catchUpBatch
+      let reviewCardCount = catchingUp ? catchUpBatch : reviews
+      let reviewsSubtitle = catchingUp ? "of \(reviews) waiting"
+        : (reviews == 1 ? "review to do" : "reviews to do")
+      model.add(DashboardActionCardsItem(lessonCount: lessons, reviewCount: reviewCardCount,
                                          lessonsEnabled: hasLessons, reviewsEnabled: hasReviews,
                                          lessonsSubtitle: lessonsSubtitle,
                                          reviewsSubtitle: reviewsSubtitle,
@@ -444,7 +451,8 @@ class MainWaniKaniTabViewController: UITableViewController {
 
       items = sortReviewItems(items: items, services: services)
 
-      if Settings.reviewItemsLimitEnabled && items.count > Settings.reviewItemsLimit {
+      if Settings.reviewItemsLimitEnabled || Settings.catchUpMode,
+         items.count > Settings.reviewItemsLimit {
         print("Truncating \(items.count) review items to \(Settings.reviewItemsLimit)")
         items = Array(items[0 ..< Int(Settings.reviewItemsLimit)])
       }

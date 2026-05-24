@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 //
 // WIP: this file is NOT yet part of any Xcode target — see TsurukameWidget/SETUP.md for the
 // 3-step wiring once you're back at a Mac with Xcode. It reads the snapshot the app already

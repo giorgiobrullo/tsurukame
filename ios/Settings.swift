@@ -228,6 +228,9 @@ protocol SettingProtocol {
   @Setting(true, #keyPath(showActivityWidget)) static var showActivityWidget: Bool
   @Setting(true, #keyPath(showAccuracyStat)) static var showAccuracyStat: Bool
   @Setting(true, #keyPath(showForecastChart)) static var showForecastChart: Bool
+
+  // Catch-up mode: when behind, present reviews as a manageable per-session batch.
+  @Setting(false, #keyPath(catchUpMode)) static var catchUpMode: Bool
   @Setting(true, #keyPath(showKanaOnlyVocab)) static var showKanaOnlyVocab: Bool
   @Setting(false,
            #keyPath(showSimilarKanjiAboveLevel)) static var showSimilarKanjiAboveLevel: Bool

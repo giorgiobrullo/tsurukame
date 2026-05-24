@@ -60,6 +60,12 @@ class DashboardSettingsViewController: UITableViewController, TKMViewController 
                                 .showPreviousLevelGraph) { Settings.showPreviousLevelGraph = $0.isOn
       })
 
+    model.add(section: "Catch-up",
+              footer: "When you're behind, show reviews as a manageable batch (your review batch size) instead of the full backlog, and cap each session to that batch.")
+    model.add(SwitchModelItem(style: .subtitle, title: "Catch-up mode",
+                              subtitle: "Tackle a big backlog one batch at a time",
+                              on: Settings.catchUpMode) { Settings.catchUpMode = $0.isOn })
+
     self.model = model
     model.reloadTable()
   }
