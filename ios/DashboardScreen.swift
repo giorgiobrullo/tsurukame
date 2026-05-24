@@ -320,10 +320,13 @@ struct DashboardScreen: View {
       }
       .frame(maxWidth: .infinity, minHeight: 96, alignment: .leading)
       .padding(18)
+      // Grey + darken only the background when disabled, so the white text stays readable in
+      // light mode (fading the whole card washed the gradient toward white and hid the text).
       .background(LinearGradient(colors: gradient.map { Color(uiColor: $0) },
-                                 startPoint: .topLeading, endPoint: .bottomTrailing))
+                                 startPoint: .topLeading, endPoint: .bottomTrailing)
+          .saturation(enabled ? 1 : 0)
+          .brightness(enabled ? 0 : -0.15))
       .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-      .opacity(enabled ? 1 : 0.45)
     }
     .buttonStyle(.plain)
     .disabled(!enabled)
