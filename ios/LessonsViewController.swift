@@ -37,6 +37,14 @@ class LessonsViewController: UIViewController, UIPageViewControllerDataSource,
 
     view.backgroundColor = TKMStyle.Color.background
 
+    // Liquid Glass back button on iOS 26 (keeps its icon, floats as glass over the content).
+    if #available(iOS 26.0, *) {
+      var config = UIButton.Configuration.glass()
+      config.image = backButton.image(for: .normal)
+      config.cornerStyle = .capsule
+      backButton.configuration = config
+    }
+
     // Create the page controller.
     pageController = UIPageViewController(transitionStyle: .scroll,
                                           navigationOrientation: .horizontal, options: nil)

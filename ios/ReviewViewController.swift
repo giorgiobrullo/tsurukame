@@ -303,13 +303,20 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
     answerField.delegate = kanaInput
     answerField.addAction(for: .editingChanged) { [weak self] in self?.answerFieldValueDidChange() }
 
-    // Liquid Glass submit button on iOS 26.
+    // Liquid Glass controls on iOS 26.
     if #available(iOS 26.0, *) {
       var config = UIButton.Configuration.prominentGlass()
       config.image = forwardArrowImage
       config.cornerStyle = .capsule
       config.baseForegroundColor = .white
       submitButton.configuration = config
+
+      // The menu button keeps its icon but floats as glass over the coloured background.
+      var menuConfig = UIButton.Configuration.glass()
+      menuConfig.image = menuButton.image(for: .normal)
+      menuConfig.cornerStyle = .capsule
+      menuConfig.baseForegroundColor = .white
+      menuButton.configuration = menuConfig
     }
 
     let showSuccessRate = delegate.showsSuccessRate()
@@ -1232,7 +1239,7 @@ class ReviewViewController: UIViewController, UITextFieldDelegate, SubjectDelega
                        self.answerField.textColor = .systemRed
                        self.answerField.isEnabled = false
                        self.revealAnswerButton.alpha = 1.0
-                       self.submitButton.setImage(self.forwardArrowImage, for: .normal)
+                       self.setSubmitButtonImage(self.forwardArrowImage)
                      })
     } else {
       revealAnswerButtonPressed(revealAnswerButton!)
