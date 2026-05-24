@@ -12,44 +12,6 @@ import UIKit
 
 // swiftlint:disable explicit_type_interface identifier_name line_length type_body_length type_name
 internal enum StoryboardSegue {
-  internal enum LessonPicker: String, SegueType {
-    case startCustomLessons
-  }
-  internal enum LessonSettings: String, SegueType {
-    case lessonOrder
-  }
-  internal enum Main: String, SegueType {
-    case embedTabBar
-    case katakanaCharacterPractice
-    case settings
-    case showAll
-    case showExcluded
-    case showLessonPicker
-    case showRemaining
-    case startAllLeechReviews
-    case startAlreadyPassedApprenticeReviews
-    case startBurnedItemReviews
-    case startLessons
-    case startRecentLessonReviews
-    case startRecentMistakeReviews
-    case startReviews
-    case tableForecast
-    case viewItemsInSrsCategory
-  }
-  internal enum Review: String, SegueType {
-    case reviewSummary
-    case subjectDetails
-  }
-  internal enum ReviewSettings: String, SegueType {
-    case fonts
-    case offlineAudio
-  }
-  internal enum Settings: String, SegueType {
-    case appSettings
-    case lessonSettings
-    case reviewSettings
-    case subjectDetailsSettings
-  }
 }
 // swiftlint:enable explicit_type_interface identifier_name line_length type_body_length type_name
 

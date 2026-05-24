@@ -99,16 +99,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
   }
 
   private func pushLoginViewController() {
-    if #available(iOS 15.0, *) {
-      // SwiftUI login (the native rewrite). The storyboard login remains the pre-iOS-15 fallback.
-      let vc = LoginHostingController()
-      vc.delegate = self
-      navigationController.setViewControllers([vc], animated: false)
-    } else {
-      let vc = StoryboardScene.Login.initialScene.instantiate()
-      vc.delegate = self
-      navigationController.setViewControllers([vc], animated: false)
-    }
+    let vc = LoginHostingController()
+    vc.delegate = self
+    navigationController.setViewControllers([vc], animated: false)
   }
 
   private func setMainViewControllerAnimated(animated: Bool, clearUserData: Bool) {
@@ -319,10 +312,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LoginViewControllerDelega
         openSubjectDetails(subject: subject)
       }
     case "wrap-up":
-      if let vcs = navigationController?.viewControllers,
-         let reviewContainerVC = vcs
-         .first(where: { $0 is ReviewContainerViewController }) as? ReviewContainerViewController {
-        reviewContainerVC.reviewVC.wrappingUp = true
+      if let reviewVC = navigationController?.viewControllers
+        .compactMap({ $0 as? SwiftUIReviewHostingController }).last {
+        reviewVC.wrapUp()
       }
     default:
       print("Unsupported applink path: \(url.path)")

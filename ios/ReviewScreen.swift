@@ -24,6 +24,20 @@ import WaniKaniAPI
 // cheats/synonyms, anki mode, success sparkle animations, previous-subject button, custom fonts and
 // the wrap-up UI are still TODO and tracked for follow-up.
 
+/// The outcome of answering a review task (consumed by ReviewSession.markAnswer). Previously lived
+/// in ReviewViewController.
+enum AnswerResult {
+  case Correct
+  case Incorrect
+  case OverrideAnswerCorrect
+  case AskAgainLater
+  case Exclude
+
+  var correct: Bool {
+    self == .Correct || self == .OverrideAnswerCorrect
+  }
+}
+
 // MARK: - View model
 
 @available(iOS 15.0, *)
@@ -500,6 +514,9 @@ final class SwiftUIReviewHostingController: UIHostingController<ReviewScreen>, T
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  /// Entry point for the "wrap-up" applink.
+  func wrapUp() { model.wrapUp() }
 
   /// Real reviews end on the summary screen; practice sessions just pop back.
   private func finish() {
