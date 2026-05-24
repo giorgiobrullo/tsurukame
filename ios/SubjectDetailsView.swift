@@ -62,26 +62,38 @@ private func renderMeanings(subject: TKMSubject,
   return join(strings, with: ", ")
 }
 
+// A small, secondary label marking a reading as on'yomi / kun'yomi / nanori (#53). Returns nil for
+// readings with no type (e.g. vocabulary), so only kanji readings are tagged.
+private func readingTypeLabel(_ reading: TKMReading) -> NSAttributedString? {
+  let text: String
+  switch reading.type {
+  case .onyomi: text = "\u{2009}on"
+  case .kunyomi: text = "\u{2009}kun"
+  case .nanori: text = "\u{2009}nanori"
+  default: return nil
+  }
+  return NSAttributedString(string: text, attributes: [
+    .font: UIFont.systemFont(ofSize: kFontSize * 0.65, weight: .semibold),
+    .foregroundColor: TKMStyle.Color.grey33,
+  ])
+}
+
 private func renderReadings(readings: [TKMReading], primaryOnly: Bool) -> NSAttributedString {
+  func render(_ reading: TKMReading, bold: Bool) -> NSAttributedString {
+    let font = UIFont.systemFont(ofSize: kFontSize, weight: bold ? .bold : .regular)
+    let result = NSMutableAttributedString(attributedString:
+      attrString(reading.displayText(useKatakanaForOnyomi: Settings.useKatakanaForOnyomi),
+                 attrs: [.font: font as Any]))
+    if let label = readingTypeLabel(reading) { result.append(label) }
+    return result
+  }
   var strings = [NSAttributedString]()
-  for reading in readings {
-    if reading.isPrimary {
-      var font = UIFont.systemFont(ofSize: kFontSize, weight: .regular)
-      if !primaryOnly, readings.count > 1 {
-        font = UIFont.systemFont(ofSize: kFontSize, weight: .bold)
-      }
-      strings
-        .append(attrString(reading.displayText(useKatakanaForOnyomi: Settings.useKatakanaForOnyomi),
-                           attrs: [.font: font as Any]))
-    }
+  for reading in readings where reading.isPrimary {
+    strings.append(render(reading, bold: !primaryOnly && readings.count > 1))
   }
   if !primaryOnly {
-    for reading in readings {
-      if !reading.isPrimary {
-        strings
-          .append(attrString(reading
-              .displayText(useKatakanaForOnyomi: Settings.useKatakanaForOnyomi)))
-      }
+    for reading in readings where !reading.isPrimary {
+      strings.append(render(reading, bold: false))
     }
   }
   return join(strings, with: ", ")
