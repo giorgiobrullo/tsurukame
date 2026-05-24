@@ -392,6 +392,13 @@ class MainWaniKaniTabViewController: UITableViewController {
     }
 
     applySnapshot(from: model)
+
+    // Share a snapshot with the Home Screen widget.
+    WidgetSharedData.write(WidgetSharedData.Snapshot(lessons: lessons, reviews: reviews,
+                                                     level: Int(user.level),
+                                                     streak: services.localCachingClient
+                                                       .reviewStreak,
+                                                     username: user.username, updatedAt: Date()))
   }
 
   private func addLevelProgress(to model: MutableTableModel, assignments: [TKMAssignment]) {
