@@ -240,6 +240,17 @@ class MainWaniKaniTabViewController: UITableViewController {
           })
       }
 
+      // Self-study: practice this level's items any time, no SRS penalty.
+      let selfStudyCount = currentLevelAssignments.filter { $0.isReviewStage }.count
+      if selfStudyCount > 0 {
+        let selfStudyItem = BasicModelItem(style: .value1, title: "Self-study current level",
+                                           subtitle: "\(selfStudyCount)",
+                                           accessoryType: .disclosureIndicator) { [unowned self] in
+          self.startSelfStudyCurrentLevel()
+        }
+        model.add(selfStudyItem)
+      }
+
       model.add(section: "Upcoming reviews")
       if !Settings.showForecastChart {
         // Forecast chart hidden in settings; skip it (the review-time row below still shows).
@@ -349,6 +360,15 @@ class MainWaniKaniTabViewController: UITableViewController {
       model.add(SRSDistributionItem(counts: services.localCachingClient.srsCategoryCounts,
                                     accuracy: Settings.showAccuracyStat
                                       ? services.localCachingClient.overallAccuracy : nil))
+      let statsItem = BasicModelItem(style: .default, title: "Statistics",
+                                     accessoryType: .disclosureIndicator) { [unowned self] in
+        let vc = StatsViewController()
+        vc.setup(services: self.services)
+        self.navigationController?.pushViewController(vc, animated: true)
+      }
+      statsItem.image = UIImage(systemName: "chart.bar.xaxis")
+      statsItem.imageTintColor = TKMStyle.vocabularyColor1
+      model.add(statsItem)
     }
     if let interval = services.localCachingClient.averageLevelUpInterval {
       let days = interval / 86400
@@ -641,6 +661,18 @@ class MainWaniKaniTabViewController: UITableViewController {
 
   @objc func startBurnedItemReviews() {
     perform(segue: StoryboardSegue.Main.startBurnedItemReviews, sender: self)
+  }
+
+  @objc func startSelfStudyCurrentLevel() {
+    let assignments = services.localCachingClient.getAssignmentsAtUsersCurrentLevel()
+    let items = ReviewItem.readyForSelfStudy(assignments: assignments,
+                                             localCachingClient: services.localCachingClient)
+      .shuffled()
+    guard !items.isEmpty else { return }
+    // Practice session: no SRS impact, and works regardless of whether items are currently due.
+    let vc = StoryboardScene.ReviewContainer.initialScene.instantiate()
+    vc.setup(services: services, items: items, isPracticeSession: true)
+    navigationController?.pushViewController(vc, animated: true)
   }
 }
 

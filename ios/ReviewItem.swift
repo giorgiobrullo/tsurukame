@@ -99,6 +99,16 @@ class ReviewItem: NSObject {
     }
   }
 
+  // Self-study: any started (reviewable) item, regardless of whether it's currently due. Run as a
+  // practice session so it doesn't affect SRS.
+  class func readyForSelfStudy(assignments: [TKMAssignment],
+                               localCachingClient: LocalCachingClient) -> [ReviewItem] {
+    filterReadyItems(assignments: assignments,
+                     localCachingClient: localCachingClient) { assignment -> Bool in
+      assignment.isReviewStage
+    }
+  }
+
   class func readyForLessons(assignments: [TKMAssignment],
                              localCachingClient: LocalCachingClient) -> [ReviewItem] {
     filterReadyItems(assignments: assignments,

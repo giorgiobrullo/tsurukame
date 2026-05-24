@@ -187,6 +187,7 @@
 		9721708A2DBAF247001DFFED /* SubjectsExcludedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972170892DBAF247001DFFED /* SubjectsExcludedViewController.swift */; };
 		9721708C2DBAF3A6001DFFED /* SubjectsExcluded.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9721708B2DBAF3A6001DFFED /* SubjectsExcluded.storyboard */; };
 		97A120DF2D9C467100D19CAE /* ReviewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A120DE2D9C467100D19CAE /* ReviewUtils.swift */; };
+		9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */; };
 		A46A3E6C91EE60C1C3052FA7 /* DashboardActionCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED9656EF825F08588F17905 /* DashboardActionCardItem.swift */; };
 		A911927ACBB6FD4087DA08DF /* SRSDistributionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA4FADC867BA88EE5ABC964 /* SRSDistributionItem.swift */; };
 		BABB2F910CFA9E91A98AF4B6 /* StreakHeatmapItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C937AD9C0B6866E7A0D8FC5 /* StreakHeatmapItem.swift */; };
@@ -462,6 +463,7 @@
 		BB0F6B10216B333700CB1306 /* TKMKanaInput+Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TKMKanaInput+Internals.h"; sourceTree = "<group>"; };
 		BB2909A5217FAF8B00B1816F /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		BBE4E32D2172576B003A200E /* FontLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontLoader.swift; sourceTree = "<group>"; };
+		C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		C7938DF5181DE860640CD5EE /* Pods-FontScreenshotter-FontScreenshotterUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontScreenshotter-FontScreenshotterUITests.debug.xcconfig"; path = "Target Support Files/Pods-FontScreenshotter-FontScreenshotterUITests/Pods-FontScreenshotter-FontScreenshotterUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C904455C2395DBAE001BC48B /* AnswerTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerTextField.swift; sourceTree = "<group>"; };
 		C90846AC237F1C770068A272 /* Tsurukame Complication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tsurukame Complication.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -714,6 +716,7 @@
 				634F14CBADD63065BA53E4AB /* DashboardSettingsViewController.swift */,
 				83B7110F2ABB9D5EA2B62E82 /* SettingsScreens.swift */,
 				567140C7E2E45E06417AC4EC /* WidgetSharedData.swift */,
+				C3EAF30AE79F53D6703D4291 /* StatsViewController.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1566,6 +1569,7 @@
 				94EA616D908E10AE08AF1445 /* DashboardSettingsViewController.swift in Sources */,
 				8ABD6EE815EB4D624D42A837 /* SettingsScreens.swift in Sources */,
 				BEAD8427C0788080A9079A3A /* WidgetSharedData.swift in Sources */,
+				9B02EA5D8DA4EE0C14C561E7 /* StatsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

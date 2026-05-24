@@ -1486,6 +1486,21 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
     }
   }
 
+  /// Counts per individual SRS stage, indexed by SRSStage.rawValue (1...9; index 0 unused).
+  func srsStageCounts() -> [Int] {
+    db.inDatabase { db in
+      var ret = Array(repeating: 0, count: 10)
+      for cursor in db.query("SELECT srs_stage, COUNT(*) FROM subject_progress " +
+        "WHERE srs_stage >= 1 GROUP BY srs_stage") {
+        let stage = Int(cursor.int(forColumnIndex: 0))
+        if stage >= 0, stage < ret.count {
+          ret[stage] = Int(cursor.int(forColumnIndex: 1))
+        }
+      }
+      return ret
+    }
+  }
+
   /// Average time taken to pass a level (start → passed), across all passed levels, or nil if none.
   var averageLevelUpInterval: TimeInterval? {
     var intervals = [TimeInterval]()
