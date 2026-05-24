@@ -223,6 +223,11 @@ protocol SettingProtocol {
   @Setting(false,
            #keyPath(ankiModeCombineReadingMeaning)) static var ankiModeCombineReadingMeaning: Bool
   @Setting(true, #keyPath(showPreviousLevelGraph)) static var showPreviousLevelGraph: Bool
+
+  // Dashboard widget visibility.
+  @Setting(true, #keyPath(showActivityWidget)) static var showActivityWidget: Bool
+  @Setting(true, #keyPath(showAccuracyStat)) static var showAccuracyStat: Bool
+  @Setting(true, #keyPath(showForecastChart)) static var showForecastChart: Bool
   @Setting(true, #keyPath(showKanaOnlyVocab)) static var showKanaOnlyVocab: Bool
   @Setting(false,
            #keyPath(showSimilarKanjiAboveLevel)) static var showSimilarKanjiAboveLevel: Bool

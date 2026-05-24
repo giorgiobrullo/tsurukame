@@ -234,7 +234,9 @@ class MainWaniKaniTabViewController: UITableViewController {
       }
 
       model.add(section: "Upcoming reviews")
-      if #available(iOS 15.0, *) {
+      if !Settings.showForecastChart {
+        // Forecast chart hidden in settings; skip it (the review-time row below still shows).
+      } else if #available(iOS 15.0, *) {
         model.add(ForecastChartItem(upcomingReviews: upcomingReviews,
                                     currentReviewCount: reviews,
                                     date: Date()) { [unowned self] in self.showTableForecast() })
@@ -305,7 +307,7 @@ class MainWaniKaniTabViewController: UITableViewController {
       }
     }
 
-    if #available(iOS 15.0, *) {
+    if #available(iOS 15.0, *), Settings.showActivityWidget {
       model.add(section: "Activity")
       model.add(StreakHeatmapItem(streak: services.localCachingClient.reviewStreak,
                                   dailyCounts: services.localCachingClient.reviewActivityByDay()))
@@ -338,7 +340,8 @@ class MainWaniKaniTabViewController: UITableViewController {
     model.add(section: "All levels")
     if #available(iOS 15.0, *) {
       model.add(SRSDistributionItem(counts: services.localCachingClient.srsCategoryCounts,
-                                    accuracy: services.localCachingClient.overallAccuracy))
+                                    accuracy: Settings.showAccuracyStat
+                                      ? services.localCachingClient.overallAccuracy : nil))
     }
     if let interval = services.localCachingClient.averageLevelUpInterval {
       let days = interval / 86400

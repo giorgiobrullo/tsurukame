@@ -181,6 +181,7 @@
 		79D887482B419672003D8F99 /* String+SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D887442B41949F003D8F99 /* String+SHA256.swift */; };
 		8F73DA6B4E6C360412C51110 /* LevelProgressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD3D849CDB443FDA6A69FF4 /* LevelProgressItem.swift */; };
 		93B59B2A2367AF130097533C /* UpcomingReviewsChartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B59B292367AF130097533C /* UpcomingReviewsChartItem.swift */; };
+		94EA616D908E10AE08AF1445 /* DashboardSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F14CBADD63065BA53E4AB /* DashboardSettingsViewController.swift */; };
 		96A335072EEF5F800017BC70 /* BottomSheetAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A335062EEF5F800017BC70 /* BottomSheetAction.swift */; };
 		9721708A2DBAF247001DFFED /* SubjectsExcludedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972170892DBAF247001DFFED /* SubjectsExcludedViewController.swift */; };
 		9721708C2DBAF3A6001DFFED /* SubjectsExcluded.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9721708B2DBAF3A6001DFFED /* SubjectsExcluded.storyboard */; };
@@ -328,6 +329,7 @@
 		633AFAE52352B6F2004F732F /* VocabularyHighlighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocabularyHighlighter.swift; sourceTree = "<group>"; };
 		633DE95920C5635900AC25F4 /* TKMKanaInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMKanaInput.m; sourceTree = "<group>"; };
 		633DE95B20C5635900AC25F4 /* TKMKanaInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMKanaInput.h; sourceTree = "<group>"; };
+		634F14CBADD63065BA53E4AB /* DashboardSettingsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DashboardSettingsViewController.swift; sourceTree = "<group>"; };
 		6356E7821FDFF0E3009CE7C1 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		6364A10A242DFB6F000ABF32 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Intents.framework; sourceTree = DEVELOPER_DIR; };
 		636502B225D7A39600801C2D /* SubjectsRemainingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectsRemainingViewController.swift; sourceTree = "<group>"; };
@@ -705,6 +707,7 @@
 				636A63E3238A5D6B00902269 /* VacationModeView.xib */,
 				633AFAE52352B6F2004F732F /* VocabularyHighlighter.swift */,
 				C92AB96E237F280300F79904 /* WatchHelper.swift */,
+				634F14CBADD63065BA53E4AB /* DashboardSettingsViewController.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1554,6 +1557,7 @@
 				8F73DA6B4E6C360412C51110 /* LevelProgressItem.swift in Sources */,
 				A911927ACBB6FD4087DA08DF /* SRSDistributionItem.swift in Sources */,
 				BABB2F910CFA9E91A98AF4B6 /* StreakHeatmapItem.swift in Sources */,
+				94EA616D908E10AE08AF1445 /* DashboardSettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

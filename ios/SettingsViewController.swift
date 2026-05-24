@@ -40,27 +40,35 @@ class SettingsViewController: UITableViewController, TKMViewController {
   private func rerender() {
     let model = MutableTableModel(tableView: tableView, delegate: self)
 
+    func addRow(_ title: String, symbol: String, tint: UIColor,
+                handler: @escaping () -> Void) {
+      let item = BasicModelItem(style: .default, title: title,
+                                accessoryType: .disclosureIndicator, tapHandler: handler)
+      item.image = UIImage(systemName: symbol)
+      item.imageTintColor = tint
+      model.add(item)
+    }
+
     model.add(section: "Settings")
-    model.add(BasicModelItem(style: .default,
-                             title: "Appearance & Notifications",
-                             accessoryType: .disclosureIndicator) { [unowned self] in
-        self.perform(segue: StoryboardSegue.Settings.appSettings, sender: self)
-      })
-    model.add(BasicModelItem(style: .default,
-                             title: "Lessons",
-                             accessoryType: .disclosureIndicator) { [unowned self] in
-        self.perform(segue: StoryboardSegue.Settings.lessonSettings, sender: self)
-      })
-    model.add(BasicModelItem(style: .default,
-                             title: "Reviews",
-                             accessoryType: .disclosureIndicator) { [unowned self] in
-        self.perform(segue: StoryboardSegue.Settings.reviewSettings, sender: self)
-      })
-    model.add(BasicModelItem(style: .default,
-                             title: "Radicals, Kanji & Vocabulary",
-                             accessoryType: .disclosureIndicator) { [unowned self] in
-        self.perform(segue: StoryboardSegue.Settings.subjectDetailsSettings, sender: self)
-      })
+    addRow("Appearance & Notifications", symbol: "paintbrush.fill", tint: .systemPurple) {
+      [unowned self] in self.perform(segue: StoryboardSegue.Settings.appSettings, sender: self)
+    }
+    addRow("Dashboard", symbol: "square.grid.2x2.fill", tint: .systemTeal) { [unowned self] in
+      self.navigationController?
+        .pushViewController(DashboardSettingsViewController(style: .grouped),
+                            animated: true)
+    }
+    addRow("Lessons", symbol: "book.fill", tint: TKMStyle.radicalColor1) { [unowned self] in
+      self.perform(segue: StoryboardSegue.Settings.lessonSettings, sender: self)
+    }
+    addRow("Reviews", symbol: "rectangle.stack.fill",
+           tint: TKMStyle.kanjiColor1) { [unowned self] in
+      self.perform(segue: StoryboardSegue.Settings.reviewSettings, sender: self)
+    }
+    addRow("Radicals, Kanji & Vocabulary", symbol: "character.book.closed.fill",
+           tint: TKMStyle.vocabularyColor1) { [unowned self] in
+      self.perform(segue: StoryboardSegue.Settings.subjectDetailsSettings, sender: self)
+    }
 
     model.add(section: "Diagnostics")
     if let coreVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
