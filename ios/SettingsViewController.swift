@@ -49,15 +49,21 @@ class SettingsViewController: UITableViewController, TKMViewController {
       model.add(item)
     }
 
-    model.add(section: "Settings")
-    addRow("Appearance & Notifications", symbol: "paintbrush.fill", tint: .systemPurple) {
-      [unowned self] in self.perform(segue: StoryboardSegue.Settings.appSettings, sender: self)
+    func push(_ makeVC: @escaping () -> UIViewController) -> () -> Void {
+      { [unowned self] in self.navigationController?.pushViewController(makeVC(), animated: true) }
     }
-    addRow("Dashboard", symbol: "square.grid.2x2.fill", tint: .systemTeal) { [unowned self] in
-      self.navigationController?
-        .pushViewController(DashboardSettingsViewController(style: .grouped),
-                            animated: true)
-    }
+
+    model.add(section: "Display")
+    addRow("Appearance", symbol: "paintbrush.fill", tint: .systemPurple, handler: push {
+      [unowned self] in
+      let vc = AppearanceSettingsViewController(style: .grouped)
+      vc.setup(services: self.services)
+      return vc
+    })
+    addRow("Dashboard", symbol: "square.grid.2x2.fill", tint: .systemTeal,
+           handler: push { DashboardSettingsViewController(style: .grouped) })
+
+    model.add(section: "Study")
     addRow("Lessons", symbol: "book.fill", tint: TKMStyle.radicalColor1) { [unowned self] in
       self.perform(segue: StoryboardSegue.Settings.lessonSettings, sender: self)
     }
@@ -65,10 +71,24 @@ class SettingsViewController: UITableViewController, TKMViewController {
            tint: TKMStyle.kanjiColor1) { [unowned self] in
       self.perform(segue: StoryboardSegue.Settings.reviewSettings, sender: self)
     }
-    addRow("Radicals, Kanji & Vocabulary", symbol: "character.book.closed.fill",
+    addRow("Anki mode", symbol: "square.on.square", tint: .systemIndigo,
+           handler: push { AnkiSettingsViewController(style: .grouped) })
+    addRow("Audio", symbol: "speaker.wave.2.fill", tint: .systemOrange, handler: push {
+      [unowned self] in
+      let vc = AudioSettingsViewController(style: .grouped)
+      vc.setup(services: self.services)
+      return vc
+    })
+    addRow("Subject info", symbol: "character.book.closed.fill",
            tint: TKMStyle.vocabularyColor1) { [unowned self] in
       self.perform(segue: StoryboardSegue.Settings.subjectDetailsSettings, sender: self)
     }
+
+    model.add(section: "App")
+    addRow("Notifications", symbol: "bell.badge.fill", tint: .systemRed,
+           handler: push { NotificationsSettingsViewController(style: .grouped) })
+    addRow("Account", symbol: "person.crop.circle.fill", tint: .systemBlue,
+           handler: push { AccountSettingsViewController(style: .grouped) })
 
     model.add(section: "Diagnostics")
     if let coreVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
@@ -88,14 +108,6 @@ class SettingsViewController: UITableViewController, TKMViewController {
                              title: "Clear avatar image cache",
                              subtitle: "If you are having issues with your avatar not loading, try clearing the image cache.",
                              accessoryType: .none) { [unowned self] in didTapClearImageCache() })
-
-    model.addSection()
-    let logOutItem = BasicModelItem(style: .default,
-                                    title: "Log out",
-                                    subtitle: nil,
-                                    accessoryType: .none) { [unowned self] in didTapLogOut() }
-    logOutItem.textColor = .systemRed
-    model.add(logOutItem)
 
     self.model = model
     model.reloadTable()

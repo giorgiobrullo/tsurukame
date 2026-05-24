@@ -105,25 +105,6 @@ class ReviewSettingsViewController: UITableViewController, TKMViewController {
 
     model.add(section: "Display")
     model.add(SwitchModelItem(style: .subtitle,
-                              title: "Show SRS level indicator",
-                              subtitle: nil,
-                              on: Settings
-                                .showSRSLevelIndicator) { [unowned self] in
-        showSRSLevelIndicatorSwitchChanged($0)
-      })
-    model.add(BasicModelItem(style: .default,
-                             title: "Fonts",
-                             subtitle: nil,
-                             accessoryType: .disclosureIndicator) { [unowned self] in self
-        .didTapFonts()
-      })
-    model.add(BasicModelItem(style: .value1,
-                             title: "Font size",
-                             subtitle: fontSizeValueText,
-                             accessoryType: .disclosureIndicator) { [unowned self] in self
-        .fontSizeChanged()
-      })
-    model.add(SwitchModelItem(style: .subtitle,
                               title: "Show minutes for next level-up review",
                               subtitle: nil,
                               on: Settings
@@ -178,56 +159,6 @@ class ReviewSettingsViewController: UITableViewController, TKMViewController {
                                 .minimizeReviewPenalty) { [unowned self] in
         minimizeReviewPenaltySwitchChanged($0)
       })
-    model.add(SwitchModelItem(style: .subtitle,
-                              title: "Anki mode",
-                              subtitle: "Do reviews without typing answers",
-                              on: Settings.ankiMode) { [unowned self] in ankiModeSwitchChanged($0)
-      })
-
-    ankiModeTaskTypeIndexPath = model.add(BasicModelItem(style: .value1,
-                                                         title: "Anki mode applies to",
-                                                         subtitle: Settings.ankiModeTaskType
-                                                           .description,
-                                                         accessoryType: .disclosureIndicator) {
-                                            [unowned self] in self.didTapAnkiModeTaskType()
-                                          },
-                                          hidden: !Settings.ankiMode)
-
-    let ankiModeCombineReadingMeaning = SwitchModelItem(style: .subtitle,
-                                                        title: "Combine Reading + Meaning",
-                                                        subtitle: "Only one review for reading and meaning with Anki mode enabled",
-                                                        on: Settings
-                                                          .ankiModeCombineReadingMeaning) { [
-      unowned self
-    ] in
-      ankiModeCombineReadingMeaningSwitchChanged($0)
-    }
-    ankiModeCombineReadingMeaningIndexPath = model.add(ankiModeCombineReadingMeaning,
-                                                       hidden: !Settings.ankiMode || Settings
-                                                         .ankiModeTaskType != .both)
-
-    model.add(section: "Audio")
-    model.add(SwitchModelItem(style: .subtitle,
-                              title: "Play audio automatically",
-                              subtitle: "When you answer correctly",
-                              on: Settings
-                                .playAudioAutomatically) { [unowned self] in
-        playAudioAutomaticallySwitchChanged($0)
-      })
-    model.add(SwitchModelItem(style: .subtitle,
-                              title: "Interrupt background audio",
-                              subtitle: "When answer is played automatically",
-                              on: Settings
-                                .interruptBackgroundAudio) { [unowned self] in
-        interruptBackgroundAudioSwitchChanged($0)
-      })
-    model.add(BasicModelItem(style: .default,
-                             title: "Offline audio",
-                             subtitle: nil,
-                             accessoryType: .disclosureIndicator) { [unowned self] in self
-        .didTapOfflineAudio()
-      })
-
     model.add(section: "Animations")
     model.add(SwitchModelItem(style: .default,
                               title: "Particle explosion",
