@@ -59,6 +59,10 @@ final class ReviewViewModel: ObservableObject {
   @Published var shakeToggle = false
   /// Set when an answer is marked correct, to drive the one-shot success animation.
   @Published var successEvent: SuccessEvent?
+  /// The most recently completed subject, shown as a tappable chip in the bottom-left corner.
+  @Published var previousSubject: TKMSubject?
+  /// Bumped when `previousSubject` changes, so the chip replays its fly-to-corner animation.
+  @Published var flyToken = UUID()
 
   init(services: TKMServices, items: [ReviewItem], isPracticeSession: Bool) {
     self.services = services
@@ -211,6 +215,11 @@ final class ReviewViewModel: ObservableObject {
 
   /// Build the one-shot success event from the marked result, honouring the animation settings.
   private func emitSuccess(_ marked: ReviewSession.MarkResult) {
+    // Capture the just-finished subject (still active until advanceToNext) for the corner chip.
+    if marked.subjectFinished, let finished = session.activeSubject {
+      previousSubject = finished
+      flyToken = UUID()
+    }
     var billboard: SuccessEvent.Billboard?
     if marked.didLevelUp, Settings.animateLevelUpPopup {
       // Only the first stage of each SRS category gets the celebratory popup.
@@ -323,11 +332,11 @@ struct ReviewScreen: View {
   @ObservedObject var model: ReviewViewModel
   let subjectDelegate: SubjectDelegate
 
-  @State private var showMenu = false
   @State private var showSynonymAlert = false
   @State private var synonymText = ""
-  /// The answer field's frame in `reviewSpace`, used to anchor the success animation.
+  /// Frames in `reviewSpace`, used to anchor the success animation and the corner chip.
   @State private var answerFrame: CGRect = .zero
+  @State private var heroFrame: CGRect = .zero
 
   private static let reviewSpace = "reviewSpace"
   private var brand: Color { Color(uiColor: TKMStyle.radicalColor2) }
@@ -343,26 +352,9 @@ struct ReviewScreen: View {
     .background(Color.tkmBackground.ignoresSafeArea())
     .coordinateSpace(name: Self.reviewSpace)
     .overlay(successOverlay)
+    .overlay(previousSubjectOverlay)
     .onPreferenceChange(AnswerFrameKey.self) { answerFrame = $0 }
-    .confirmationDialog("Options", isPresented: $showMenu, titleVisibility: .hidden) {
-      if model.phase == .markedWrong || model.phase == .revealed {
-        Button("My answer was correct") { model.overrideCorrect() }
-      }
-      Button("Ask again later") { model.askAgain() }
-      if model.taskType == .meaning {
-        Button("Add synonym") { synonymText = ""
-          showSynonymAlert = true
-        }
-      }
-      if model.canExclude {
-        Button("Exclude this item", role: .destructive) { model.excludeItem() }
-      }
-      if model.canWrapUp, !model.isWrappingUp {
-        Button("Wrap up") { model.wrapUp() }
-      }
-      Button("End session", role: .destructive) { model.endSession() }
-      Button("Cancel", role: .cancel) {}
-    }
+    .onPreferenceChange(HeroFrameKey.self) { heroFrame = $0 }
     .alert("Add synonym", isPresented: $showSynonymAlert) {
       TextField("Synonym", text: $synonymText)
       Button("Add") { model.addSynonym(synonymText) }
@@ -388,6 +380,10 @@ struct ReviewScreen: View {
       }
       .frame(maxWidth: .infinity, maxHeight: isRevealed ? 128 : .infinity)
       .clipped()
+      .background(GeometryReader { geo in
+        Color.clear.preference(key: HeroFrameKey.self,
+                               value: geo.frame(in: .named(Self.reviewSpace)))
+      })
       .modifier(ShakeEffect(animatableData: model.shakeToggle ? 1 : 0))
     }
   }
@@ -402,7 +398,6 @@ struct ReviewScreen: View {
         Label("\(model.queueCount)", systemImage: "tray.full.fill")
         Text(model.successRateText)
         Spacer()
-        Button { showMenu = true } label: { Image(systemName: "ellipsis.circle.fill") }
       }
       .font(.footnote.weight(.semibold))
       .foregroundStyle(.white)
@@ -443,6 +438,7 @@ struct ReviewScreen: View {
         switch model.phase {
         case .answering, .markedWrong:
           HStack(spacing: 10) {
+            optionsMenu
             AnswerFieldView(text: $model.answer,
                             isReading: model.isReading,
                             isEnabled: model.phase == .answering,
@@ -456,6 +452,7 @@ struct ReviewScreen: View {
           }
         case .revealed:
           HStack(spacing: 10) {
+            optionsMenu
             wideButton("I was right", systemImage: "checkmark", filled: false,
                        tint: .green) { model.overrideCorrect() }
             wideButton("Next", systemImage: "arrow.right", filled: true) { model.next() }
@@ -471,14 +468,50 @@ struct ReviewScreen: View {
   @ViewBuilder
   private var ankiControls: some View {
     if model.phase == .answering {
-      wideButton("Show answer", systemImage: "eye", filled: true) { model.ankiShowAnswer() }
+      HStack(spacing: 10) {
+        optionsMenu
+        wideButton("Show answer", systemImage: "eye", filled: true) { model.ankiShowAnswer() }
+      }
     } else {
       HStack(spacing: 10) {
+        optionsMenu
         wideButton("Incorrect", systemImage: "xmark", filled: true,
                    tint: .red) { model.ankiIncorrect() }
         wideButton("Correct", systemImage: "checkmark", filled: true,
                    tint: .green) { model.ankiCorrect() }
       }
+    }
+  }
+
+  /// Anchored pull-down menu of per-review actions (replaces the old slide-out drawer). Lives at
+  /// the bottom-left so it's reachable one-handed and opens attached to its button.
+  private var optionsMenu: some View {
+    Menu {
+      if model.phase == .markedWrong || model.phase == .revealed {
+        Button("My answer was correct", systemImage: "checkmark") { model.overrideCorrect() }
+      }
+      Button("Ask again later", systemImage: "arrow.uturn.left") { model.askAgain() }
+      if model.taskType == .meaning {
+        Button("Add synonym", systemImage: "plus") { synonymText = ""
+          showSynonymAlert = true
+        }
+      }
+      if model.canExclude {
+        Button("Exclude this item", systemImage: "nosign", role: .destructive) {
+          model.excludeItem()
+        }
+      }
+      if model.canWrapUp, !model.isWrappingUp {
+        Button("Wrap up", systemImage: "flag.checkered") { model.wrapUp() }
+      }
+      Button("End session", systemImage: "xmark", role: .destructive) { model.endSession() }
+    } label: {
+      Image(systemName: "ellipsis")
+        .font(.system(size: 18, weight: .semibold))
+        .foregroundStyle(.secondary)
+        .frame(width: 52, height: 52)
+        .background(Color(uiColor: TKMStyle.Color.cellBackground),
+                    in: RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
   }
 
@@ -531,11 +564,61 @@ struct ReviewScreen: View {
     }
     .allowsHitTesting(false)
   }
+
+  /// The just-finished subject, flying from the hero into a tappable chip in the bottom-left.
+  @ViewBuilder
+  private var previousSubjectOverlay: some View {
+    if let prev = model.previousSubject, heroFrame != .zero, !isRevealed {
+      let size: CGFloat = 56
+      let from = CGPoint(x: heroFrame.midX, y: heroFrame.midY)
+      let to = CGPoint(x: heroFrame.minX + 16 + size / 2, y: heroFrame.maxY - 16 - size / 2)
+      PreviousSubjectChip(subject: prev,
+                          colors: TKMStyle.gradient(forSubject: prev).map { Color(cgColor: $0) },
+                          size: size, from: from, to: to) { subjectDelegate.didTapSubject(prev) }
+        .id(model.flyToken)
+    }
+  }
 }
 
 private struct AnswerFrameKey: PreferenceKey {
   static var defaultValue: CGRect = .zero
   static func reduce(value: inout CGRect, nextValue: () -> CGRect) { value = nextValue() }
+}
+
+private struct HeroFrameKey: PreferenceKey {
+  static var defaultValue: CGRect = .zero
+  static func reduce(value: inout CGRect, nextValue: () -> CGRect) { value = nextValue() }
+}
+
+/// A subject chip that animates from `from` (hero centre, large) to `to` (bottom-left corner,
+/// small) on appear, then rests there as a tappable shortcut to the just-finished subject.
+@available(iOS 15.0, *)
+struct PreviousSubjectChip: View {
+  let subject: TKMSubject
+  let colors: [Color]
+  let size: CGFloat
+  let from: CGPoint
+  let to: CGPoint
+  var onTap: () -> Void
+
+  @State private var landed = false
+
+  var body: some View {
+    Button(action: onTap) {
+      ZStack {
+        LinearGradient(colors: colors, startPoint: .top, endPoint: .bottom)
+        JapaneseSubjectLabel(subject: subject, size: landed ? 24 : 52)
+          .fixedSize()
+      }
+      .frame(width: landed ? size : size * 1.9, height: landed ? size : size * 1.9)
+      .clipShape(RoundedRectangle(cornerRadius: landed ? 12 : 18, style: .continuous))
+      .shadow(color: .black.opacity(0.3), radius: 5, y: 2)
+    }
+    .buttonStyle(.plain)
+    .position(landed ? to : from)
+    .animation(.spring(response: 0.5, dampingFraction: 0.8), value: landed)
+    .onAppear { DispatchQueue.main.async { landed = true } }
+  }
 }
 
 // MARK: - Success animation
