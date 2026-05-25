@@ -133,6 +133,7 @@ final class MainModel: ObservableObject {
 struct MainScreen: View {
   @ObservedObject var model: MainModel
   var onSearch: () -> Void = {}
+  var onStats: () -> Void = {}
   var onSettings: () -> Void = {}
 
   var body: some View {
@@ -174,6 +175,7 @@ struct MainScreen: View {
         Image(systemName: "beach.umbrella.fill").foregroundStyle(.white)
       }
       headerButton("magnifyingglass", action: onSearch)
+      headerButton("chart.bar.xaxis", action: onStats)
       headerButton("gearshape", action: onSettings)
     }
     .padding(.horizontal, 16)

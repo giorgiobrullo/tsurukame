@@ -274,9 +274,6 @@ struct DashboardScreen: View {
     TKMSection("All levels") {
       VStack(spacing: 10) {
         SRSDistributionView(stages: data.srsStages, accuracy: data.accuracy).tkmCard()
-        TKMNavRow("Statistics", systemImage: "chart.bar.xaxis",
-                  tint: Color(uiColor: TKMStyle.vocabularyColor1),
-                  action: model.actions.openStatistics)
       }
     }
   }

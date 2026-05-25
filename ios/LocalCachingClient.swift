@@ -1501,6 +1501,23 @@ class LocalCachingClient: NSObject, SubjectLevelGetter {
     }
   }
 
+  /// Per-subject lifetime accuracy, for the "critical items" / leech analysis. Each tuple is the
+  /// subject id, accuracy (0...100), and total answers (meaning + reading) recorded for it.
+  func accuracyBySubject() -> [(subjectId: Int64, accuracy: Double, total: Int)] {
+    db.inDatabase { db in
+      var ret = [(subjectId: Int64, accuracy: Double, total: Int)]()
+      for cursor in db.query("SELECT pb FROM review_stats") {
+        guard let stat: TKMReviewStatistic = cursor.proto(forColumnIndex: 0) else { continue }
+        let correct = Int(stat.meaningCorrect + stat.readingCorrect)
+        let wrong = Int(stat.meaningIncorrect + stat.readingIncorrect)
+        let total = correct + wrong
+        guard total > 0 else { continue }
+        ret.append((stat.subjectID, Double(correct) / Double(total) * 100, total))
+      }
+      return ret
+    }
+  }
+
   /// Longest run of consecutive active days (reviews or lessons) in the recorded history.
   var longestStreak: Int {
     let counts = reviewActivityByDay()

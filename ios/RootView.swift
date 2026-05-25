@@ -143,6 +143,7 @@ private struct MainContainer: View {
     NavigationStack(path: $router.path) {
       MainScreen(model: model,
                  onSearch: { router.push(.search) },
+                 onStats: { router.push(.statistics) },
                  onSettings: { router.settingsPresented = true })
         .toolbar(.hidden, for: .navigationBar)
         .navigationDestination(for: AppRoute.self) { route in destination(for: route) }
@@ -171,8 +172,7 @@ private struct MainContainer: View {
   private func destination(for route: AppRoute) -> some View {
     switch route {
     case .statistics:
-      StatsView(data: StatsData.make(services: state.services))
-        .navigationTitle("Statistics")
+      StatsScreen(services: state.services) { router.push(.subjectDetail($0)) }
     case .search:
       SubjectSearchView(services: state.services) { router.push(.subjectDetail($0.id)) }
     case let .subjectDetail(id):
